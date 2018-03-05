@@ -18,8 +18,8 @@ public class Exam03_3 {
         b = a;   // 왼쪽에 b라는 이름의 메모리에 
                  // a라는 이름의 메모리에 들어있는 값을 저장한다.
         
-        System.out.println("a의 값 " + a);  // a의 값, 실행 결과 : 100
-        System.out.println("b의 값 " + b);  // b의 값, 실행 결과 : 100
+        System.out.println("a의 값 : " + a);  // a의 값, 실행 결과 : 100
+        System.out.println("b의 값 : " + b);  // b의 값, 실행 결과 : 100
     }
 }
 

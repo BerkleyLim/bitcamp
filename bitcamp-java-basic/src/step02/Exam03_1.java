@@ -1,4 +1,4 @@
-// 변수 - 변수 선언
+// 변수 - 메모리 종류와 변수 선언
 
 package step02;
 //import java.util.Scanner;

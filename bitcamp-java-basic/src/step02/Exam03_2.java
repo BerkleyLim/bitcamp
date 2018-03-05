@@ -1,4 +1,4 @@
-// 변수 - 다양한 변수 선언 방법
+// 변수 - 여러 개의 변수를 한 번에 선언
 
 package step02;
 //import java.util.Scanner;
@@ -12,6 +12,6 @@ public class Exam03_2 {
         boolean b1, b2, b3; // 논리 값을 담을 메모리를 3개 준비시킨다.
         // 논리 값은 true, false 두 개만 있다.
         // 메모리에 저장 될 때 true는 1, false는 0 값으로 저장된다.
-        
+
     }
 }
