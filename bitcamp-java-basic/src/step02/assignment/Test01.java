@@ -57,7 +57,7 @@ C:\Users\Bit\git\bitcamp\bitcamp-java-basic>java -cp bin step02.assignment.Test0
 */
 
 /* 
-<강사님 코드>
+<강사님 코드> // 1단계 : 1명의 성적을 입력 받아서 출력하기.
 package step02.assignment;
 
 public class Test01 {
@@ -72,6 +72,8 @@ public class Test01 {
         int kor = KeyScan.nextInt();
 
         System.out.print("영어? ");
+        // 이전에 국어 점수를 입력 받을 때 들어온 줄바꿈 코드는
+        // nextInt() 메서드에서 버린다.
         int eng = KeyScan.nextInt();
 
         System.out.print("수학? ");
