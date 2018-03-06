@@ -55,3 +55,45 @@ C:\Users\Bit\git\bitcamp\bitcamp-java-basic>java -cp bin step02.assignment.Test0
 -----------------------
 임현식  77 46 99 222 74.0
 */
+
+/* 
+<강사님 코드>
+package step02.assignment;
+
+public class Test01 {
+    public static void main(String[] args) {
+        java.io.InputStream keyboard = System.in;
+        java.util.Scanner KeyScan = new java.util.Scanner(keyboard); 
+
+        System.out.print("이름? ");
+        String name = KeyScan.nextLine();
+
+        System.out.print("국어? ");
+        int kor = KeyScan.nextInt();
+
+        System.out.print("영어? ");
+        int eng = KeyScan.nextInt();
+
+        System.out.print("수학? ");
+        int math = KeyScan.nextInt();
+
+        int sum = kor + eng + math;
+        int avg = sum / 3;
+
+        System.out.println("-----------------------");
+
+        System.out.print(name);
+        System.out.print("  ");
+        System.out.print(kor);
+        System.out.print("  ");
+        System.out.print(eng);
+        System.out.print("  ");
+        System.out.print(math);
+        System.out.print("  ");
+        System.out.print(sum);
+        System.out.print("  ");
+        System.out.print(avg);
+        System.out.println();
+    }
+}
+*/
