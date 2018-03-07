@@ -9,7 +9,7 @@ public class App {
         final int members = 5;   // 최대 5명 입력 가능
         InfList[] il = new InfList[members];
         int inputCount=members; // 최대 입력 갯수
-        char ch;
+        char ch = 0;
 
         InputStream keyboard = System.in;
         Scanner sc = new Scanner(keyboard);
@@ -33,13 +33,18 @@ public class App {
             il[i].endDay = sc.nextLine();
 
             // 조건문 적용
-            if(i != members -1)
+            if(i != members - 1) {
                 System.out.print("계속 입력하시겠습니까? (Y/n)  ");
+                ch = sc.nextLine().charAt(0);
+                // 또는
+                // sc.equal("\n");
+            }
 
-            if('n' == sc.nextLine().charAt(0)) {
+            if('n' == ch || i == members -1) {
                 inputCount = i + 1;
                 break;
-            }
+            } 
+                
         }
 
         System.out.println("--------------------------------");
