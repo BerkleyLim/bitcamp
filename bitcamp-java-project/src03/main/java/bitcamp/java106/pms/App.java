@@ -35,7 +35,7 @@ public class App {
             // 조건문 적용
             if(i != members -1)
                 System.out.print("계속 입력하시겠습니까? (Y/n)  ");
-                
+
             if('n' == sc.nextLine().charAt(0)) {
                 inputCount = i + 1;
                 break;
