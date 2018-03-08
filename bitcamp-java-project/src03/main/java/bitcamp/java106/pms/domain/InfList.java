@@ -1,4 +1,4 @@
-package bitcamp.java106.pms;
+package bitcamp.java106.pms.domain;
 
 public class InfList {
     public String team;
