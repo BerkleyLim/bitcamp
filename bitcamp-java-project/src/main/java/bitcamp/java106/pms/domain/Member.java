@@ -1,19 +1,18 @@
 package bitcamp.java106.pms.domain; // java폴더가 루트
 
 
-public class ID implements IDInput {
+public class Member implements MemberInput {
     private String id;
     private String email;
     private String passWord;
 
-    public ID(){
+    public Member(){
         this.id = "";
         this.email = "";
         this.passWord = "";
-        setTeamInformation();
     }
 
-    public ID(String id, String email, String passWord) {
+    public Member(String id, String email, String passWord) {
         this.id = id;
         this.email = email;
         this.passWord = passWord;
