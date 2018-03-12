@@ -1,5 +1,6 @@
 package bitcamp.java106.pms.domain; // java폴더가 루트
 
+
 public class ID implements IDInput {
     private String id;
     private String email;
@@ -9,12 +10,14 @@ public class ID implements IDInput {
         this.id = "";
         this.email = "";
         this.passWord = "";
+        setTeamInformation();
     }
 
     public ID(String id, String email, String passWord) {
         this.id = id;
         this.email = email;
         this.passWord = passWord;
+
     }
 
     // id 설정자 및 반환자
