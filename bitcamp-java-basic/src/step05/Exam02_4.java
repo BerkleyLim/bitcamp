@@ -72,6 +72,7 @@ public class Exam02_4 {
         default:
         }
         
+
     }
 }
 

@@ -58,6 +58,14 @@ public class Exam02_3 {
         default:
         }
 
-
+        // 컴파일 오류, switch문에서는 boolean은 불가능 (Java에서는 안됨, 
+        //타언어에서는 되는것도 있다.)
+        /*
+        boolean bool = true;
+        switch (bool) {
+        case true:
+        case false:
+        }
+        */
     }
 }
