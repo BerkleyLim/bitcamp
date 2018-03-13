@@ -7,7 +7,7 @@
 
 ## 실행 결과
 ```
-> java -classpath bin step05.assignment.Test01
+> java -classpath bin step05.assignment.Test02
 밑변 길이? 5
 *
 **

@@ -7,7 +7,7 @@ public class Test02 {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("밑변 길이? ");
+        System.out.print("가로 길이? ");
         num = sc.nextInt();
 
         // 직사각형 출력!! - while 문
@@ -72,7 +72,7 @@ import java.util.Scanner;
 public class Test01 {
     public static void main(String[] args) {
         Scanner keyScan = new Scanner(System.in);
-        System.out.println("밑변의 길이? ");
+        System.out.println("가로 길이? ");
         int len = keyScan.nextInt();
 
         int count = 1;
