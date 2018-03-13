@@ -7,9 +7,10 @@ public class Exam02_3 {
     public static void main(String[] args) {
         
         // switch (값) { }
-        // => 값으로 가능한 데이터 타입은?
+        // 값으로 가능한 데이터 타입은?
         // => 정수(byte, short, int, char), 문자열(String), 
         //    특별한 상수Enum 타입
+        // => case 값으로 변수를 사용 불가, 리터럴만 가능!!!!!!!
         byte b = 2;
         switch (b) {
         case 1:
@@ -67,5 +68,19 @@ public class Exam02_3 {
         case false:
         }
         */
+
+        // 컴파일 오류, switch문에서 case에 변수가 들어가면, 오류!!
+        // case에서는 한마디로 상수표현만 가능하다!!
+        /*
+        int x = 1, y = 300;
+        switch(x) {
+        case 1 * y:
+        }
+        */
+
+        int x = 1, y = 300;
+        switch(x) {
+        case 1 * 300:       // OK
+        }
     }
 }
