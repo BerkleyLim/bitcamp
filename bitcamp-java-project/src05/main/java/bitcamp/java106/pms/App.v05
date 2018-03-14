@@ -1,8 +1,15 @@
 package bitcamp.java106.pms; // java폴더가 루트
 
+import java.io.InputStream;
+import java.nio.channels.MembershipKey;
 import java.util.Scanner;
 import bitcamp.java106.pms.domain.*;    // 모든 클래스 포함
 
+// ver0.5 - member/add,list,view 명령어를 처리하는 코드를 메서드로 분리한다.
+// ver0.4 - team/add,list,view 명령어를 처리하는 코드를 메서드로 분리한다.
+// ver0.3 - help 명령어를 처리하는 코드를 메서드로 분리한다.
+// ver0.2 - quit 명렁어를 처리하는 코드를 메서드로 분리한다.
+// ver0.1 - 명령어를 입력 받는 코드를 메서드로 분리한다.
 public class App {
     // 클래스 정의
     private static Team[] teams = new Team[1000];
@@ -25,7 +32,7 @@ public class App {
             String[] arr = prompt();
 
             String csc = arr[0];
-            option = null;
+            
             // 이것은 view에서 검색 부분, 즉 팀명 or 아이디명 검색용으로
             if(arr.length >= 2) {
                 option = arr[1];
@@ -48,15 +55,6 @@ public class App {
             } else if(csc.equals("member/view")) { // 9) 해당 회원 상세정보 출력
                 onMemberView();
 
-              // 여기서부터 유지보수 시작!!
-            } else if(csc.equals("team/update")) { // 10) 팀 정보 수정
-                onTeamUpdate();
-            } else if(csc.equals("team/delete")) { // 11) 팀 정보 삭제
-                onTeamDelete();
-            } else if(csc.equals("member/update")) { // 12) 회원 정보 수정
-                onMemberUpdate();
-            } else if(csc.equals("member/delete")) { // 12) 회원 정보 삭제
-                onMemberDelete();
             } else {    // 3) 명령어 잘 못 입력 시
                 System.out.println("명령어를 잘 못 입력 했습니다.");
             }
@@ -85,45 +83,28 @@ public class App {
         System.out.println("회원 등록 명령 : member/add");
         System.out.println("회원 조회 명령 : member/list");
         System.out.println("회원 상세조회 명령 : member/view 아이디");
-        // 유지보수 추가
-        System.out.println("팀 정보 수정 : team/update");
-        System.out.println("팀 정보 삭제 : team/delete");
-        System.out.println("맴버 정보 수정 : member/update");
-        System.out.println("맴버 정보 삭제 : member/delete");
         System.out.println("종료 : quit");
     }
 
     // 팀 추가 명령어
     private static void onTeamAdd() {
-        String name, description, maxQty, startDate, endDate; // 임시 저장 변수
-        
+        Team team = new Team(); // 또 다른 임시 객체 생성
 
         System.out.print("팀명? ");
-        name = sc.nextLine();
-        
+        team.setName(sc.nextLine());
+
         System.out.print("설명? ");
-        description = sc.nextLine();
-       
+        team.setDescription(sc.nextLine());
+
         System.out.print("인원수? ");
-        maxQty = sc.nextLine();
-        
+        team.setMaxQty(sc.nextLine());
+
         System.out.print("시작일? ");
-        startDate = sc.nextLine();
-        
+        team.setStartDate(sc.nextLine());
+
         System.out.print("종료일? ");
-        endDate = sc.nextLine();
+        team.setEndDate(sc.nextLine());
 
-        // 임시 객체 생성
-        Team team = new Team(name, description,maxQty,
-            startDate, endDate); // 또 다른 임시 객체 생성
-        
-        team.setName(name);
-        team.setDescription(description);
-        team.setMaxQty(maxQty);
-        team.setStartDate(startDate);
-        team.setEndDate(endDate);
-
-        // 임시 객체 생성후 저장
         teams[teamCount++] = team;   
         // 월래 팀에 저장할 클래스 배열에 저장
     }
@@ -171,24 +152,17 @@ public class App {
 
     // 회원 추가
     private static void onMemberAdd() {
-        String id, email, passWord; // 임시 변수 지정
-        
+        Member member = new Member(); // 또 다른 임시 객체 생성
+
         System.out.print("아이디? ");
-        id = sc.nextLine();
+        member.setID(sc.nextLine());
 
         System.out.print("이메일? ");
-        email = sc.nextLine();
+        member.setEmail(sc.nextLine());
 
         System.out.print("암호? ");
-        passWord = sc.nextLine();
+        member.setPassWord(sc.nextLine());
 
-        // 또 다른 임시 객체 생성
-        Member member = new Member(); 
-        member.setID(id);
-        member.setEmail(email);
-        member.setPassWord(passWord);
-
-        // 임시 객체에 저장 한 것을 월래 배열에 저장
         members[memberCount++] = member;  
         // 월래 팀에 저장할 클래스 배열에 저장
     }
@@ -230,159 +204,6 @@ public class App {
             System.out.println("암호 : " 
                         + member.getPassWord());
             System.out.println();
-        }
-    }
-
-    // ----------------------------------------------
-    // 유지보수 추가
-
-    // 팀 정보 수정
-    private static void onTeamUpdate() {
-        // 팀명을 입력하지 않았을 때,
-        if(option == null) {
-            System.out.println("팀명을 입력하세요.");
-            return;
-        }
-
-        int i = 0;
-
-        while(i < teamCount) {
-            if(option.equals(teams[i].getName())) {
-                String name, description, maxQty, startDate, endDate;
-                System.out.printf("팀명(%s)? ", teams[i].getName());
-                name = sc.nextLine();
-                teams[i].setName(name);
-                
-                System.out.printf("설명(%s)? ", teams[i].getDescription());
-                description = sc.nextLine();
-                teams[i].setDescription(description);
-                
-                System.out.printf("최대인원(%s)? ", teams[i].getMaxQty());
-                maxQty = sc.nextLine();
-                teams[i].setMaxQty(maxQty);
-
-                System.out.printf("시작일(%s)? ", teams[i].getStartDate());
-                startDate = sc.nextLine();
-                teams[i].setStartDate(startDate);
-                
-                System.out.printf("종료일(%s)? ", teams[i].getEndDate());
-                endDate = sc.nextLine();
-                teams[i].setEndDate(endDate);
-
-                return;
-            }
-            i++;
-        }
-
-        if(i == teamCount) {
-            System.out.println("해당 이름의 팀이 없습니다.");
-        }
-    }
-
-    // 팀 정보 삭제
-    private static void onTeamDelete() {
-        int i = 0;
-
-        if(option == null) {
-            System.out.println("팀을 입력하세요.");
-            return;
-        }
-
-        // 먼저 해당 아이디 색인
-        while(i < teamCount) {
-            if(option.equals(teams[i].getName())) {
-                System.out.print("정말 삭제하시겠습니까?(Y/N)");
-                String str;
-                str = sc.nextLine().toLowerCase();
-
-                if(str.equals("y")) {
-                    teamCount--;
-                    while(i < teamCount) {
-                        teams[i] = teams[i+1];
-                        i++;
-                    }
-
-                    teams[teamCount+1] = new Team();
-                    return;
-                }
-
-            }
-            i++;
-        }
-
-        if(i == teamCount) {
-            System.out.println("해당 이름의 팀이 없습니다.");
-        }
-
-    }
-
-    // 회원 정보 수정
-    private static void onMemberUpdate() {
-        // 회원명을 입력하지 않았을 때,
-        if(option == null) {
-            System.out.println("회원명을 입력하세요.");
-            return;
-        }
-
-        int i = 0;
-        while(i < memberCount) {
-            if(option.equals(members[i].getID())) {
-                String id, email, passWord;
-                System.out.printf("아이디(%s)? ", members[i].getID());
-                id = sc.nextLine();
-                members[i].setID(id);
-                
-                System.out.printf("이메일(%s)? ", members[i].getEmail());
-                email = sc.nextLine();
-                members[i].setEmail(email);
-                
-                System.out.printf("암호(%s)? ", members[i].getPassWord());
-                passWord = sc.nextLine();
-                members[i].setPassWord(passWord);
-
-                return;
-            }
-            i++;
-        }
-
-        if(i == memberCount) {
-            System.out.println("해당 회원이 없습니다.");
-        }
-    }
-
-    // 회원 정보 삭제
-    private static void onMemberDelete() {
-        int i = 0;
-
-        if(option == null) {
-            System.out.println("아이디를 입력하세요.");
-            return;
-        }
-
-        // 먼저 해당 아이디 색인
-        while(i < memberCount) {
-            if(option.equals(members[i].getID())) {
-                System.out.print("정말 삭제하시겠습니까?(Y/N)");
-                String str;
-                str = sc.nextLine().toLowerCase();
-
-                if(str.equals("y")) {
-                    memberCount--;
-                    while(i < memberCount) {
-                        members[i] = members[i+1];
-                        i++;
-                    }
-
-                    members[memberCount+1] = new Member();
-                    return;
-                }
-
-            }
-            i++;
-        }
-
-        if(i == memberCount) {
-            System.out.println("해당 아이디가 없습니다.");
         }
     }
 }
