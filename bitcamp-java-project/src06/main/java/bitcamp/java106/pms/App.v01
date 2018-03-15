@@ -3,7 +3,6 @@ package bitcamp.java106.pms; // java폴더가 루트
 import java.util.Scanner;
 import bitcamp.java106.pms.domain.*;    // 모든 클래스 포함
 
-// ver0.2 - 팀 정보 삭제, 회원 정보 삭제
 // ver0.1 - 팀 변경, 회원 변경 기능 추가
 public class App {
     // 클래스 정의
@@ -300,41 +299,6 @@ public class App {
 
     // 팀 정보 삭제
     private static void onTeamDelete() {
-        int i = 0;
-
-        if(option == null) {
-            System.out.println("팀을 입력하세요.");
-            return;
-        }
-
-        // 먼저 해당 아이디 색인
-        while(i < teamCount) {
-            if(option.equals(teams[i].getName())) {
-                System.out.print("정말 삭제하시겠습니까?(Y/N)");
-                String str;
-                str = sc.nextLine().toLowerCase();
-
-                if(str.equals("y")) {
-                    teamCount--;
-                    while(i < teamCount) {
-                        teams[i] = teams[i+1];
-                        i++;
-                    }
-
-                    teams[teamCount+1] = new Team();
-                    return;
-                } else {
-                    return;
-                }
-
-            }
-            i++;
-        }
-
-        if(i == teamCount) {
-            System.out.println("해당 이름의 팀이 없습니다.");
-        }
-
     }
 
     // 회원 정보 수정
@@ -380,40 +344,6 @@ public class App {
 
     // 회원 정보 삭제
     private static void onMemberDelete() {
-        int i = 0;
-
-        if(option == null) {
-            System.out.println("아이디를 입력하세요.");
-            return;
-        }
-
-        // 먼저 해당 아이디 색인
-        while(i < memberCount) {
-            if(option.equals(members[i].getID())) {
-                System.out.print("정말 삭제하시겠습니까?(Y/N)");
-                String str;
-                str = sc.nextLine().toLowerCase();
-
-                if(str.equals("y")) {
-                    memberCount--;
-                    while(i < memberCount) {
-                        members[i] = members[i+1];
-                        i++;
-                    }
-
-                    members[memberCount+1] = new Member();
-                    return;
-                } else {
-                    return;
-                }
-
-            }
-            i++;
-        }
-
-        if(i == memberCount) {
-            System.out.println("해당 아이디가 없습니다.");
-        }
     }
 }
 
