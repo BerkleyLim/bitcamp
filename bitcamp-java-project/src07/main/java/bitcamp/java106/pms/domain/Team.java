@@ -80,4 +80,5 @@ public class Team implements TeamInput {
     public String getEndDate(){
         return endDate;
     }
+
 }

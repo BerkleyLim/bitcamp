@@ -5,24 +5,26 @@ import bitcamp.java106.pms.domain.*;    // 모든 클래스 포함
 import bitcamp.java106.pms.controller.*;
 import bitcamp.java106.pms.util.Console;
 
+// ver0.1 - 팀 관리 기능(메서드)을 별도의 클래스로 옮긴다.
+//          => controller.TeamController 클래스 추가 
 public class App {
     // 클래스 정의
     static Scanner keyScan = new Scanner(System.in);
 
     private static String option = null;   // 이것은 view 명령어의 횟수로 지정
 
+
     public static void main(String[] args) {
         // 클래스를 사용하기 전에 필수값을 설정
         TeamController.keyScan = keyScan;
         MemberController.keyScan = keyScan;
-        BoardController.keyScan = keyScan;
         Console.keyScan = keyScan;
 
         
         while(true) {
             String[] arr = Console.prompt();
 
-            String menu = arr[0]; // case by case : 이 경우 어떤 명령어를 입력했을
+            String csc = arr[0]; // case by case : 이 경우 어떤 명령어를 입력했을
                                 // 시의 대해 
             option = null;
 
@@ -32,21 +34,38 @@ public class App {
                 option = arr[1];
             }
 
-            if(menu.equals("help") && option == null) {   // 1) 명령어 정보
+
+            if(csc.equals("help") && option == null) {      // 1) 명령어 정보
                 onHelp();
-            } else if(menu.equals("quit")
+            } else if(csc.equals("quit")
                             && option == null) { // 2) 종료 버튼 누를 시.
                 onQuit();
-            } else if(menu.startsWith("team/")){ // startsWith("prefix")
-                                            // 이것은 처음 친 값만 추출
-                TeamController.service(menu, option);
-           
-            } else if(menu.startsWith("member/")) {
-                MemberController.service(menu, option);
+            } else if(csc.equals("team/add")
+                            && option == null) { // 4) 팀 생성 명령어
+                TeamController.onTeamAdd();
+            } else if(csc.equals("team/list")
+                            && option == null) { // 5) 팀 정보 간단 출력
+                TeamController.onTeamList();
+            } else if(csc.equals("team/view")) { // 6) 해당 팀 상세정보 출력
+                TeamController.onTeamView(option);
+            } else if (csc.equals("member/add")
+                            && option == null) { // 7) 회원 생성 명령어
+                MemberController.onMemberAdd();
+            } else if(csc.equals("member/list")
+                            && option == null) { // 8) 회원 정보 간단 출력
+                MemberController.onMemberList();
+            } else if(csc.equals("member/view")) { // 9) 해당 회원 상세정보 출력
+                MemberController.onMemberView(option);
 
-            } else if(menu.startsWith("board/")) {
-                BoardController.service(menu, option);
-
+                // 여기서부터 유지보수 시작!!
+            } else if(csc.equals("team/update")) { // 10) 팀 정보 수정
+                TeamController.onTeamUpdate(option);
+            } else if(csc.equals("team/delete")) { // 11) 팀 정보 삭제
+                TeamController.onTeamDelete(option);
+            } else if(csc.equals("member/update")) { // 12) 회원 정보 수정
+                MemberController.onMemberUpdate(option);
+            } else if(csc.equals("member/delete")) { // 12) 회원 정보 삭제
+                MemberController.onMemberDelete(option);
             } else {    // 3) 명령어 잘 못 입력 시
                 System.out.println("명령어를 잘 못 입력 했습니다.");
             }
@@ -67,20 +86,14 @@ public class App {
         System.out.println("팀 등록 명령 : team/add");
         System.out.println("팀 조회 명령 : team/list");
         System.out.println("팀 상세조회 명령 : team/view 팀명");
-        System.out.println("팀 정보 수정 : team/update");
-        System.out.println("팀 정보 삭제 : team/delete");
-        
         System.out.println("회원 등록 명령 : member/add");
         System.out.println("회원 조회 명령 : member/list");
         System.out.println("회원 상세조회 명령 : member/view 아이디");
+        // 유지보수 추가
+        System.out.println("팀 정보 수정 : team/update");
+        System.out.println("팀 정보 삭제 : team/delete");
         System.out.println("맴버 정보 수정 : member/update");
         System.out.println("맴버 정보 삭제 : member/delete");
-
-        System.out.println("게시판 등록 명령 : board/add");
-        System.out.println("게시판 조회 명령 : board/list");
-        System.out.println("게시판 상세조회 명령 : board/view 인덱스명");
-        System.out.println("게시판 정보 수정 명령 : board/update 인덱스명");
-        System.out.println("게시판 정보 삭제 명령 : board/delete 인덱스명");
         System.out.println("종료 : quit");
     }
 
@@ -88,28 +101,6 @@ public class App {
 }
 
 /*
-C:\Users\Bit\git\bitcamp\bitcamp-java-project>java -cp bin bitcamp.java106.pms.App
-명령> help
-팀 등록 명령 : team/add
-팀 조회 명령 : team/list
-팀 상세조회 명령 : team/view 팀명
-팀 정보 수정 : team/update
-팀 정보 삭제 : team/delete
-회원 등록 명령 : member/add
-회원 조회 명령 : member/list
-회원 상세조회 명령 : member/view 아이디
-맴버 정보 수정 : member/update
-맴버 정보 삭제 : member/delete
-게시판 등록 명령 : board/add
-게시판 조회 명령 : board/list
-게시판 상세조회 명령 : board/view 인덱스명
-게시판 정보 수정 명령 : board/update 인덱스명
-게시판 정보 삭제 명령 : board/delete 인덱스명
-종료 : quit
-
-명령> quit
-안녕히 가세요!
-
 C:\Users\Bit\git\bitcamp\bitcamp-java-project>java -classpath bin bitcamp.java106.pms.App
 명령> member/add
 아이디? aal
