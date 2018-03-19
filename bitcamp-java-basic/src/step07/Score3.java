@@ -9,16 +9,38 @@ class Score3 {
     int sum;
     float average;
     
-    // 메서드를 이용하여 이 타입의 데이터를 다룰 수 있는 연산자를 정의한다.
-    // => 사용자 정의 데이터 타입 입장에서는 메서드가 연산자로 불린다.
-    // => 즉 사용자 정의 데이터 타입에 메서드를 정의하는 것은
-    //    그 데이터를 다룰 연산자를 정의하는 것이다.
+    // 다음 연산자는 계산을 수행할 대마다 인스턴스의 주소를 파라미터로 받아야 한다.
+    // 인스턴스 메서드!
+    //public static void calculate(Score3 score) { 
+    // /   score.sum = score.kor + score.eng + score.math;
+    //    score.average  = (float) score.sum / 3f;
+    //}
 
-    // Score 데이터 값을 다룰 수 있는 새 연산자를 정의
-    // => 다음 메소드는 Score 객체의 국, 영, 수 값의 합계와 평균을 계산하는 연산자이다.
-
-    public static void calculate(Score2 score) { 
-        score.sum = score.kor + score.eng + score.math;
-        score.average  = (float) score.sum / 3f;
+    // 인스턴스 메서드
+    // => 인스턴스의 주소를 파라미터로 받는 것이 아니라,
+    //    메서드를 호출할 때(연산자를 사용할 때), 
+    //    매서드 앞에 인스턴스의 주소를 적는다.
+    // => 이 인스턴스의 주소는 내부에 내장된 this라는 변수에 자동 복사된다.
+    //    그래서 파라미터 대신 this를 사용하면 된다.
+    // => 인스턴스 메서드는 static을 붙이지 않는다.
+    public void calculate() {
+        this.sum = this.kor + this.eng + this.math;
+        this.average = this.sum / 3f;
     }
 }
+
+// 클래스 메서드
+// => static이 붙는 메서드
+// => 특정 인스턴스가 아닌 모든 인스턴스에 대해 작업을 수행할 때 사용하는 메서드이다.
+// => 사용법
+//    클래스명.메서드명();
+//    레퍼런스.메서드명();
+//    그러나 가능한 레퍼런스를 사용하여 클래스 멧드를 호출 금지
+//    타 개발자가 헷깔려 함
+
+// 인스턴스 메서드
+// => static이 붙지 않는 메서드
+// => 특정 인스턴스에 대해 작업을 수행할 때 사용하는 메셔드이다.
+// => 사용법
+//    레퍼런스.메서드명();
+//    

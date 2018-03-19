@@ -9,13 +9,13 @@ public class Calculator2 {
 
 
     // 다음 메소드는 작업 결과를 클래스 변수에 보관한다.
-    public static void plus (int value) { return += value; }
+    public static void plus (int value) { result += value; }
 
-    public static void minus (int value) { return -= value; }
+    public static void minus (int value) {result -= value; }
 
-    public static void multiple (int value) { return *= value; }
+    public static void multiple (int value) { result *= value; }
     
-    public static void divide (int value) { return /=value ; }
+    public static void divide (int value) { result /=value ; }
 
 
 }
