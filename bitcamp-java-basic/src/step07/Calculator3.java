@@ -14,19 +14,19 @@ public class Calculator3 {
     public static void plus (Calculator3 calc, int value) { 
         // result는 더 이상 클래스 변수가 아니기 때문에 직접 접근 불가.
         // 오직 인스턴스 주소를 통해서만 접근 가능
-        Cals.result += value; 
+        calc.result += value; 
     }
 
     public static void minus (Calculator3 calc,int value) {
-        Cals.result -= value; 
+        calc.result -= value; 
     }
 
     public static void multiple (Calculator3 calc, int value) {
-        Cals.result *= value;
+        calc.result *= value;
     }
     
     public static void divide (Calculator3 calc, int value) {
-        Cals.result /=value;
+        calc.result /=value;
     }
 
 

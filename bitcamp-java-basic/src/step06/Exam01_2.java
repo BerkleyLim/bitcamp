@@ -34,7 +34,7 @@ public class Exam01_2 {
         System.out.print("밑변 길이? ");
         len = sc.nextInt();
 
-        for(int starLen = 1; starLen <= len; starlen +=2) {
+        for(int starLen = 1; starLen <= len; starLen +=2) {
             // 명령 코드들을 기능 별로 묶어 놓고
             // 필요할 때마다 다음과 같이 사용하면
             // 코드를 읽기가 쉬워진다.

@@ -12,6 +12,6 @@ public class Exam01_2 {
         result = Calculator.plus(2,3);
         result = Calculator.minus(result,1);
         result = Calculator.multiple(result, 7);
-        result = Caldulator.divide(result, 3);
+        result = Calculator.divide(result, 3);
     }
 }

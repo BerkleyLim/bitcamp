@@ -17,7 +17,7 @@ public class Exam01_1{
         score.sum = score.kor + score.eng + score.math;
         score.average = (float) score.sum / (float) 3f;
 
-        System.out.println("%s, %d, %d, %d, %d, %.1f\n", score.name,
+        System.out.printf("%s, %d, %d, %d, %d, %.1f\n", score.name,
         score.kor, score.eng, score.math, score.sum, score.average);
     }
 }

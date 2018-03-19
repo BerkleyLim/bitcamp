@@ -11,7 +11,7 @@ public class Exam02_1 {
         score.math = 85;
 
         // 다음은 Score의 값을 다루는 연산자가 없을 대의 예이다.
-        Score2.calculatie(score);
+        Score2.calculate(score);
 
         int i = 10;
         ++i;

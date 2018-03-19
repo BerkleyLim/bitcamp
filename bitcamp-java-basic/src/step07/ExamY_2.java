@@ -23,7 +23,7 @@ public class ExamY_2 {
         Calculator2.divide(4);
 
         Calculator2.divide(3);
-        Calculator2.divide(4);
+        Calculator2.divide(5);
 
 
         System.out.printf("result = %d\n", Calculator2.result);

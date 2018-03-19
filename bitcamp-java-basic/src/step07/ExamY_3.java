@@ -30,7 +30,7 @@ public class ExamY_3 {
         Calculator3.divide(c2, 4);  //
 
         Calculator3.divide(c1, 3);
-        Calculator3.divide(c2, 4);
+        Calculator3.divide(c2, 6);
 
 
         // 식 1의 계산 결과 c1 인스턴스의 result에 들어 있고
