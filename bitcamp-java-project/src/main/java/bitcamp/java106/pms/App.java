@@ -1,8 +1,10 @@
 package bitcamp.java106.pms; // java폴더가 루트
 
 import java.util.Scanner;
-import bitcamp.java106.pms.domain.*;    // 모든 클래스 포함
-import bitcamp.java106.pms.controller.*;
+
+import bitcamp.java106.pms.controller.BoardController;
+import bitcamp.java106.pms.controller.MemberController;
+import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.util.Console;
 
 public class App {

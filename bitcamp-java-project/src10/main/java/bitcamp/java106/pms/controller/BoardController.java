@@ -9,7 +9,7 @@ public class BoardController {
     private static Board[] boards = new Board[1000]; // board 클래스 정의
     public static Scanner keyScan = new Scanner(System.in);
     private static int boardCount = 0;  // 이것은 정보 입력 횟수를 나타냄
-    private static int index;
+    //private static int index;
 
     // 메뉴 선택 모드
     public static void service(String menu, String option) {
