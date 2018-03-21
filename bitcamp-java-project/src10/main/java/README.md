@@ -1,2 +1,4 @@
-단위 테스트 관련 설정 파일을 두는 폴더.
-
+# 변경 내역
+- Board.java 추가
+- BoardInput.java 추가
+- BoardController.java 추가
