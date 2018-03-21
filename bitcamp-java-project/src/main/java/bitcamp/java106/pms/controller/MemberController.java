@@ -1,6 +1,8 @@
 package bitcamp.java106.pms.controller;
 
 import java.util.Scanner;
+
+import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.util.Console;
 
@@ -8,9 +10,9 @@ public class MemberController {
     // 이 클래스를 사용하려면 keyboard 스캐너가 있어야 한다.
     // 이 클래스를 사용하기 전에 스캐너를 설정하라!
     private Scanner keyScan;
+    
+    MemberDao memberDao = new MemberDao();
 
-    private Member[] members = new Member[1000];
-    private static int memberCount = 0;  // 맴버 입력 횟수
     
     public MemberController(Scanner keyScan) {
         this.keyScan = keyScan;
@@ -34,17 +36,6 @@ public class MemberController {
         }
     }
 
-    private int getMemberIndex(String id) {
-        for(int i = 0; i < memberCount; i++) {
-            if(this.members[i] == null) continue;
-            if(id.equals(this.members[i].getID().toLowerCase())) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
     // 회원 추가
     private void onMemberAdd() {
         String id, email, passWord; // 임시 변수 지정
@@ -62,13 +53,14 @@ public class MemberController {
         Member member = new Member(id, email, passWord); 
 
         // 임시 객체에 저장 한 것을 월래 배열에 저장
-        this.members[memberCount++] = member;  
+        memberDao.insert(member);  
         // 월래 팀에 저장할 클래스 배열에 저장
     }
 
     // 회원 정보 조회
     private void onMemberList() {
-        for(int i =0; i < memberCount; i++) {
+        Member[] members = memberDao.list();
+        for(int i =0; i < members.length; i++) {
             if (members[i] == null) continue;
             System.out.println(members[i].getID() + ", "
              + members[i].getEmail() + ", " + members[i].getPassWord());
@@ -85,12 +77,12 @@ public class MemberController {
         }
 
     
-        int i = this.getMemberIndex(name);
+        Member member = memberDao.getIndex(name);
         
-        if(i == -1) {
+        if(member == null) {
             System.out.println("해당 이름을 갖는 아이디가 없습니다.");
         } else {
-            Member member = members[i];
+            
             System.out.println("아이디 : " + member.getID());
             System.out.println("이메일 : " 
                         + member.getEmail());
@@ -108,26 +100,27 @@ public class MemberController {
             return;
         }
 
-        int i = this.getMemberIndex(name);
+        // 색인
+        Member member = memberDao.getIndex(name);
 
-        if(i == memberCount) {
+        if(member == null) {
             System.out.println("해당 회원이 없습니다.");
         } else {
             String id, email, passWord;
-            System.out.printf("아이디(%s)? ", members[i].getID());
+            System.out.printf("아이디(%s)? ", member.getID());
             id = this.keyScan.nextLine();
             
-            System.out.printf("이메일(%s)? ", members[i].getEmail());
+            System.out.printf("이메일(%s)? ", member.getEmail());
             email = this.keyScan.nextLine();
             
-            System.out.printf("암호(%s)? ", members[i].getPassWord());
+            System.out.printf("암호(%s)? ", member.getPassWord());
             passWord = this.keyScan.nextLine();
 
             // member 임시 객체 만들어서 최종적으로 원 members에 저장
             // try ~ catch문 사용하고, 유지보수를 위해 만든다.
-            Member member = new Member(id, email, passWord);
+            Member memberUpdate = new Member(id, email, passWord);
             
-            members[i] = member;
+            memberDao.update(memberUpdate);
 
             System.out.println("변경하였습니다.");
             return;
@@ -141,18 +134,14 @@ public class MemberController {
             return;
         }
 
-        int i = getMemberIndex(name);
+        // 색인
+        Member member = memberDao.getIndex(name);
 
-        if(i == -1) {
+        if(member == null) {
             System.out.println("해당 아이디가 없습니다.");
         } else {
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                memberCount--;
-                while(i < memberCount) {
-                    members[i] = members[i+1];
-                    i++;
-                }
-                members[memberCount+1] = new Member();
+                memberDao.delete();
             }
         }
     } 

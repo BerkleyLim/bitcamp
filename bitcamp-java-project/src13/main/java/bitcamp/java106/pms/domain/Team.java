@@ -9,6 +9,7 @@ public class Team implements TeamInput {
     private Date startDate;   // 시작일
     private Date endDate;     // 종료일
 
+
     public Team() {
         this.name = "";
         this.description = "";

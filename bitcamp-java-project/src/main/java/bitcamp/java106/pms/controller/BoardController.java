@@ -3,17 +3,18 @@
 // => 즉 생성자란, 객체를 사용 하기 전에 유효한 값으로 설정하게 만드는 문법이다.
 package bitcamp.java106.pms.controller;
 
+import java.sql.Date;
 import java.util.Scanner;
+
+import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.util.Console;
 
-
 public class BoardController {
-    private Board[] boards = new Board[1000]; // board 클래스 정의
+    //private Board[] boards = new Board[1000]; // board 클래스 정의
     private Scanner keyScan;
     private static int boardCount = 0;  // 이것은 정보 입력 횟수를 나타냄
-    //private static int index;
-   
+    BoardDao boardDao = new BoardDao();
     
     public BoardController(Scanner keyScan) {
         // BoardController의 메서드를 이용하려면 반드시 설정해야 하는 값이 있다.
@@ -53,6 +54,7 @@ public class BoardController {
         }
     }
 
+    /*
     // 같은 패턴의 반복문을 따로 저장
     private int getBoardIndex(String title) {
         for(int i = 0; i < boardCount; i++) {
@@ -68,10 +70,11 @@ public class BoardController {
         }
         return -1;
     }
-
+     */
     // 추가 명령어
     private void onBoardAdd() {
-        String title, detail, register;    // 임시 변수 생성
+        String title, detail;
+        Date register;    // 임시 변수 생성
         System.out.println("[게시글 등록]");
         System.out.print("제목? ");
         title = this.keyScan.nextLine();
@@ -80,21 +83,23 @@ public class BoardController {
         detail = this.keyScan.nextLine();
 
         System.out.print("등록일? ");
-        register = this.keyScan.nextLine();
+        register = Date.valueOf(this.keyScan.nextLine());
 
         // 임시 객체 생성
         Board board = new Board(title, detail, register);
         
-        this.boards[boardCount++] = board; // 최종적으로 진짜 객체에 저장
+        boardDao.insert(board);
     }
 
     // 보드 리스트 출력
     private void onBoardList() {
         System.out.println("[게시글 목록]");
-        for(int i = 0; i < boardCount; i++) {
-            if(this.boards[i] == null) continue;
-            System.out.println(i + ", " + this.boards[i].getTitle() 
-                + ", " + this.boards[i].getRegister());
+        // 게시판 갯수를 list 만큼 저장
+        Board[] list = boardDao.list(); 
+        for(int i =0; i< list.length; i++) {
+            if(list[i] == null) continue;
+            System.out.println(i + ", " + list[i].getTitle() 
+                + ", " + list[i].getRegister());
         }
     } 
 
@@ -107,14 +112,14 @@ public class BoardController {
             return;
         }
 
-        int i = this.getBoardIndex(option);
-
-        if(i == -1) {
-            System.out.println("제목을 찾을 수 없습니다.");
+        Board board = boardDao.get(Integer.parseInt(option));
+        
+        if(board == null) {
+            System.out.println("유효하지 않은 게시물 번호입니다.");
         } else {
-            System.out.println("제목 : " + this.boards[i].getTitle());
-            System.out.println("내용 : " + this.boards[i].getDetail());
-            System.out.println("등록일 : " + this.boards[i].getRegister());
+            System.out.println("제목 : " + board.getTitle());
+            System.out.println("내용 : " + board.getDetail());
+            System.out.println("등록일 : " + board.getRegister());
         }
     }
 
@@ -127,23 +132,23 @@ public class BoardController {
             return;
         }
 
-        int i = this.getBoardIndex(option);
+        int i = Integer.parseInt(option);
+        Board board = boardDao.get(i);
 
-        if(i == -1) {
+        if(board == null) {
             System.out.println("해당 제목이 일치하지 않습니다.");
         } else {
             String title, detail;
 
-            System.out.printf("제목(%s)? ", boards[i].getTitle());
+            System.out.printf("제목(%s)? ", board.getTitle());
             title = this.keyScan.nextLine();
 
-            System.out.printf("내용(%s)? ", boards[i].getDetail());
+            System.out.printf("내용(%s)? ", board.getDetail());
             detail = this.keyScan.nextLine();
 
             // 임시 객체 생성
-            Board board = new Board(title, detail, this.boards[i].getRegister());
-
-            this.boards[i] = board;            
+            Board updateBoard = new Board(title, detail, board.getRegister());
+            boardDao.update(i, updateBoard);             
         }
     }
 
@@ -155,20 +160,26 @@ public class BoardController {
             return;
         }
 
-        int i = this.getBoardIndex(option);
-
-        if(i == -1) {
-            System.out.println("삭제할 게시물이 없습니다.");
-        } else {
-            if(Console.confirm("정말 삭제하시겠습니까?")) {
-                this.boards[i] = null;
-                System.out.println("삭제하였습니다.");
+        try {
+            int i = Integer.parseInt(option);
+            Board board = boardDao.get(i);
+            if(board == null) {
+                System.out.println("삭제할 게시물이 없습니다.");
+            } else {
+                if(Console.confirm("정말 삭제하시겠습니까?")) {
+                    boardDao.delete(i);
+                    System.out.println("삭제하였습니다.");
+                }
             }
+        } catch(Exception e) {
+            System.err.println("인덱스 번호를 입력하세요.");
         }
     }
     
 }
 
+// ver 14 - BoardDao를 사용하여 게시물 데이터를 관리한다.
+// ver 13 - Board의 시간을 관련하는 함수를 만든다.
 
 /*
 C:\Users\Bit\git\bitcamp\bitcamp-java-project>java -cp bin bitcamp.java106.pms.App

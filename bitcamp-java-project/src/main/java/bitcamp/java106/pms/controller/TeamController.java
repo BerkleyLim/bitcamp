@@ -1,16 +1,18 @@
 package bitcamp.java106.pms.controller; // java폴더가 루트
 
-import bitcamp.java106.pms.domain.Team;
+import java.sql.Date;
 import java.util.Scanner;
+
+import bitcamp.java106.pms.dao.TeamDao;
+import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
 public class TeamController {
     // 이 클래스를 사용하기 전에 App 클래스에서 준비한 Scanner 객체를
     // sc 변수에 저장하라.
     private Scanner keyScan;
-    private Team[] teams = new Team[1000];
-    private int teamCount = 0;  // 팀 입력 횟수
-
+    TeamDao teamDao = new TeamDao(); // 팀 정보 접근 설정
+    
     public TeamController(Scanner keyScan) {
         this.keyScan = keyScan;
     }
@@ -32,20 +34,10 @@ public class TeamController {
         }
     }
 
-    private int getTeamIndex(String name) {
-        for(int i = 0; i < teamCount; i++) {
-            if(teams[i] == null) continue;  // delete 메서드를 성공적으로 실행할 때
-                                            // 건너뛰기 위해 만든 것.
-            if(name.equals(teams[i].getName().toLowerCase())) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     // 팀 추가 명령어
     private void onTeamAdd() {
-        String name, description, maxQty, startDate, endDate; // 임시 저장 변수
+        String name, description, maxQty;
+        Date startDate, endDate; // 임시 저장 변수
             
         System.out.print("팀명? ");
         name = keyScan.nextLine();
@@ -57,27 +49,31 @@ public class TeamController {
         maxQty = keyScan.nextLine();
         
         System.out.print("시작일? ");
-        startDate = keyScan.nextLine();
+        startDate = Date.valueOf(keyScan.nextLine());
         
         System.out.print("종료일? ");
-        endDate = keyScan.nextLine();
+        endDate = Date.valueOf(keyScan.nextLine());
 
         // 임시 객체 생성
         Team team = new Team(name, description,maxQty,
             startDate, endDate); // 또 다른 임시 객체 생성
         
         // 임시 객체 생성후 저장
-        teams[teamCount++] = team;   
+        teamDao.insert(team);   
         // 월래 팀에 저장할 클래스 배열에 저장
     }
 
     // 팀 정보 조회
     private void onTeamList() {
-        for(int i =0; i < teamCount; i++) {
-            if (teams[i] == null) continue;
-            System.out.println(teams[i].getName() + ", " +
-                teams[i].getMaxQty() + ", " + teams[i].getStartDate() +
-                " ~ " + teams[i].getEndDate());
+        System.out.println("[팀 리스트 출력]");
+        Team[] team = teamDao.list();  // 리스트 생성
+        
+        // 여기서 리스트 출력
+        for(int i =0; i < team.length; i++) {
+            if (team[i] == null) continue;
+            System.out.println(team[i].getName() + ", " +
+                team[i].getMaxQty() + ", " + team[i].getStartDate() +
+                " ~ " + team[i].getEndDate());
         }
     }
 
@@ -91,12 +87,12 @@ public class TeamController {
                     // 의미? 즉시 메서드 실행을 멈추고 이전 위치로 돌아간다.
         }
 
-        int i = getTeamIndex(name);
+        Team team = teamDao.getIndex(name);
 
-        if(i == -1) {
+        if(team == null) {
             System.out.println("해당 이름을 갖는 팀이 없습니다.");
         } else {
-            Team team = teams[i];
+            
             System.out.println("팀명 : " + team.getName());
             System.out.println("설명 : " + team.getDescription());
             System.out.println("최대인원 : " + team.getMaxQty());
@@ -113,39 +109,34 @@ public class TeamController {
             return;
         }
 
-        int i = getTeamIndex(name);
-
-
-        if(i == -1) {
+        Team team = teamDao.getIndex(name);
+        
+        if(team == null) {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
-            String named, description, maxQty, startDate, endDate;
+            String named, description, maxQty;
+            Date startDate, endDate;
             
-            System.out.printf("팀명(%s)? ", teams[i].getName());
+            System.out.printf("팀명(%s)? ", team.getName());
             named = keyScan.nextLine();
             
-            System.out.printf("설명(%s)? ", teams[i].getDescription());
+            System.out.printf("설명(%s)? ", team.getDescription());
             description = keyScan.nextLine();
             
-            System.out.printf("최대인원(%s)? ", teams[i].getMaxQty());
+            System.out.printf("최대인원(%s)? ", team.getMaxQty());
             maxQty = keyScan.nextLine();
             
-            System.out.printf("시작일(%s)? ", teams[i].getStartDate());
-            startDate = keyScan.nextLine();
+            System.out.printf("시작일(%s)? ", team.getStartDate());
+            startDate = Date.valueOf(keyScan.nextLine());
             
-            System.out.printf("종료일(%s)? ", teams[i].getEndDate());
-            endDate = keyScan.nextLine();
+            System.out.printf("종료일(%s)? ", team.getEndDate());
+            endDate = Date.valueOf(keyScan.nextLine());
             
             // 임시 객체 변수 - try catch문을 사용 했을 때 대비해서
-            Team team = new Team(named, description, maxQty, startDate,
-                            endDate);
-            team.setName(named);
-            team.setDescription(description);
-            team.setMaxQty(maxQty);
-            team.setStartDate(startDate);
-            team.setEndDate(endDate);
+            Team teamUpdate = new Team(named, description, maxQty, 
+                    startDate, endDate);
             
-            teams[i] = team;
+            teamDao.update(teamUpdate);
 
             System.out.println("변경하였습니다.");
 
@@ -161,22 +152,20 @@ public class TeamController {
             return;
         }
 
-        int i = getTeamIndex(name);
+        Team team = teamDao.getIndex(name);
         // 먼저 해당 아이디 색인
-
-        if(i == -1) {
+        
+        
+        if(team == null) {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
+            
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                teamCount--;
-                while(i < teamCount) {
-                    teams[i] = teams[i+1];
-                    i++;
-                }
-                teams[teamCount+1] = new Team();
-                //teams[i] = null;
-                }
+                teamDao.delete(team);
+            }
         }
     }
         
 }
+
+// ver 13 - 시작일, 종료일을 문자열로 입력 받아 Date 객체로 변환하여 저장
