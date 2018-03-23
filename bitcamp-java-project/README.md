@@ -1,4 +1,60 @@
-# 자바 프로젝트 
+﻿# 자바 프로젝트 
+
+## src15 - 팀 멤버 관리 기능 추가
+- 학습목표
+  - 자바 문법을 활용하는 것을 연습한다.
+  - 기존 시스템을 유지보수하는 것을 연습한다.
+- 작업내용
+  - 팀 멤버를 관리하는 기능을 추가한다.
+  
+```
+> java -classpath bin bitcamp.java106.pms.App
+명령> team/add
+팀명? 비트비트
+...
+
+명령> team/add
+팀명? 바이트바이트
+...
+
+명령> member/add
+아이디? hong
+...
+
+명령> member/add
+아이디? kim
+...
+
+명령> team/member/add 오호라
+오호라 팀은 존재하지 않습니다.
+
+명령> team/member/add 비트비트
+추가할 멤버의 아이디는? hong
+추가하였습니다.
+
+명령> team/member/add 비트비트
+추가할 멤버의 아이디는? kim
+추가하였습니다.
+
+명령> team/member/add 비트비트
+추가할 멤버의 아이디는? hong
+이미 등록된 회원입니다.
+
+명령> team/member/add 비트비트
+추가할 멤버의 아이디는? lee
+lee 회원은 없습니다.
+
+명령> team/member/list 비트비트
+회원들: hong, kim
+
+명령> team/member/delete 비트비트
+삭제할 팀원은? hong
+삭제하였습니다.
+
+명령> team/member/delete 비트비트
+삭제할 팀원은? hong
+이 팀의 회원이 아닙니다.
+```
 
 ## src14 - DA0 클래스 분리(리팩토링)
 - 학습목표
@@ -36,6 +92,7 @@
   - src09에 이어서 할 것!
 - 작업내용
   - 게시판 데이터를 등록, 조회, 변경, 삭제하는 기능을 추가한다.
+  
 ```
 > java -classpath bin bitcamp.java106.pms.App
 명령> board/add
@@ -114,6 +171,7 @@
   - 팀 정보 변경 및 삭제 기능을 추가한다.
   - 회원 정보 변경 및 삭제 기능을 추가한다.
 - 실행결과
+
 ```
 > java -classpath bin bitcamp.java106.pms.App
 명령> (사용자을 입력을 기다리고 있어야 한다.)
@@ -235,7 +293,9 @@ leem, leem@test.com, 1111
   - 추가하는 기능없다.
   - 메서드 문법을 사용하여 코드를 정리한다.
   - src04의 내용을 기반으로 할 것
+  
 - 실행 결과
+
 ```
 > java -classpath bin bitcamp.java106.pms.App
 명령> (사용자을 입력을 기다리고 있어야 한다.)
@@ -320,6 +380,7 @@ leem, leem@test.com, 1111
   - 사용자로부터 팀 또는 회원 정보를 입력 받아 저장한다.
   - 사용자의 명령에 따라 팀 또는 회원 정보를 출력한다.
 - 실행결과
+
 ```
 > java -classpath bin bitcamp.java106.pms.App
 명령> (사용자을 입력을 기다리고 있어야 한다.)
@@ -408,6 +469,7 @@ leem, leem@test.com, 1111
   - 입력은 최대 5개까지 가능하다.
   - 5개를 넘으면 바로 출력한다.
 - 실행 결과
+
 ```
 > java -classpath bin bitcamp.java106.pms.App
 팀명? 비트비트
@@ -441,6 +503,7 @@ leem, leem@test.com, 1111
 - 작업내용
   - 사용자로부터 팀 정보를 입력 받아 출력하라.
 - 실행 결과
+
 ```
 > java -classpath bin bitcamp.java106.pms.App
 팀명? 비트비트

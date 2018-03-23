@@ -24,7 +24,7 @@ public class Exam04_2 {
     public void m1() {
         A ref1;
         B ref2;
-        C ref3; // 컴파일 오류!!
+        Car ref3; // 컴파일 오류!!
     }
 }
 
