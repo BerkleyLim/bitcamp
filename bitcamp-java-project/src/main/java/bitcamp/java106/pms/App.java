@@ -5,6 +5,9 @@ import java.util.Scanner;
 import bitcamp.java106.pms.controller.BoardController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TeamController;
+import bitcamp.java106.pms.controller.TeamMemberController;
+import bitcamp.java106.pms.dao.MemberDao;
+import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.util.Console;
 
 public class App {
@@ -15,14 +18,16 @@ public class App {
 
     public static void main(String[] args) {
         // 클래스를 사용하기 전에 필수값을 설정
-        //TeamController.keyScan = keyScan;
+        TeamDao teamDao = new TeamDao();
+        MemberDao memberDao = new MemberDao();
+
         TeamController teamController = new TeamController(keyScan);
-        //MemberController.keyScan = keyScan;
-        MemberController memberController = new MemberController(keyScan);
-        //BoardController.keyScan = keyScan;
+        MemberController memberController = new MemberController(keyScan, memberDao);
         BoardController boardController = new BoardController(keyScan);
+        TeamMemberController teamMemberController 
+            = new TeamMemberController(keyScan, teamDao, memberDao);
+       
         
-        //Console.keyScan = keyScan;
         Console console = new Console(keyScan);
         
         while(true) {
@@ -43,6 +48,9 @@ public class App {
             } else if(menu.equals("quit")
                             && option == null) { // 2) 종료 버튼 누를 시.
                 onQuit();
+            } else if(menu.startsWith("team/member/")) {
+                teamMemberController.service(menu, option);
+                
             } else if(menu.startsWith("team/")){ // startsWith("prefix")
                                             // 이것은 처음 친 값만 추출
                 teamController.service(menu, option);
@@ -54,7 +62,7 @@ public class App {
                 boardController.service(menu, option);
 
             } else {    // 3) 명령어 잘 못 입력 시
-                System.out.println("명령어가 올바르지 않습니다.");
+                System.out.println("명령어를 잘 못 입력 했습니다.");
             }
 
             System.out.println();
@@ -92,6 +100,8 @@ public class App {
 
 
 }
+
+// 
 
 /*
 C:\Users\Bit\git\bitcamp\bitcamp-java-project>java -cp bin bitcamp.java106.pms.App

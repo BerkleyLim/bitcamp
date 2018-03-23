@@ -5,6 +5,9 @@ import java.util.Scanner;
 import bitcamp.java106.pms.controller.BoardController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TeamController;
+import bitcamp.java106.pms.controller.TeamMemberController;
+import bitcamp.java106.pms.dao.MemberDao;
+import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.util.Console;
 
 public class App {
@@ -97,6 +100,8 @@ public class App {
 
 
 }
+
+// 
 
 /*
 C:\Users\Bit\git\bitcamp\bitcamp-java-project>java -cp bin bitcamp.java106.pms.App

@@ -4,7 +4,7 @@ package bitcamp.java106.pms.dao;
 import bitcamp.java106.pms.domain.Team;
 
 public class TeamDao {
-    private Team[] teams = new Team[1000]; // 팀 클래스 배열 생성
+    private static Team[] teams = new Team[1000]; // 팀 클래스 배열 생성
     private int teamIndex = 0; // 팀 입력 갯수 설정
     private static int i = 0; // 반복자 설정
     
@@ -27,24 +27,36 @@ public class TeamDao {
     }
     
     // 입력한 Team의 해당 정보 내용을 색인한다.
-    public Team getIndex(String option) {
-        for(i =0; i < teamIndex; i++) {
-            if(teams[i] == null) continue;
-            if(option.equals(teams[i].getName())) {
-                return teams[i];
-            }
-        }
-        return null;
+    public Team get(String name) {
+        int i = this.getTeamIndex(name);
+        if (i == -1)
+            return null;
+        return teams[i];
     }
     
     // 팀 갱신
     public void update(Team team) {
-        teams[i] = team;
+        int i = this.getTeamIndex(team.getName());
+        
+        if (i != -1)
+            teams[i] = team;
     }
     
     // 팀 삭제
-    public void delete(Team team) {
-        teams[i] = null;
+    public void delete(String name) {
+        int i = this.getTeamIndex(name);
+        if (i != -1) 
+            teams[i] = null;
     }
     
+    private int getTeamIndex(String name) {
+        for (int i = 0; i < this.teamIndex; i++) {
+            if (teams[i] == null) continue;
+            if (name.equals(teams[i].getName())) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
+

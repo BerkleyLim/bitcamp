@@ -4,14 +4,14 @@ import java.sql.Date;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.dao.TeamDao;
-import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
-public class TeamController extends TeamDao {
+public class TeamController {
     // 이 클래스를 사용하기 전에 App 클래스에서 준비한 Scanner 객체를
     // sc 변수에 저장하라.
     private Scanner keyScan;
+    TeamDao teamDao = new TeamDao(); // 팀 정보 접근 설정
     
     public TeamController(Scanner keyScan) {
         this.keyScan = keyScan;
@@ -29,8 +29,6 @@ public class TeamController extends TeamDao {
             onTeamUpdate(option);
         } else if(menu.equals("team/delete")) { // 11) 팀 정보 삭제
             onTeamDelete(option);
-        } else if(menu.startsWith("team/member")) { // => 여기는 해당 팀에서 아이디 존재하면 넣는다.
-            onTeamMember(menu, option);
         } else {
             System.out.println("명령어가 올바르지 않습니다.");
         }
@@ -61,14 +59,14 @@ public class TeamController extends TeamDao {
             startDate, endDate); // 또 다른 임시 객체 생성
         
         // 임시 객체 생성후 저장
-        insert(team);   
+        teamDao.insert(team);   
         // 월래 팀에 저장할 클래스 배열에 저장
     }
 
     // 팀 정보 조회
     private void onTeamList() {
         System.out.println("[팀 리스트 출력]");
-        Team[] team = teamList();  // 리스트 생성
+        Team[] team = teamDao.list();  // 리스트 생성
         
         // 여기서 리스트 출력
         for(int i =0; i < team.length; i++) {
@@ -89,7 +87,7 @@ public class TeamController extends TeamDao {
                     // 의미? 즉시 메서드 실행을 멈추고 이전 위치로 돌아간다.
         }
 
-        Team team = getTeamIndex(name);
+        Team team = teamDao.get(name);
 
         if(team == null) {
             System.out.println("해당 이름을 갖는 팀이 없습니다.");
@@ -111,7 +109,7 @@ public class TeamController extends TeamDao {
             return;
         }
 
-        Team team = getTeamIndex(name);
+        Team team = teamDao.get(name);
         
         if(team == null) {
             System.out.println("해당 이름의 팀이 없습니다.");
@@ -138,7 +136,7 @@ public class TeamController extends TeamDao {
             Team teamUpdate = new Team(named, description, maxQty, 
                     startDate, endDate);
             
-            update(teamUpdate);
+            teamDao.update(teamUpdate);
 
             System.out.println("변경하였습니다.");
 
@@ -154,7 +152,7 @@ public class TeamController extends TeamDao {
             return;
         }
 
-        Team team = getTeamIndex(name);
+        Team team = teamDao.get(name);
         // 먼저 해당 아이디 색인
         
         
@@ -163,66 +161,9 @@ public class TeamController extends TeamDao {
         } else {
             
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                delete(team);
+                teamDao.delete(team.getName());
             }
         }
-    }
-    
-    // 여기는 TeamMember 관련된 조건문
-    private void onTeamMember(String menu, String option) {
-        if(menu.equals("team/member/add")) {
-            teamMemberAdd(option);  // 해당 팀 입력 색인
-            
-        } else if (menu.equals("team/member/list")) {
-            teamMemberList(option);  // 해당 팀 입력 색인
-            
-        } else if (menu.equals("team/member/delete")) {
-            teamMemberDelete(option);  // 해당 팀 입력 색인
-        } else {
-            System.out.println("명령어가 올바르지 않습니다.");
-        }
-        
-    }
-    
-    // 해당 팀을 아이디에 추가
-    public void teamMemberAdd(String option) {
-        Team team = searchTeam(option);
-        
-        // team 값이 없을 때 바로 그냥 나와라
-        if(team == null)
-            return;
-        
-        System.out.print("추가할 맴버의 아이디는? ");
-        String id = keyScan.nextLine();
-        
-        teamMemberInsert(team.getName(), id);
-        
-        
-    }
-    
-    public void teamMemberList(String option) {
-        Team team = searchTeam(option);
-        
-        if(team == null)
-            return;
-        
-        String[] member = teamMemberLists(team.getName());
-        
-        System.out.print("회원들 : ");
-        for(int i =1; i < member.length; i++) {
-            if (member[i] == null) continue;
-            System.out.print(member[i] + ", ");
-        }
-        System.out.println();
-    }
-    
-    public void teamMemberDelete(String option) {
-        Team team = searchTeam(option);
-        
-        if(team == null)
-            return;
-        
-        teamMemberDeletes(team.getName());
     }
         
 }

@@ -27,7 +27,7 @@ public class MemberDao {
     
     // 회원의 대한 정보 색인 하는 메서드, 찾으면 해당 members[i]의 방을 리턴, 못찾으면 null로 리턴
     public Member get(String option) {
-        int i = this.getMemberIndex(id);
+        int i = this.getMemberIndex(option);
         if (i == -1)
             return null;
         return this.members[i];
@@ -35,7 +35,7 @@ public class MemberDao {
     
     // 회원의 대한 업데이트 하기!!
     public void update(Member member) {
-        int i = this.getMemberIndex(member.id);
+        int i = this.getMemberIndex(member.getID());
         if (i != -1)
             this.members[i] = member;
     }
@@ -54,7 +54,7 @@ public class MemberDao {
      */
     
     // 회원 삭제!!
-    public void delete() {
+    public void delete(String id) {
         int i = this.getMemberIndex(id);
         if (i != -1)
             this.members[i] = null;

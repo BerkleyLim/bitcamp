@@ -14,7 +14,7 @@ public class MemberController {
     MemberDao memberDao;
 
     
-    public MemberController(Scanner keyScan, memberDao memberDao) {
+    public MemberController(Scanner keyScan, MemberDao memberDao) {
         this.keyScan = keyScan;
         this.memberDao = memberDao;
     }
@@ -78,7 +78,7 @@ public class MemberController {
         }
 
     
-        Member member = memberDao.getIndex(name);
+        Member member = memberDao.get(name);
         
         if(member == null) {
             System.out.println("해당 이름을 갖는 아이디가 없습니다.");
@@ -102,7 +102,7 @@ public class MemberController {
         }
 
         // 색인
-        Member member = memberDao.getIndex(name);
+        Member member = memberDao.get(name);
 
         if(member == null) {
             System.out.println("해당 회원이 없습니다.");
@@ -136,13 +136,13 @@ public class MemberController {
         }
 
         // 색인
-        Member member = memberDao.getIndex(name);
+        Member member = memberDao.get(name);
 
         if(member == null) {
             System.out.println("해당 아이디가 없습니다.");
         } else {
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                memberDao.delete();
+                memberDao.delete(member.getID());
                 System.out.println("삭제하였습니다.");
             }
         }

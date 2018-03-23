@@ -10,7 +10,7 @@ import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.util.Console;
 
-public class BoardController extends Board {
+public class BoardController {
     //private Board[] boards = new Board[1000]; // board 클래스 정의
     private Scanner keyScan;
     private static int boardCount = 0;  // 이것은 정보 입력 횟수를 나타냄
@@ -54,6 +54,23 @@ public class BoardController extends Board {
         }
     }
 
+    /*
+    // 같은 패턴의 반복문을 따로 저장
+    private int getBoardIndex(String title) {
+        for(int i = 0; i < boardCount; i++) {
+            if(this.boards[i] == null) continue; // 이 조건은 delete시 실행하지 않는다
+            try {
+                if(Integer.parseInt(title) == i) {
+                    return i;
+                }
+            } catch(Exception e) { 
+                return -1;
+            }
+
+        }
+        return -1;
+    }
+     */
     // 추가 명령어
     private void onBoardAdd() {
         String title, detail;

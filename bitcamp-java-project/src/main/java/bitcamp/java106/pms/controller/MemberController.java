@@ -6,14 +6,17 @@ import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.util.Console;
 
-public class MemberController extends MemberDao {
+public class MemberController {
     // 이 클래스를 사용하려면 keyboard 스캐너가 있어야 한다.
     // 이 클래스를 사용하기 전에 스캐너를 설정하라!
     private Scanner keyScan;
     
+    MemberDao memberDao;
+
     
-    public MemberController(Scanner keyScan) {
+    public MemberController(Scanner keyScan, MemberDao memberDao) {
         this.keyScan = keyScan;
+        this.memberDao = memberDao;
     }
 
     public void service(String menu, String option) {
@@ -51,13 +54,13 @@ public class MemberController extends MemberDao {
         Member member = new Member(id, email, passWord); 
 
         // 임시 객체에 저장 한 것을 월래 배열에 저장
-        insert(member);  
+        memberDao.insert(member);  
         // 월래 팀에 저장할 클래스 배열에 저장
     }
 
     // 회원 정보 조회
-    protected void onMemberList() {
-        Member[] members = memberList();
+    private void onMemberList() {
+        Member[] members = memberDao.list();
         for(int i =0; i < members.length; i++) {
             if (members[i] == null) continue;
             System.out.println(members[i].getID() + ", "
@@ -75,7 +78,7 @@ public class MemberController extends MemberDao {
         }
 
     
-        Member member = getMemberIndex(name);
+        Member member = memberDao.get(name);
         
         if(member == null) {
             System.out.println("해당 이름을 갖는 아이디가 없습니다.");
@@ -99,7 +102,7 @@ public class MemberController extends MemberDao {
         }
 
         // 색인
-        Member member = getMemberIndex(name);
+        Member member = memberDao.get(name);
 
         if(member == null) {
             System.out.println("해당 회원이 없습니다.");
@@ -118,7 +121,7 @@ public class MemberController extends MemberDao {
             // try ~ catch문 사용하고, 유지보수를 위해 만든다.
             Member memberUpdate = new Member(id, email, passWord);
             
-            update(memberUpdate);
+            memberDao.update(memberUpdate);
 
             System.out.println("변경하였습니다.");
             return;
@@ -133,15 +136,15 @@ public class MemberController extends MemberDao {
         }
 
         // 색인
-        Member member = getMemberIndex(name);
+        Member member = memberDao.get(name);
 
         if(member == null) {
             System.out.println("해당 아이디가 없습니다.");
         } else {
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                delete();
+                memberDao.delete(member.getID());
+                System.out.println("삭제하였습니다.");
             }
         }
     } 
-    
 }

@@ -87,7 +87,7 @@ public class TeamController {
                     // 의미? 즉시 메서드 실행을 멈추고 이전 위치로 돌아간다.
         }
 
-        Team team = teamDao.getIndex(name);
+        Team team = teamDao.get(name);
 
         if(team == null) {
             System.out.println("해당 이름을 갖는 팀이 없습니다.");
@@ -109,7 +109,7 @@ public class TeamController {
             return;
         }
 
-        Team team = teamDao.getIndex(name);
+        Team team = teamDao.get(name);
         
         if(team == null) {
             System.out.println("해당 이름의 팀이 없습니다.");
@@ -152,7 +152,7 @@ public class TeamController {
             return;
         }
 
-        Team team = teamDao.getIndex(name);
+        Team team = teamDao.get(name);
         // 먼저 해당 아이디 색인
         
         
@@ -161,7 +161,7 @@ public class TeamController {
         } else {
             
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                teamDao.delete(team);
+                teamDao.delete(team.getName());
             }
         }
     }
