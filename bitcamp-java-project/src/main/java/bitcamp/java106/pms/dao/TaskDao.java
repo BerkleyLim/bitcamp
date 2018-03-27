@@ -12,36 +12,51 @@ public class TaskDao {
         this.tasks[this.taskIndex++] = task;
     }
     
-    public Task[] list() {
-        Task[] arr = new Task[this.taskIndex];
-        for (int i = 0; i < this.taskIndex; i++) 
-            arr[i] = this.tasks[i];
+    private int count(String teamName) {
+        int cnt = 0;
+        for (int i = 0; i < taskIndex; i++) {
+            if (tasks[i] == null) continue;
+            if (tasks[i].getTeam().getName().equals(teamName)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+    
+    public Task[] list(String teamName) {
+        Task[] arr = new Task[this.count(teamName)];
+        for (int i = 0, x = 0; i < this.taskIndex; i++) {
+            if (tasks[i] == null) continue;
+            if (tasks[i].getTeam().getName().equals(teamName)) {
+                arr[x++] = this.tasks[i];
+            }
+        }
         return arr;
     }
     
-    public Task get(String name) {
-        int i = this.getTaskIndex(name);
-        if (i == -1)
-            return null;
-        return tasks[i];
+    public Task get(String teamName, int taskNo) {
+        for(int i =0, x = 0; i < taskIndex; i++) {
+            if (tasks[i] == null) continue;
+            if (tasks[i].getTeam().getName().toLowerCase().equals(teamName) &&
+                    tasks[i].getNo() == taskNo) {
+                return tasks[i];
+            }
+        }
+        return null;
     }
     
     public void update(Task task) {
-        int i = this.getTaskIndex(task.getName());
-        if (i != -1)
-            tasks[i] = task;
+        tasks[task.getNo()] = task;
     }
     
-    public void delete(String name) {
-        int i = this.getTaskIndex(name);
-        if (i != -1) 
-            tasks[i] = null;
+    public void delete(int taskNo) {
+        tasks[taskNo] = null;
     }
     
     private int getTaskIndex(String name) {
         for (int i = 0; i < this.taskIndex; i++) {
             if (this.tasks[i] == null) continue;
-            if (name.equals(this.tasks[i].getName().toLowerCase())) {
+            if (name.equals(this.tasks[i].getTeam().getName().toLowerCase())) {
                 return i;
             }
         }

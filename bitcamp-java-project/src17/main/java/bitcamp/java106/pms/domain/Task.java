@@ -3,11 +3,57 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 public class Task {
-    public String getTaskTitle() {
-        return taskTitle;
+    public static final int READY = 0;
+    public static final int WORKING = 1;
+
+    public static final int COMPLETE = 9;
+    
+    private int no;         // 내부적으로 쓰이는 작업번호(작업상태 조작 아님)
+
+
+    private String title;    // 작업명
+    private Date startDate;  // 시작일
+    private int state;       // 작업상태 -> 0: 작업대기, 1: 작업중, 9: 완료
+    private Date endDate;    // 종료일
+    private Member worker;   // Member
+    private Team team;       // Team
+    
+    public Task(Team team) {
+        this.team = team;
     }
-    public void setTaskTitle(String taskTitle) {
-        this.taskTitle = taskTitle;
+    
+    public Task(Team team, String title, Date startDate, Date endDate) {
+        this.team = team;;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.state = READY;
+    }
+    
+    // 
+    public int getState() {
+        return state;
+    }
+    public void setState(int state) {
+        this.state = state;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public Member getWorker() {
+        return worker;
+    }
+    public void setWorker(Member worker) {
+        this.worker = worker;
+    }
+    public Team getTeam() {
+        return team;
+    }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
     public Date getStartDate() {
         return startDate;
@@ -21,36 +67,21 @@ public class Task {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    public String getMember() {
-        return id;
-    }
-    public void setMember(String id) {
-        this.id = id;
-    }
-    
-    public void setNo(int no) {
-        this.no= no;
-    }
     
     public int getNo() {
         return no;
     }
-    
-    private String taskTitle;
-    private Date startDate;
-    private Date endDate;
-    private String id;
-    private int no; // 작업번호
-    private Team[] team = new Team[1000];
-    
-    // 팀 색인
-    /*
-    public Team teamName(String name) {
-        for(int i = 0; i < team.length; i++) {
-            if(name == null) continue;
-            if(name.equals(anObject))
-            return team[i];
-        }
+
+    public void setNo(int no) {
+        this.no = no;
     }
-    */
+
+    @Override
+    public String toString() {
+        return "Task [title=" + title + ", startDate=" + startDate + ", state=" + state + ", endDate=" + endDate
+                + ", worker=" + worker + ", team=" + team + "]";
+    }
+    
 }
+
+// ver17 - 사용자 정의 데이터 타입 생성

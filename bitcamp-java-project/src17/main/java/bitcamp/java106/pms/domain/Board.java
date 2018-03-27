@@ -4,7 +4,7 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 public class Board {
-    private int no;  // 보드 인덱스 번호로 체크한다.
+    private int no;
     private String title;
     private String content;
     private Date createdDate;

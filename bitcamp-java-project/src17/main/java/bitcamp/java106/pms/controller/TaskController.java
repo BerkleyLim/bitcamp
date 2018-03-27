@@ -1,273 +1,297 @@
-// Task 작업 하기 시작!!
+// 팀 멤버 관리 기능을 모아 둔 클래스
 package bitcamp.java106.pms.controller;
 
 import java.sql.Date;
 import java.util.Scanner;
 
-import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
+import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Task;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
 public class TaskController {
     
-    private Scanner keyScan;
+    Scanner keyScan;
     TeamDao teamDao;
-    MemberDao memberDao;
     TaskDao taskDao;
-    Team[] team = new Team[1000];
-    private static int teamIndex = 0;
     
-    // 생성자 
-    public TaskController(Scanner keyScan, TeamDao teamDao,
-            MemberDao memberDao, TaskDao taskDao) {
-        this.keyScan = keyScan;
+    
+    public TaskController(Scanner scanner, TeamDao teamDao, TaskDao taskDao) {
+        this.keyScan = scanner;
         this.teamDao = teamDao;
-        this.memberDao = memberDao;
         this.taskDao = taskDao;
     }
     
-    // 서비스 메뉴
     public void service(String menu, String option) {
-        if(menu.equals("task/add")) {
-            onTaskAdd(option);
+        if(option == null) {
+            System.out.println("팀명을 입력하세요.");
+            return;
+        }
+        
+        Team team = teamDao.get(option);
+        
+        if(team == null) {
+            System.out.printf("%s 팀은 존재하지 않습니다.", option);
+            return;
+        }
+        
+        Task task = new Task(team);
+        
+        if (menu.equals("task/add")) {
+            this.onTaskAdd(team);
         } else if (menu.equals("task/list")) {
-            onTaskList(option);
-        } else if (menu.equals("task/view")) {
-            onTaskView(option);
-        } else if (menu.equals("task/update")) {
-            onTaskUpdate(option);
+            this.onTaskList(team);
+        } else if(menu.equals("task/view")) {
+            this.onTaskView(team);
+        } else if(menu.equals("task/update")) {
+            this.onTaskUpdate(team);
         } else if (menu.equals("task/delete")) {
-            onTaskDelete(option);
-        } else if (menu.equals("task/state")){
-            onTaskState(option);
+            this.onTaskDelete(team);
+        } else if (menu.equals("task/state")) {
+            this.onTaskState(team);
         } else {
             System.out.println("명령어가 올바르지 않습니다.");
         }
     }
-    
-    // 팀을 입력하지 않는 경우 조건문 검사
-    public boolean isNotExistTeamName(String option) {
-        try {
-            if(option == null) {
-                System.out.println("팀명을 입력하세요. ");
-                return true;
-            } else if(!option.equals(teamDao.get(option).getName())) {
-                System.out.println("해당 팀이 존재하지 않습니다.");
-                return true;
-            } else {
-                team[teamIndex] = new Team(); 
-                team[teamIndex++].setName(option);
-                return false;
-            }
-        } catch(Exception e) {
-            System.out.println("해당 팀이 존재하지 않습니다.");
-            return true;
-        }
-    }
-    
-    // 작업명 추가
-    public void onTaskAdd(String option) {
-        // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
-            return;
-        }
+
+    // 팀 작업 추가
+    private void onTaskAdd(final Team team) {
+        Task task = new Task(team);
+        //task.setTeam(team);
         
-        Task task = new Task();
-        //
+        System.out.println("[팀 작업 추가]");
         System.out.print("작업명? ");
-        task.setTaskTitle(keyScan.nextLine());
+        task.setTitle(keyScan.nextLine());
         
         System.out.print("시작일? ");
-        Date startDate = Date.valueOf(keyScan.nextLine());
+        String str = keyScan.nextLine();
         
-        Date startDateCalc = teamDao.get(option).getStartDate();
-
-        // 시작 날짜 계산
-        if(startDate == null || (startDate.getTime() - startDateCalc.getTime()) < 0){
-            task.setStartDate(teamDao.get(option).getStartDate());
+        // 1) 시작일 입력 하지 않으면, 2) 시작일을 보다 이전으로 입력시, 3) 시작일을 그 이후에 입력시
+        if(str.length() == 0) {
+            task.setStartDate(team.getStartDate());
+        } else if(Date.valueOf(str).getTime() < team.getStartDate().getTime()){
+            task.setStartDate(team.getStartDate());
         } else {
-            task.setStartDate(startDate);
+            task.setStartDate(Date.valueOf(str));
         }
         
         System.out.print("종료일? ");
-        Date endDate = Date.valueOf(keyScan.nextLine());
-        Date endDateCalc = teamDao.get(option).getEndDate();
+        str = keyScan.nextLine();
         
-        // 종료 날짜 계산
-        if(endDate == null || (endDate.getTime() - endDateCalc.getTime()) > 0){
-            task.setEndDate(teamDao.get(option).getStartDate());
+        // 1) 종료일 입력 하지 않으면, 2) 종료일을 초과 입력시, 3) 종료일을 기준보다 이전으로 입력시
+        if(str.length() == 0) {
+            task.setEndDate(Date.valueOf(team.getStartDate().toString()));
+        } else if(Date.valueOf(str).getTime() > team.getStartDate().getTime()) {
+            task.setEndDate(team.getStartDate());
         } else {
-            task.setEndDate(endDate);
+            task.setEndDate(Date.valueOf(str));
         }
         
-        System.out.print("작업자? ");
-        String id = keyScan.nextLine();
         
-        if(memberDao.get(id) != null) {
-            task.setMember(id);
-        } else {
-            task.setMember(null);
+        System.out.print("작업자 아이디? ");
+        String memberId = keyScan.nextLine();
+        
+        // 작업자 지정 안할 시
+        if(memberId.length() != 0) {
+            task.setWorker(null);
+            Member member = team.getMember(memberId);
+            if (member == null) {
+                System.out.printf("'%s'는 이 팀의 회원이 아닙니다. "
+                        + "작업자는 비워두겠습니다.", memberId);
+            }
+            task.setWorker(member);
         }
         
-        taskDao.taskAdd(task, option);
+        
+        taskDao.insert(task);
     }
     
-    public void onTaskList(String option) {
-     // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
+    // 작업 리스트
+    private void onTaskList(final Team team) {
+        if(team.getName() == null) {
+            System.out.println("팀명을 입력하세요.");
             return;
         }
         
-        Task[] task = taskDao.taskList();
+        System.out.println("[팀 작업 목록]");
         
-        for(int i = 0; i < task.length; i++) {
-            if(task[i] == null) continue;
-            System.out.println(i + " " + task[i].getTaskTitle() + " "
-                    + task[i].getStartDate() + " " + task[i].getEndDate()
-                    + " " + task[i].getMember());
+        Task[] tasks = taskDao.list(team.getName());
+        
+        for(Task task : tasks) {
+            System.out.printf("%d, %s, %s, %s, %s\n", 
+                    task.getNo(), task.getTitle(), 
+                    task.getStartDate(), task.getEndDate(), 
+                    (task.getWorker() == null) ? 
+                            "-" : task.getWorker().getId());
         }
+        
+        System.out.println();
     }
     
-    public void onTaskView(String option) {
-        // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
-            return;
-        }
-        System.out.print("작업번호?");
-        Task task = taskDao.get(keyScan.nextInt());
-        keyScan.nextLine();
+    // 작업 상세 조회
+    private void onTaskView(final Team team) {
+        System.out.println("[작업 정보]");
+        System.out.print("작업 번호? ");
+        int taskNo = Integer.parseInt(keyScan.nextLine());
+        
+        
+        Task task = taskDao.get(team.getName(), taskNo);
         
         if(task == null) {
-            System.out.println("작업번호를 잘 못 입력하였습니다.");
-        } else {
-            System.out.println("작업명: " + task.getTaskTitle());
-            System.out.println("시작일: " + task.getStartDate());
-            System.out.println("종료일: " + task.getEndDate());
-            System.out.println("작업자: " + task.getMember());
-        }
-        
-    }
-    
-    public void onTaskUpdate(String option) {
-        // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
+            System.out.printf("'%s'팀의 %d번 작업을 찾을 수 없습니다. \n",
+                    team.getName(), taskNo);
             return;
         }
         
-        System.out.print("작업번호?");
-        Task task = taskDao.get(keyScan.nextInt());
-        keyScan.nextLine();
+        System.out.println("작업명: " + task.getTitle());
+        System.out.println("시작일: " + task.getStartDate());
+        System.out.println("종료일: " + task.getEndDate());
+        System.out.printf("작업자: %s" ,
+                (task.getWorker() == null) ? "-" : task.getWorker().getId()); 
+        System.out.printf("작업상태: %s\n", getStateLabel(task.getState()));
+    }
+    
+    // 작업 업데이트
+    private void onTaskUpdate(final Team team) {
+        System.out.println("[팀 작업 변경]");
+        System.out.print("변경할 작업의 번호? ");
+        int taskNo = Integer.parseInt(keyScan.nextLine());
         
-        if(task == null) {
-            System.out.println("작업번호를 잘 못 입력하였습니다.");
+        Task originTask = taskDao.get(team.getName(), taskNo);
+        if(originTask == null) {
+            System.out.printf("'%s'팀의 %d번 작업을 찾을 수 없습니다. \n",
+                    team.getName(), taskNo);
+            return;
+        }
+        
+        Task task = new Task(team);
+        task.setNo(originTask.getNo());
+        
+        System.out.print("작업명(" + originTask.getTitle() + ")? ");
+        String str = keyScan.nextLine();
+        if(str.length() == 0) {
+            task.setTitle(originTask.getTitle());
         } else {
-            System.out.print("작업명? ");
-            task.setTaskTitle(keyScan.nextLine());
-            
-            System.out.print("시작일? ");
-            Date startDate = Date.valueOf(keyScan.nextLine());
-            
-            Date startDateCalc = teamDao.get(option).getStartDate();
+            task.setTitle(str);
+        }
+        
+        System.out.print("시작일(" + originTask.getStartDate() + ")? ");
+        str = keyScan.nextLine();
+        
+        // 1) 시작일 입력 하지 않으면, 2) 시작일을 보다 이전으로 입력시, 3) 시작일을 그 이후에 입력시
+        if(str.length() == 0) {
+            task.setStartDate(originTask.getStartDate());
+        } else if(Date.valueOf(str).getTime() < originTask.getStartDate().getTime()){
+            task.setStartDate(originTask.getStartDate());
+        } else {
+            task.setStartDate(Date.valueOf(str));
+        }
+        System.out.print("종료일(" + originTask.getEndDate() + ")? ");
+        str = keyScan.nextLine();
+        
+        // 1) 종료일 입력 하지 않으면, 2) 종료일을 초과 입력시, 3) 종료일을 기준보다 이전으로 입력시
+        if(str.length() == 0) {
+            task.setEndDate(Date.valueOf(originTask.getStartDate().toString()));
+        } else if(Date.valueOf(str).getTime() > originTask.getStartDate().getTime()) {
+            task.setEndDate(originTask.getStartDate());
+        } else {
+            task.setEndDate(Date.valueOf(str));
+        }
+        
+        System.out.printf("작업자 아이디(%s)? " ,
+                (originTask.getWorker() == null) ? "-" : originTask.getWorker().getId());
+        String memberId = keyScan.nextLine();
+        // memberId의 null 값 여부 조건 검사
+        if (memberId.length() == 0) {
+            task.setWorker(originTask.getWorker());
+        } else {
+            Member member = team.getMember(memberId);
+            if (member == null) {
+                System.out.printf("'%s'는 이 팀의 회원이 아닙니다. "
+                        + "작업자는 비워두겠습니다.", memberId);
+            }
+            task.setWorker(member);
+        }
 
-            // 시작 날짜 계산
-            if(startDate == null || (startDate.getTime() - startDateCalc.getTime()) < 0){
-                task.setStartDate(teamDao.get(option).getStartDate());
-            } else {
-                task.setStartDate(startDate);
-            }
-            
-            System.out.print("종료일? ");
-            Date endDate = Date.valueOf(keyScan.nextLine());
-            Date endDateCalc = teamDao.get(option).getEndDate();
-            
-            // 종료 날짜 계산
-            if(endDate == null || (endDate.getTime() - endDateCalc.getTime()) > 0){
-                task.setEndDate(teamDao.get(option).getStartDate());
-            } else {
-                task.setEndDate(endDate);
-            }
-            
-            System.out.print("작업자? ");
-            String id = keyScan.nextLine();
-            
-            if(memberDao.get(id) != null) {
-                task.setMember(id);
-            } else {
-                task.setMember(null);
-            }
-            
-            System.out.println("변경하시겠습니까? (Y/N)");
-            String ch = keyScan.nextLine().toUpperCase();
-            if(ch.equals("y")) {
-                taskDao.update(task);
-                System.out.println("저장하였습니다.");
-            } else {
-                System.out.println("취소하였습니다.");
-            }
+        if(Console.confirm("변경하시겠습니까?")) {
+            taskDao.update(task);
+            System.out.println("변경하였습니다.");
+        } else {
+            System.out.println("취소하였습니다.");
         }
-        
     }
     
-    public void onTaskDelete(String option) {
-        // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
-            return;
-        }
+    // 작업 삭제
+    private void onTaskDelete(final Team team) {
+        System.out.println("[팀 작업 삭제]");
+        System.out.print("삭제할 작업의 번호? ");
+        int taskNo = Integer.parseInt(keyScan.nextLine());
         
-        System.out.println("삭제할 작업의 번호? ");
-        int num = keyScan.nextInt();
-        keyScan.nextLine();
-        
-        Task task = taskDao.get(num);
-        
+        Task task = taskDao.get(team.getName(), taskNo);
         if(task == null) {
-            System.out.println("해당 작업의 번호가 없습니다.");
-        } else {
-            if (Console.confirm("정말 삭제하시겠습니까?")) {
-                taskDao.delete(num);
-                System.out.println("삭제되었습니다.");
-            } else {
-                System.out.println("취소하였습니다.");
-            }
-        }
-    }
-    
-    public void onTaskState(String option) {
-        // 팀명 입력하지 않을 때 혹은 잘 못 입력했을 대 조건문 검사
-        if(isNotExistTeamName(option)) {
+            System.out.printf("'%s'팀의 %d번 작업을 찾을 수 없습니다. \n",
+                    team.getName(), taskNo);
             return;
         }
         
-        System.out.print("상태를 변경할 작업의 번호? ");
-        int status = keyScan.nextInt();  // 작업번호
-        keyScan.nextLine();
-        
-        String key = taskDao.status(status);  // 작업번호의 대한 상태
-        
-        if(key.equals("")) {
-            System.out.println("해당 작업이 없습니다.");
+        if(Console.confirm("삭제하겠습니까?")) {
+            taskDao.delete(task.getNo());
+            System.out.println("삭제하였습니다.");
         } else {
-            String[] str = taskDao.titleStatus(); // 해당 팀명의 작업 내역
-            for(int i =0; i< str.length; i++) {
-                
-                System.out.printf("\'%s\' 작업의 상태: %s(%d)",str[i],key,status);
-            }
-            
-            // 마저 상태 변경하기
-            System.out.println("변경할 상태? (0:작업대기, 1:작업중, 9:작업완료) ");
-            status = keyScan.nextInt();
-            keyScan.nextLine();
-            key = taskDao.status(status);
-            if(key.equals("")) {
-                System.out.println("올바르지 않은 값입니다. 이전 생태를 유지합니다!");
-            } else {
-                System.out.printf("작업의 상태를 \'%s\'(으로) 변경하였습니다.",key);
-            }
+            System.out.println("취소하였습니다.");
         }
         
+    }
+    
+    private void onTaskState(final Team team) {
+        System.out.println("[작업 진행 상태]");
+        System.out.print("상태를 변경할 작업의 번호? ");
+        int taskNo = Integer.parseInt(keyScan.nextLine());
         
+        Task task = taskDao.get(team.getName(), taskNo);
+        if(task == null) {
+            System.out.printf("'%s'팀의 %d번 작업을 찾을 수 없습니다. \n",
+                    team.getName(), taskNo);
+            return;
+        }
+        
+        System.out.printf("'%s' 작업의 상태: %s\n", 
+                task.getTitle(), getStateLabel(task.getState()));
+        
+        
+        System.out.println("변경할 상태? (0: 작업대기, 1: 작업중, 9: 작업완료)");
+        int state = Integer.parseInt(keyScan.nextLine());
+        
+        if (state == Task.READY || state == Task.WORKING || 
+                state == Task.COMPLETE) {
+            task.setState(state);
+            System.out.printf("작업 상태를 '%s'로 변경하였습니다.",
+                    getStateLabel(state));
+        } else {
+            System.out.println("올바르지 않은 값입니다. 이전 상태를 유지합니다.");
+        }
+    }
+    
+    // 다음 메서드와 같이 인스턴스 변수를 사용하지 않은 메서드라며,
+    // static을 붙여 클래스 메서드로 만들라.
+    public static String getStateLabel(int state) {
+        switch (state){
+        case Task.READY:
+            return "작업대기";
+        case Task.WORKING:
+            return "작업중";
+        case Task.COMPLETE:
+            return "작업완료";
+        default:
+            return null;
+        }
     }
 }
+
+// ver 17 - 클래스 생성
+// ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
+// ver 15 - 팀 멤버를 등록, 조회, 삭제할 수 있는 기능 추가. 
+// ver 14 - TeamDao를 사용하여 팀 데이터를 관리한다.
+// ver 13 - 시작일, 종료일을 문자열로 입력 받아 Date 객체로 변환하여 저장.

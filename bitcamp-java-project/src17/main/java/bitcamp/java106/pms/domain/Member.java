@@ -1,9 +1,9 @@
 package bitcamp.java106.pms.domain;
 
 public class Member {
-    private String id;  // 아이디
-    private String email; // 이메일
-    private String password; // 비밀번호
+    private String id;
+    private String email;
+    private String password;
     
     public String getId() {
         return id;
