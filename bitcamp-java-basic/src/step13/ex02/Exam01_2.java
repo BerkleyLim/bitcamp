@@ -1,0 +1,18 @@
+// 제네릭 적용 후 LinkedList
+package step13.ex02;
+
+public class Exam01_2 {
+    public static void main(String[] args) {
+        LinkedList2<Member> list = new LinkedList2<>(); // new에서 LinkedList2<>() 가능
+        list.add(new Member("홍길동", 20));
+        list.add(new Member("임꺽정", 30));
+        list.add(new Member("유관순", 16));
+        
+        // get() 메서드는 제네릭이 적용되었기 때문에 굳이 형변환 필요 없음
+        for (int i = 0; i < list.size(); i++) {
+            Member member = list.get(i);
+            System.out.printf("%s(%d)\n", member.name, member.age);
+            
+        }
+    }
+}
