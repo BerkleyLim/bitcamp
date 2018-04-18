@@ -1,11 +1,61 @@
 package bitcamp.java106.pms.dao;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
 
+import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.domain.Classroom;
+
+@Component
 public class TeamMemberDao {
-    private HashMap<String, ArrayList<String>> collection = new HashMap<>();
+    private HashMap<String, ArrayList<String>> collection;
+    
+    
+    public TeamMemberDao() throws Exception {
+        load();
+    }
+    
+    public void load() throws Exception {
+        
+        try (
+                ObjectInputStream in = new ObjectInputStream(
+                               new BufferedInputStream(
+                               new FileInputStream("data/teammember.data")));
+            ) {
+        
+            try {
+                collection = (HashMap<String, ArrayList<String>>) in.readObject();
+            } catch (Exception e) {
+                // 데이터를 읽다가 오류가 발생하면 빈 해시맵 객체를 만든다.
+                collection = new HashMap<String, ArrayList<String>>();
+            }
+        } 
+    }
+    
+    public void save() throws Exception {
+        try (
+                ObjectOutputStream out = new ObjectOutputStream(
+                                new BufferedOutputStream(
+                                new FileOutputStream("data/teammember.data")));
+            ) {
+            
+                out.writeObject(collection);
+        }
+    }
     
     private ArrayList<String> getTeamMembers(String teamName) {
         // 팀 이름으로 멤버 아이디가 들어 있는 ArrayList를 가져온다.
@@ -80,6 +130,7 @@ public class TeamMemberDao {
     
 }
 
+//ver 23 - @Component 애노테이션을 붙인다.
 // ver 19 - 우리 만든 ArrayList 대신 java.util.LinkedList를 사용하여 목록을 다룬다.
 // ver 18 - ArrayList 적용
 // ver 17 - 클래스 추가

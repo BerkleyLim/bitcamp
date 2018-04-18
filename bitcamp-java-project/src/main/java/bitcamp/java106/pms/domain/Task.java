@@ -1,14 +1,19 @@
 package bitcamp.java106.pms.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Task {
+public class Task implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     public static final int READY = 0;
     public static final int WORKING = 1;
 
     public static final int COMPLETE = 9;
     
-    private static int count = 1;
+    public static int count = 1;
     private int no;         // 내부적으로 쓰이는 작업번호(작업상태 조작 아님)
 
 

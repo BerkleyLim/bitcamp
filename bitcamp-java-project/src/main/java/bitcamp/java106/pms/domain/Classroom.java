@@ -1,9 +1,15 @@
 package bitcamp.java106.pms.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Classroom {
-    private static int count;
+public class Classroom implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public static int count;
     
     private int no;            // 인덱스 번호
     private String className;  // 수업명
