@@ -59,3 +59,12 @@ update ex_board set titl='okok' where bno=7;
 ```
 delete from ex_board where bno = 8;
 ```
+
+## 데이터 일부 조회
+```
+-- 여기는 테이블 기준 첫번째 테이블부터 3개 출력
+select * from ex_board limit 0, 3;
+
+-- 여기는 테이블 기준 두번째 테이블부터 3개 출력
+select * from ex_board limit 1, 3; 
+```

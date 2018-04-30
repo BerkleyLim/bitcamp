@@ -1,5 +1,31 @@
 ﻿# 자바 프로젝트 
 
+# src33 - Data Persistence Framework인 Mybatis를 적용하라!
+학습목표
+  - JDBC 대신 Mybatis를 사용했을 때 이점을 이해한다.
+  - Mybatis를 설정하고 코드에 적용할 수 있다.
+작업내용
+  - Mybatis 프레임워크 관련 의존라이브러리 가저온다.
+  - SqlSessionFactory를 준비한다.
+  - DAO에 SqlSession Factory를 의존 객체로 주입한다.
+  - DAO는 JDBC 코드 대신 SqlSession을 사용하여 데이터를 처리한다.
+
+# src32 - DB 커넥션 풀을 적용하여 DB 연결 객체를 효율적으로 관리하라.
+학습목표
+  - "pooling 기법(일정 수량의 객체를 만들어 놓고 재사용하는 방법)"을 이해한다.
+  - "flyweight 디자인 패턴"을 이해하고 구현할 수 있다.
+  - "proxy 디자인 패턴"을 이해한다.
+  - DB 커넥션 풀 개념을 이해하고 구현할 수 있다.
+작업내용
+  - DB 커넥션에 대해 "pooling 기법"을 적용하여 커넥션 풀을 만든다.
+  - Connection 객체의 close() 메서드를 재정의하기 위해 proxy 패턴을 적용한다.
+
+# src31 - DAO에 JDBC 적용
+학습목표
+  - JDBC API 사용을 익힌다.
+작업내용
+  - DAO 클래스에 JDBC API를 적용한다.
+
 # src30 - 멀티스레드 적용
 학습목표
   - 멀티스레드를 적용하여 다중 클라이언트 요청을 처리할 수 있다.

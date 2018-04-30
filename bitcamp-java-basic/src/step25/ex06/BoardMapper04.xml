@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardMapper">
+
+  <resultMap type="Board" id="BoardMap">
+    <result column="bno" property="no"/>
+    <result column="titl" property="title"/>
+    <result column="cont" property="content"/>
+    <result column="rdt" property="registeredDate"/>
+  </resultMap>
+
+  <!-- SQL 문에 값 삽입하기
+       => #{key이름}
+       => 값이 들어 있는 객체를 태크 속성에 지정하라.
+          parameterType="값이 들어있는 객체의 타입"
+   -->
+  <select id="selectBoard" 
+              resultMap="BoardMap" parameterType="MAP">
+    select 
+      bno, 
+      titl, 
+      cont, 
+      rdt 
+    from ex_board
+    limit #{startIndex}, #{pageSize}
+  </select>
+  
+</mapper>
