@@ -1,5 +1,32 @@
 ﻿# 자바 프로젝트 
 
+# src36 - tomcat 서블릿 컨테이너 적용
+학습목표
+    - 톰켓 서버를 구축하고 실행할 수 있다.
+    - 서블릿을 만들고 배치할 수 있다.
+    - Adapter 설계 패턴의 원리를 이해한다.
+작업내용
+    - 톰캣 서버를 설치한다.
+    - 서블릿 관련 라이브러리를 가져온다.
+    - 클라이언트 요청을 받아서 컨트롤러에게 전달할 DispatchServlet을 만든다.
+
+# src35 - Spring 프레임워크의 IoC 컨테이너 적용
+학습목표
+    - Spring IoC 컨테이너를 설정할 수 있다.
+    - Spring IoC 컨테이너를 사용하여 객체를 관리할 수 있다.
+작업내용
+    - Spring IoC 컨테이너 관련 라이브러리 추가
+    - 기존의 ApplicationContext를 Spring IoC로 넣는다.
+
+# src34 - 테이블에 Foreign Key 적용하기
+학습목표
+    - FK의 용도를 이해한다.
+    - 컬럼에 FK를 설정할 수 있다.
+    - 여러 테이블의 데이터를 조인하여 결과를 조회할 수 있다.
+작업 내용
+    - 기존의 테이블을 FK 적용한 새 테이블을 만든다.
+    - SQL 맵퍼 파일을 변경한다.
+
 # src33 - Data Persistence Framework인 Mybatis를 적용하라!
 학습목표
   - JDBC 대신 Mybatis를 사용했을 때 이점을 이해한다.
