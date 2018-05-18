@@ -9,6 +9,7 @@
     
     <bean id="c1" class="bitcamp.java106.step05.Car">
         <!-- 배열 프로퍼티 값 설정하기 -->
+        <!-- property 태그 ==> name : , value :  -->
         <property name="tires">
             <array>
                 <bean class="bitcamp.java106.step05.Tire" 

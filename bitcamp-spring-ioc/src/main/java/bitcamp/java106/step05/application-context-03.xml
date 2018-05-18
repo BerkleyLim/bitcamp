@@ -11,15 +11,19 @@
         <!-- List 프로퍼티 값 설정하기 : 배열과 똑같다.  -->
         <property name="options">
             <map>
+                <!-- map 태그에 key 값과 value 값 넣기 1 -->
                 <entry>
                     <key><value>sunroof</value></key>
                     <value>true</value>
                 </entry>
+                <!-- map 태그에 key 값과 value 값 넣기 2 -->
                 <entry key="auto" value="true"/>
+                <!-- map 태그에 key 값과 value 값 넣기 3 -->
                 <entry key="spareTire"> 
                     <!-- 객체를 바로 만들어 넣고 싶다면 bean 태그를 사용하라! -->
                     <bean class="bitcamp.java106.step05.Tire" p:maker="비트타이"/>
                 </entry>
+                <!-- map 태그에 key 값과 value 값 넣기 4 -->
                 <entry key="engine" value-ref="e1"/>
             </map>
         </property>

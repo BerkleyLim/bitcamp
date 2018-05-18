@@ -1,13 +1,26 @@
 ﻿# 자바 프로젝트 
 
-# src37 - 서블릿 기술 적용
+## src39 - forward, include 기술 적용
+학습목표
+    - forward와 include의 용도를 이해하고 적용할 수 있다.
+작업내용
+    - 오류 처리 코드를 별도의 서블릿으로 분리하여 forward 한다.
+    - 팀 상세보기 화면을 여러 서블릿으로 분리하여 include 한다.
+
+## src38 - refresh, redirect 기술 적용
+학습목표
+    - refresh와 redirect의 동작을 이해하고 사용할수 있다.
+작업내용
+    - 등록, 변경, 삭제 후 refresh와 redirect를 적용하기
+    
+## src37 - 서블릿 기술 적용
 학습목표
     - 서블릿을 만들고 배치할 수 있다.
     - HTML 페이지를 만들 수 있다.
 작업내용
     - 기존의 컨트롤러를 서블릿으로 전환한다.
 
-# src36 - tomcat 서블릿 컨테이너 적용
+## src36 - tomcat 서블릿 컨테이너 적용
 학습목표
     - 톰켓 서버를 구축하고 실행할 수 있다.
     - 서블릿을 만들고 배치할 수 있다.
@@ -17,7 +30,7 @@
     - 서블릿 관련 라이브러리를 가져온다.
     - 클라이언트 요청을 받아서 컨트롤러에게 전달할 DispatchServlet을 만든다.
 
-# src35 - Spring 프레임워크의 IoC 컨테이너 적용
+## src35 - Spring 프레임워크의 IoC 컨테이너 적용
 학습목표
     - Spring IoC 컨테이너를 설정할 수 있다.
     - Spring IoC 컨테이너를 사용하여 객체를 관리할 수 있다.
@@ -25,7 +38,7 @@
     - Spring IoC 컨테이너 관련 라이브러리 추가
     - 기존의 ApplicationContext를 Spring IoC로 넣는다.
 
-# src34 - 테이블에 Foreign Key 적용하기
+## src34 - 테이블에 Foreign Key 적용하기
 학습목표
     - FK의 용도를 이해한다.
     - 컬럼에 FK를 설정할 수 있다.
@@ -34,7 +47,7 @@
     - 기존의 테이블을 FK 적용한 새 테이블을 만든다.
     - SQL 맵퍼 파일을 변경한다.
 
-# src33 - Data Persistence Framework인 Mybatis를 적용하라!
+## src33 - Data Persistence Framework인 Mybatis를 적용하라!
 학습목표
   - JDBC 대신 Mybatis를 사용했을 때 이점을 이해한다.
   - Mybatis를 설정하고 코드에 적용할 수 있다.
@@ -44,7 +57,7 @@
   - DAO에 SqlSession Factory를 의존 객체로 주입한다.
   - DAO는 JDBC 코드 대신 SqlSession을 사용하여 데이터를 처리한다.
 
-# src32 - DB 커넥션 풀을 적용하여 DB 연결 객체를 효율적으로 관리하라.
+## src32 - DB 커넥션 풀을 적용하여 DB 연결 객체를 효율적으로 관리하라.
 학습목표
   - "pooling 기법(일정 수량의 객체를 만들어 놓고 재사용하는 방법)"을 이해한다.
   - "flyweight 디자인 패턴"을 이해하고 구현할 수 있다.
@@ -54,13 +67,13 @@
   - DB 커넥션에 대해 "pooling 기법"을 적용하여 커넥션 풀을 만든다.
   - Connection 객체의 close() 메서드를 재정의하기 위해 proxy 패턴을 적용한다.
 
-# src31 - DAO에 JDBC 적용
+## src31 - DAO에 JDBC 적용
 학습목표
   - JDBC API 사용을 익힌다.
 작업내용
   - DAO 클래스에 JDBC API를 적용한다.
 
-# src30 - 멀티스레드 적용
+## src30 - 멀티스레드 적용
 학습목표
   - 멀티스레드를 적용하여 다중 클라이언트 요청을 처리할 수 있다.
   - 스레드의 동작을 이해한다.
@@ -68,7 +81,7 @@
 작업내용
   - HTTPServer에서 클라이언트 요청을 처리할 때 멀티스레드를 적용한다.
 
-# src29 - HTTP 프로토콜 적용
+## src29 - HTTP 프로토콜 적용
 학습목표
   - HTTP 요청 프로토콜과 HTTP 응답 프로토콜을 이해한다.
   - HTTP 프로토콜에 따라 네트워크 프로그램을 작성할 수 있다.
