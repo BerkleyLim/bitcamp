@@ -34,6 +34,6 @@ public class Exam01 extends HttpServlet {
         
         // 콘솔 창에 서블릿이 실행되었음을 표시하기 위해 출력한다.
         // => 필터의 실행과 서블릿의 실행 순서를 확인하기 위함이다.
-        System.out.println("/step09/ex02/exam01 실행!");
+        System.out.println("/step09/ex01/exam01 실행!");
     }
 }
