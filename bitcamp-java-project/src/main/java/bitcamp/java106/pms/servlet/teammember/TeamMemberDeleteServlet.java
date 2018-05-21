@@ -1,7 +1,6 @@
 package bitcamp.java106.pms.servlet.teammember;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 
 import javax.servlet.RequestDispatcher;
@@ -34,46 +33,32 @@ public class TeamMemberDeleteServlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
-        
         String teamName = request.getParameter("teamName");
+        String memberId = request.getParameter("memberId");
+        
         
         try {
-            String memberId = request.getParameter("memberId");
             int count = teamMemberDao.delete(teamName, memberId);
             if (count == 0) {
-                throw new Exception("해당 팀원이 존재하지 않습니다.");
-            } 
-            
-            // 한글을 웹서버/브라우저로 보낼 때, 무조건 한글을 바로 보내지 않고 UTF-8의 7bit로 된 값으로 보낸다.
-            // 이후 나중에 디코딩을 자동으로 한다.
-            // list?teamName= : 로케이션 헤더값 
-            // 웹서버가 웹 브라우저에게 헤더값을 요구하면 자동으로 한글 처리를 하지 않는다.
-            // 참고로 우리는 수정으로 처리!!
-            // javaScript에서도 자주 쓰이기도 한다.
-          //response.sendRedirect("../view?name=" + teamName);
+                throw new Exception("<p>해당 팀원이 존재하지 않습니다.</p>");
+            }
             response.sendRedirect("../view?name=" + 
-                        URLEncoder.encode(teamName, "UTF-8"));
-            // 개발자가 직접 요청이나 응답해더를 직접 작성하여 값을 주고 받으로 한다면,
-            // URL 인코딩과 URL 디코딩을 손수 해줘야 한다. 
+                    URLEncoder.encode(teamName, "UTF-8"));
+            // 개발자가 요청이나 응답헤더를 직접 작성하여 값을 주고 받으로 한다면,
+            // URL 인코딩과 URL 디코딩을 손수 해 줘야 한다.
             
         } catch (Exception e) {
-            // 예외가 발생하면 ErrorServlet으로 예외 내용을 출력하도록 실행을 위윔한다.
-            // 1) 실행을 위임할 객체를 준비한다.
             RequestDispatcher 요청배달자 = request.getRequestDispatcher("/error");
-            
-            // 2) 다른 서블릿에게 실행을 위임하기 전에 그 서블릿에 전달할 데이터가 있다면,
-            //    ServletRequest 보관소에 담아라.
             request.setAttribute("error", e);
-            request.setAttribute("title", "팀 삭제 실패!");
-            
-            // 3) 다른 서블릿으로 실행을 위임한다.
-            // 다른 서블릿으로 실행을 위임할 때,
-            // 이전까지 버퍼로 출력한 데이터를 버린다.
+            request.setAttribute("title", "팀 회원 삭제 실패!");
             요청배달자.forward(request, response);
         }
     }
+    
 }
 
+//ver 39 - forward 적용
+//ver 38 - redirect 적용
 //ver 37 - 컨트롤러를 서블릿으로 변경
 //ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
