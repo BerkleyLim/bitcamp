@@ -53,6 +53,9 @@ public class TeamMemberDeleteServlet extends HttpServlet {
           //response.sendRedirect("../view?name=" + teamName);
             response.sendRedirect("../view?name=" + 
                         URLEncoder.encode(teamName, "UTF-8"));
+            // 개발자가 직접 요청이나 응답해더를 직접 작성하여 값을 주고 받으로 한다면,
+            // URL 인코딩과 URL 디코딩을 손수 해줘야 한다. 
+            
         } catch (Exception e) {
             // 예외가 발생하면 ErrorServlet으로 예외 내용을 출력하도록 실행을 위윔한다.
             // 1) 실행을 위임할 객체를 준비한다.
