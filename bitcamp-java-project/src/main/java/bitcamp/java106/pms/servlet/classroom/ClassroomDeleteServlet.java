@@ -28,9 +28,6 @@ public class ClassroomDeleteServlet extends HttpServlet {
     protected void doGet(
             HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-
-        
-
         
         try {
             int no = Integer.parseInt(request.getParameter("no"));

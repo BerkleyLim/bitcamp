@@ -33,11 +33,6 @@ public class BoardAddServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
         
-        // 클라이언트가 보낸 데이터가 어떤 문자표를 사용해서 작성한지 알아야만 
-        // String 객체(UTF-16)로 값을 꺼낼 수 있다. 
-        request.setCharacterEncoding("UTF-8");
-        
-        
         try {
             Board board = new Board();
             board.setTitle(request.getParameter("title"));

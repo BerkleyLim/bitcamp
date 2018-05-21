@@ -31,9 +31,6 @@ public class TeamUpdateServlet extends HttpServlet {
             HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
         
-        request.setCharacterEncoding("UTF-8");
-        
-
         
         try {
             Team team = new Team();
