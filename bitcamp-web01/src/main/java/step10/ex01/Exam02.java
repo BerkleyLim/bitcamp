@@ -1,4 +1,4 @@
-// 쿠키 : 클라이언트 쪽에 데이터를 보관하는 방법
+// 쿠키 : 클라이언트 쪽에 보관된 데이터를 꺼내는 방법
 package step10.ex01;
 
 import java.io.IOException;
@@ -12,43 +12,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-@WebServlet("/step10/ex01/exam01")
-public class Exam01 extends HttpServlet {
+@WebServlet("/step10/ex01/exam02")
+public class Exam02 extends HttpServlet {
     
     @Override
     protected void doGet(
             HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 쿠키(cookie) 보내기
-        // 1) key-value 한 쌍의 값을 갖는 쿠키 객체를 만든다.
-        Cookie cookie1 = new Cookie("c1", "aaa");
-        Cookie cookie2 = new Cookie("c2", "123");
+        // 쿠키(cookie) 받기
+        // => 쿠키는 서버가 요청하지 않아도 웹브라우저에게 무조건 보낸다.
+        //    물론 웹서버가 웹브라우저에 쿠키를 보낼 때 조건에 따라 웹서버에 보낸다.
         
-        // 2) 응답 헤더에 쿠키 정보를 출력한다.
-        response.addCookie(cookie1);
-        response.addCookie(cookie2);
+        // 1) 쿠키 가져오기
+        // => 안타깝게도 특정 이름을 가진 쿠키 값만 꺼내는 메서드가 없다.
+        Cookie[] cookies = request.getCookies();
         
         response.setContentType("text/plain;charset=utf-8");
         PrintWriter out = response.getWriter();
-        out.println("쿠키를 보냈습니다.");
+        out.println("클라이언트가 보낸 쿠키들:");
+        
+        for (Cookie cookie : cookies) {
+            out.printf("%s=%s\n", cookie.getName(), cookie.getValue());
+        }
         
         
     }
 }
-// 쿠키(cookie)?
-// => 웹서버에서 보낸 데이터를 보내 웹브라우저에 저장하는 것
-// => 웹브라우저는 웹서버로부터 받은 데이터를 보관하고 있다가
-//    웹서버에 요청할 때마다 다시 보낸다.
-//    예) 쿠폰
 
-// 쿠키를 클라이언트로 보내는 HTTP 프로토콜?
-//GET /bitcamp-web01/step10/ex01/exam01 HTTP/1.1
+// 웹브라우저가 웹서버로 쿠키를 보내는 HTTP 프로토콜?
+//GET /bitcamp-web01/step10/ex01/exam02 HTTP/1.1
 //Host: localhost:8888
 //Connection: keep-alive
-//Cache-Control: max-age=0
 //Upgrade-Insecure-Requests: 1
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36
 //Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
 //Accept-Encoding: gzip, deflate, br
 //Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+//Cookie: c1=aaa; c2=123
+
+
+
+

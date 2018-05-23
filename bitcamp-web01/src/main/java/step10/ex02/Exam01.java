@@ -1,5 +1,5 @@
-// 쿠키 : 클라이언트 쪽에 데이터를 보관하는 방법
-package step10.ex01;
+// 쿠키 : 유효기간 설정하기
+package step10.ex02;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-@WebServlet("/step10/ex01/exam01")
+@WebServlet("/step10/ex02/exam01")
 public class Exam01 extends HttpServlet {
     
     @Override
@@ -20,14 +20,22 @@ public class Exam01 extends HttpServlet {
             HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 쿠키(cookie) 보내기
-        // 1) key-value 한 쌍의 값을 갖는 쿠키 객체를 만든다.
         Cookie cookie1 = new Cookie("c1", "aaa");
-        Cookie cookie2 = new Cookie("c2", "123");
+        cookie1.setMaxAge(20); // 유지 시간(초)을 설정한다.(20초 동안 유효)
+        // 유효기간을 설정하면 웹브라우저를 닫아도, 컴퓨터를 종료해도 유지된다.
+        // 왜? 파일시스템(HDD 등)에 보관하기 때문에 컴퓨터를 꺼도 유지된다.
+        // 당연히 유효기간이 지나면 웹 브라우저는 웹 서버에게 보내지 않고 해당 쿠기를 제거한다.
         
-        // 2) 응답 헤더에 쿠키 정보를 출력한다.
+        Cookie cookie2 = new Cookie("c2", "123");
+        cookie2.setMaxAge(40); // 40초 동안 유효
+        
+        Cookie cookie3 = new Cookie("c3", "123");
+        // 유효기간을 설정하지 않으면 웹브라우저를 실행하는 동안만 유효하다.
+        // 웹브라우저를 닫으면 유효기간이 설정되지 않은 쿠키는 자동으로 삭제된다.
+        
         response.addCookie(cookie1);
         response.addCookie(cookie2);
+        response.addCookie(cookie3);
         
         response.setContentType("text/plain;charset=utf-8");
         PrintWriter out = response.getWriter();
@@ -43,12 +51,15 @@ public class Exam01 extends HttpServlet {
 //    예) 쿠폰
 
 // 쿠키를 클라이언트로 보내는 HTTP 프로토콜?
-//GET /bitcamp-web01/step10/ex01/exam01 HTTP/1.1
-//Host: localhost:8888
-//Connection: keep-alive
-//Cache-Control: max-age=0
-//Upgrade-Insecure-Requests: 1
-//User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36
-//Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-//Accept-Encoding: gzip, deflate, br
-//Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+//HTTP/1.1 200
+//Set-Cookie: c1=aaa; Max-Age=30; Expires=Wed, 23-May-2018 01:55:16 GMT
+//Set-Cookie: c2=123
+//Set-Cookie: c2=123
+//Content-Type: text/plain;charset=utf-8
+//Content-Length: 28
+//Date: Wed, 23 May 2018 01:54:46 GMT
+
+
+
+
+
