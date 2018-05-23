@@ -51,6 +51,9 @@ public class TeamListServlet extends HttpServlet {
         out.println("<title>팀 목록</title>");
         out.println("</head>");
         out.println("<body>");
+        
+        request.getRequestDispatcher("/header").include(request, response);
+        
         out.println("<h1>팀 목록</h1>");
         
         try {
