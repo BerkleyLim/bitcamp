@@ -15,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrorServlet extends HttpServlet {
     @Override
     protected void service(
-            HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
@@ -26,13 +27,12 @@ public class ErrorServlet extends HttpServlet {
         out.println("<meta charset='UTF-8'>");
         String refererUrl = request.getHeader("Referer");
         if (refererUrl != null) {
-            out.printf("<meta http-equiv='Refresh' content='5;url=%s'>\n",
-                    refererUrl);
+            out.printf("<meta http-equiv='Refresh' content='5;url=%s'>", refererUrl); 
         }
         out.println("<title>실행 오류</title>");
         out.println("</head>");
         out.println("<body>");
-        out.printf("<p>%s</p>\n",request.getAttribute("title"));
+        out.printf("<h1>%s</h1>\n", request.getAttribute("title"));
         out.println("<pre>");
         Exception e = (Exception) request.getAttribute("error");
         e.printStackTrace(out);
@@ -41,3 +41,22 @@ public class ErrorServlet extends HttpServlet {
         out.println("</html>");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
