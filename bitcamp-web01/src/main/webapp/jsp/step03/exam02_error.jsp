@@ -1,13 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" 
+    contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset=UTF-8>
-<title>exam01</title>
+<meta charset="UTF-8">
+<title>exam02_error</title>
 </head>
 <body>
-<h2>오류 발생</h2>
-
+<h1>오류 발생!</h1>
 </body>
 </html>
+
+
+
+
+
+
+
