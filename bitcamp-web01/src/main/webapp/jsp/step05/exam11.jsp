@@ -26,7 +26,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <h2>값을 포함하고 있는 복잡한 URL 만들기</h2>
-<c:url value="http://localhost:8888/java-project/member/add"
+<c:url value="http://www.google.com"
         var="url1"
         scope="page">
     <c:param name="id" value="user01" />

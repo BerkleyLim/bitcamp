@@ -24,16 +24,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <h2>HTTP 요청을 수행한 후 그 결과를 가져오기</h2>
-<c:url value="http://www.google.com"
+
+
+<c:url value="http://m.zdnet.co.kr/column_view.asp"
         var="url1"
         scope="page">
-    <c:param name="id" value="user01" />
-    <c:param name="email" value="user01@test.com" />
-    <c:param name="password" value="1111" />
+    <c:param name="artice_id" value="20180528142747" />
 </c:url>
 
-<a href="${url1}">회원 등록</a><br>
+<c:import url="${url1}" var="result" scope="page"/>
 
+<textarea cols="80" rows="15">${pageScope.result }</textarea>
 
 </body>
 </html>
