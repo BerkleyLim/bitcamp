@@ -10,24 +10,26 @@
 <title>강의 목록</title>
 </head>
 <body>
-
-
 <jsp:include page="/header.jsp"/>
-<h1>강의 목록(MVC)</h1>
+<h1>강의 목록(MVC + JSP 전용 태그)</h1>
 <p><a href='form.html'>새 강의</a></p>
 <table border='1'>
 <tr>
     <th>번호</th><th>강의명</th><th>기간</th><th>강의실</th>
 </tr>
+<jsp:useBean id="list"
+            type="java.util.List<Classroom>"
+            class="java.util.ArrayList"
+            scope="request"/>
 <%
-List<Classroom> list = (List<Classroom>)request.getAttribute("list");
 for (Classroom classroom : list) {
+    pageContext.setAttribute("classroom", classroom);
 %>
 <tr>
-    <td><%=classroom.getNo()%></td>
-    <td><a href='view?no=<%=classroom.getNo()%>'><%=classroom.getTitle()%></a></td>
-    <td><%=classroom.getStartDate()%>~<%=classroom.getEndDate()%></td>
-    <td><%=classroom.getRoom()%></td>
+    <td>${classroom.no}</td>
+    <td><a href='view?no=${classroom.no}%>'>${classroom.title}</a></td>
+    <td>${classroom.startDate}~${classroom.endDate}</td>
+    <td>${classroom.room}</td>
 </tr>
 <%}%>
 </table>

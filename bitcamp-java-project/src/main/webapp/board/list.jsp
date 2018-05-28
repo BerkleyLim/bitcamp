@@ -13,20 +13,24 @@
 
 <jsp:include page="/header.jsp"/>
 
-<h1>게시물 목록(MVC)</h1>
+<h1>게시물 목록(MVC + JSP 전용 태그 + EL)</h1>
 <p><a href='form.html'>새 글</a></p>
 <table border='1'>
 <tr>
     <th>번호</th><th>제목</th><th>등록일</th>
 </tr>
+<jsp:useBean id="list"
+            type="java.util.List<Board>"
+            class="java.util.ArrayList"
+            scope="request"/>
 <%
-List<Board> list = (List<Board>)request.getAttribute("list");
 for (Board board : list) {
+    pageContext.setAttribute("board", board);
 %>
 <tr>
-    <td><%=board.getNo()%></td>
-    <td><a href='view?no=<%=board.getNo()%>'><%=board.getTitle()%></a></td>
-    <td><%=board.getCreatedDate()%></td>
+    <td>${board.no}</td>
+    <td><a href='view?no=${board.no}'>${board.title}</a></td>
+    <td>${board.createdDate}</td>
 </tr>
 <%}%>
 </table>

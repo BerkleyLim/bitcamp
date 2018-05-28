@@ -9,15 +9,9 @@
 <title>팀 보기</title>
 </head>
 <body>
-
-<%
-out.flush();
-request.getRequestDispatcher("/header.jsp").include(request, response);%>
-
-<h1>팀 보기(MVC)</h1>
-<%
-Team team = (Team)request.getAttribute("team");
-%>
+<jsp:include page="/header.jsp"/>
+<h1>팀 보기(MVC + JSP 전용 태그)</h1>
+<jsp:useBean id="team" class="bitcamp.java106.pms.domain.Team" scope="request"/>
 <form action='update' method='post'>
 <table border='1'>
 <tr>
@@ -49,11 +43,7 @@ Team team = (Team)request.getAttribute("team");
 <a href='../task/list?teamName=<%=team.getName()%>'>작업목록</a>
 </p>
 </form>
-
-<%
-out.flush();
-request.getRequestDispatcher("/team/member/list.jsp").include(request, response);%>
-
+<jsp:include page="/team/member/list.jsp"/>
 </body>
 </html>
 
