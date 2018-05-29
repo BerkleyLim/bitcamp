@@ -22,11 +22,12 @@ public class TeamViewController implements Controller {
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
+        
         String name = request.getParameter("name");
         
         try {
             Team team = teamDao.selectOne(name);
-            
+    
             if (team == null) {
                 out.println("해당 이름의 팀이 없습니다.");
             } else {
@@ -34,17 +35,16 @@ public class TeamViewController implements Controller {
                 out.printf("설명: %s\n", team.getDescription());
                 out.printf("최대인원: %d\n", team.getMaxQty());
                 out.printf("기간: %s ~ %s\n", 
-                        team.getStartDate(), team.getEndDate());
+                    team.getStartDate(), team.getEndDate());
             }
-            
         } catch (Exception e) {
-            System.out.println("팀 상세조회 실패");
-            e.printStackTrace();
+            out.println("상세조회 실패!");
+            e.printStackTrace(out);
         }
-        
     }
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - TeamController에서 view() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

@@ -12,15 +12,12 @@ public class Team {
     private int maxQty;
     private Date startDate;
     private Date endDate;
-    
+
     public Team() {}
     
     public Team(String name) {
         this.name = name;
     }
-    
-    // 사용자 정의 데이터 타입에서 메서드 정의란?
-    // => 새 데이터 타입의 값을 다룰 연산자를 정의하는 것을 의미한다.
     
     public String getName() {
         return name;
@@ -61,17 +58,16 @@ public class Team {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
+    
     @Override
     public String toString() {
-        return "Team [name=" + name + ", description=" + description + ", maxQty=" + maxQty + ", startDate=" + startDate
-                + ", endDate=" + endDate + "]";
+        return "Team [name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + "]";
     }
-    
 }
 
-//ver 17 - toString() 오버라이딩
-//         팀 맴버 관련된 메서드로 옮긴다.
+//ver 24 - 생성자 추가
+//ver 17 - toString() 오버라이딩.
+//         팀 멤버 관련 메서드를 TeamMemberDao 클래스로 옮긴다.
 //ver 16 - 캡슐화 적용. 겟터, 셋터 추가.
 //ver 15 - 멤버를 저장할 인스턴스 변수를 추가한다.
 //          팀 멤버 배열에 멤버 객체를 추가하고 빼는 메서드를 새로 정의한다.

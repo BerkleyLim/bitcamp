@@ -10,7 +10,6 @@ public class Task implements Serializable {
     public static final int WORKING = 1;
     public static final int COMPLETE = 9;
     
-
     private int no;
     private String title;
     private Date startDate;
@@ -68,6 +67,7 @@ public class Task implements Serializable {
         this.endDate = endDate;
         return this;
     }
+
     @Override
     public String toString() {
         return "Task [title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", state=" + state

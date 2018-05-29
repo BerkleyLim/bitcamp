@@ -21,7 +21,7 @@ public class BoardController implements Controller {
     
     public void service(String menu, String option) {
         if (menu.equals("board/add")) {
-            this.onAdd();
+            this.onBoardAdd();
         } else if (menu.equals("board/list")) {
             this.onBoardList();
         } else if (menu.equals("board/view")) {
@@ -35,7 +35,7 @@ public class BoardController implements Controller {
         }
     }
 
-    private void onAdd() {
+    void onBoardAdd() {
         System.out.println("[게시물 입력]");
         Board board = new Board();
 
@@ -91,12 +91,12 @@ public class BoardController implements Controller {
             System.out.println("유효하지 않은 게시물 번호입니다.");
         } else {
             Board updateBoard = new Board();
+            updateBoard.setNo(board.getNo());
             System.out.printf("제목(%s)? ", board.getTitle());
             updateBoard.setTitle(this.keyScan.nextLine());
             System.out.printf("설명(%s)? ", board.getContent());
             updateBoard.setContent(this.keyScan.nextLine());
             updateBoard.setCreatedDate(board.getCreatedDate());
-            updateBoard.setNo(board.getNo());
             boardDao.update(updateBoard);
             System.out.println("변경하였습니다.");
         }

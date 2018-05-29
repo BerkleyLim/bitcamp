@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.controller.Controller;
 import bitcamp.java106.pms.dao.BoardDao;
-import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.server.ServerRequest;
 import bitcamp.java106.pms.server.ServerResponse;
 
@@ -31,14 +30,13 @@ public class BoardDeleteController implements Controller {
                 out.println("삭제하였습니다.");
             }
         } catch (Exception e) {
-            System.out.println("삭제 실패!");
+            out.println("삭제 실패!");
             e.printStackTrace(out);
         }
-        
     }
     
 }
 
-// ver 31 - JDBC API가 적용된 DAO 사용
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - BoardController에서 delete() 메서드를 추출하여 클래스로 정의. 

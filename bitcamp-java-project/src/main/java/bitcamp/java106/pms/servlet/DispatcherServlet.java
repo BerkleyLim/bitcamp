@@ -71,7 +71,8 @@ public class DispatcherServlet extends HttpServlet {
             if(requestHandler == null)
                 throw new ServletException("요청을 처리할 요청 핸들러가 없습니다.");
             
-            String viewUrl = (String) requestHandler.invoke(request, response);
+            String viewUrl = (String) requestHandler.invoke(
+                    pageController, request, response);
             
             if (viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));

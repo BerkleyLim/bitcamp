@@ -1,30 +1,23 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import bitcamp.java106.pms.annotation.Component;
 
 @Component
 public class TeamMemberDao {
+    
     public int insert(String teamName, String memberId) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
-                "bitcamp", "1111");
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
                 "insert into pms_team_member(tnm,mid) values(?,?)");) {
             
@@ -39,7 +32,7 @@ public class TeamMemberDao {
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
-                "bitcamp", "1111");
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
                 "delete from pms_team_member where tnm=? and mid=?");) {
             
@@ -54,7 +47,7 @@ public class TeamMemberDao {
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
-                "bitcamp", "1111");
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
                 "select mid from pms_team_member where tnm=?");) {
             
@@ -74,7 +67,7 @@ public class TeamMemberDao {
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
-                "bitcamp", "1111");
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
                 "select mid from pms_team_member where tnm=? and mid=?");) {
             
@@ -94,6 +87,7 @@ public class TeamMemberDao {
 // 메서드 시그너처(method signature) = 함수 프로토타입(function prototype)
 // => 메서드의 이름과 파라미터 형식, 리턴 타입에 대한 정보를 말한다.
 
+//ver 31 - JDBC API 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 19 - 우리 만든 ArrayList 대신 java.util.LinkedList를 사용하여 목록을 다룬다. 

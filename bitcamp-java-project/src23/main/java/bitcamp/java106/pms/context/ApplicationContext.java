@@ -1,4 +1,4 @@
-// 미니 IoC 컨테이너
+// 미니 IoC 컨테이너 
 package bitcamp.java106.pms.context;
 
 import java.io.File;
@@ -11,21 +11,22 @@ import java.util.Map;
 import bitcamp.java106.pms.annotation.Component;
 
 public class ApplicationContext {
-    // 클래스 이름으로 객체를 저장할 수 있도록 Map을 사용한다.
-    private HashMap<String, Object> objPool = new HashMap<>();
+
+    private HashMap<String,Object> objPool = new HashMap<>();
     
-    public ApplicationContext(String packageName, Map<String, Object> beans) throws Exception {
+    public ApplicationContext(String packageName, Map<String,Object> beans) throws Exception {
         // 다른 맵에서 들어있는 객체를 이 컨테이너에 복사한다.
         if (beans != null) {
             objPool.putAll(beans);
         }
         
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+
         File dir = new File(classLoader.getResource(
                 packageName.replace(".", "/")).getPath());
-        
         if (!dir.isDirectory())
             return;
+        
         findAndInstantiateClasses(dir, packageName);
     }
     
@@ -45,13 +46,13 @@ public class ApplicationContext {
                 findAndInstantiateClasses(f, packageName + "." + f.getName());
                 continue;
             } 
-        
-            String classname = f.getName();  
+            
+            String classname = f.getName();    
             Class clazz = Class.forName(packageName + "." + 
                     classname.substring(0, classname.length() - 6));
             
             // 이미 해당 타입의 객체가 생성되어 있다면 다시 생성하지 않는다.
-            if (objPool.get(clazz.getName()) != null)
+            if (objPool.get(clazz.getName()) != null) 
                 continue;
             
             Object obj = createObject(clazz);
@@ -64,7 +65,7 @@ public class ApplicationContext {
     private String getComponentName(Class clazz) throws Exception {
         Component anno = (Component) clazz.getAnnotation(Component.class);
         String label = anno.value();
-        if(label.length() == 0)
+        if (label.length() == 0)
             return clazz.getName();
         return label;
     }
@@ -87,9 +88,8 @@ public class ApplicationContext {
             }
             return null;
         }
-        
     }
-
+    
     private boolean isComponent(Class clazz) throws Exception {
         // 애노테이션의 타입을 지정하여 해당 클래스에서 @Component 애노테이션 정보를 추출한다.
         Component anno = (Component) clazz.getAnnotation(Component.class);
@@ -104,22 +104,21 @@ public class ApplicationContext {
         
         // 생성자의 파라미터 타입을 알아낸다.
         Class[] paramTypes = constructor.getParameterTypes();
-        // 파라미터 타입에 해당되는 값을 보관한 저장소
+        
+        // 파라미터 타입에 해당하는 값을 보관할 저장소
         ArrayList<Object> paramValues = new ArrayList<>();
         for (Class paramType : paramTypes) {
-            //Object paramObj = objPool.get(paramType.getName());
-           // Object paramObj = findObject(paramType);
             paramValues.add(findObject(paramType)); // 파라미터 값을 준비
         }
         
-        // 파라미터 값이 준비되어씩 때문에 
+        // 파라미터 값이 준비되었기 때문에 
         // 준비한 파라미터 값을 가지고 생성자를 호출하여 인스턴스를 만들어 리턴한다.
         return constructor.newInstance(paramValues.toArray());
     }
     
     private Object findObject(Class clazz) throws Exception {
         Object obj = objPool.get(clazz.getName());
-        if (obj != null) { // 그 클래스 타입과 일치하는 객체가 있다면 그 객체를 리턴
+        if (obj != null) { // 그 클래스 타입과 일치하는 객체가 있다면 그 객체를 리턴,
             return obj;
         } 
         
@@ -131,23 +130,24 @@ public class ApplicationContext {
     
     private boolean containsDefaultType(Constructor constructor) {
         Class[] defaultTypes = {
-                byte.class, short.class, int.class, long.class, 
+                byte.class, short.class, int.class, long.class,
                 float.class, double.class, boolean.class, char.class,
                 Byte.class, Short.class, Integer.class, Long.class,
                 Float.class, Double.class, Boolean.class, Character.class,
                 String.class
-        }; 
-        // 1) 생성자의 파라미터 정보를 꺼낸다.
+        };
+        
+        //1) 생성자의 파라미터 정보를 꺼낸다.
         Class[] paramTypes = constructor.getParameterTypes();
         
-        // 2) 생성자의 파라미터 타입이 primitive 타입이거나 Wrapper, String 일 경우
-        //    이 생성자를 호출할 때 값을 줘서 호출 해야 한다.
-        //    문제는 어떤 값을 줘야 하는지, 예를 들어 int를 원한다면
-        //    int 값으로 얼마나 줘야 하는지 여기 결정할 수 없다.
-        //    그래서 이런 생성자로는 객체를 생성할 수 없다.
-        //    이런 생성자인지 검사한다.
+        //2) 생성자의 파라미터 타입이 primitive 타입이거나 Wrapper, String 일 경우
+        //   이 생성자를 호출할 때 해당 값을 줘서 호출해야 한다.
+        //   문제는 어떤 값을 줘야 하는지, 예를 들어 int를 원한다면 
+        //   int 값으로 얼마를 줘야 하는지 여기 결정할 수 없다.
+        //   그래서 이런 생성자로는 객체를 생성할 수 없다.
+        //   이런 생성자인지 검사한다. 
         for (Class paramType : paramTypes) {
-            for (Class defaultType :defaultTypes) {
+            for (Class defaultType : defaultTypes) {
                 if (paramType == defaultType)
                     return true;
             }
@@ -158,14 +158,15 @@ public class ApplicationContext {
     public Object getBean(String name) {
         return objPool.get(name);
     }
-
-    public void print() {
-        
-    }
-    
 }
 
-// ver 23 - 클래스 정의
+//ver 23 - 클래스 정의
+
+
+
+
+
+
 
 
 

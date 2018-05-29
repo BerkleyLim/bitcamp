@@ -1,3 +1,4 @@
+// 실제 커넥션 객체를 대행하는 역할을 수행한다.
 package bitcamp.java106.pms.jdbc;
 
 import java.sql.Array;
@@ -19,9 +20,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-// => proxy()를 만든 이유?
-// => close() 호출할 때 DB 연결을 끊는 대신 DataSource에 커넥션을 반납을 위해
-public class ConnectionProxy implements Connection{
+// proxy를 만든 이유?
+// => close()를 호출할 때 DB 연결을 끊는 대신,
+//    DataSource에 커넥션을 반납하기 위해!
+public class ConnectionProxy implements Connection {
     DataSource dataSource;
     Connection con;
     
@@ -251,5 +253,14 @@ public class ConnectionProxy implements Connection{
     }
   
     
-    
 }
+
+
+
+
+
+
+
+
+
+

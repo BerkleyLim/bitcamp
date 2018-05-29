@@ -13,6 +13,7 @@ import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
 import bitcamp.java106.pms.dao.MemberDao;
+import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.dao.TeamMemberDao;
 import bitcamp.java106.pms.domain.Member;
@@ -20,7 +21,9 @@ import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
 public class App {
+    
     static ApplicationContext iocContainer;
+    
     static Scanner keyScan = new Scanner(System.in);
     public static String option = null; 
     
@@ -40,15 +43,16 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
+        
         // 기본 객체 준비
-        HashMap<String, Object> defaultBeans = new HashMap<>();
+        HashMap<String,Object> defaultBeans = new HashMap<>();
         defaultBeans.put("java.util.Scanner", keyScan);
         
         // 기본 객체와 함께 @Component가 붙은 클래스의 객체를 준비한다.
         iocContainer = new ApplicationContext(
                 "bitcamp.java106.pms", defaultBeans);
         
-        // 테스트용 데이터를 준비하도록 다음 메서드를 호출한다.
+        // 테스트용 데이터를 준비한다. 
         prepareMemberData();
         prepareTeamData();
         
@@ -64,31 +68,28 @@ public class App {
                 option = null;
             }
             
-
             if (menu.equals("quit")) {
                 onQuit();
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
             } else {
-
-                    int slashIndex = menu.lastIndexOf("/");
-                    String controllerKey = (slashIndex < 0) ?
-                            menu : menu.substring(0, slashIndex);
-                    Controller controller = (Controller) iocContainer.getBean(controllerKey);
+                int slashIndex = menu.lastIndexOf("/");
+                String controllerKey = (slashIndex < 0) ? 
+                        menu : menu.substring(0, slashIndex);
                 
-                    if (controller != null) { // 요기서 색인 하기
-                        controller.service(menu, option);
-                    } else {
-                        System.out.println("명령어가 올바르지 않습니다!");
-                    }
+                Controller controller = (Controller) iocContainer.getBean(controllerKey);
+                
+                if (controller != null) {
+                    controller.service(menu, option);
+                } else {
+                    System.out.println("명령어가 올바르지 않습니다.");
+                }
+            }
 
-            } 
             System.out.println(); 
         }
     }
-    
-    
     static void prepareMemberData() {
         MemberDao memberDao = (MemberDao) iocContainer.getBean(
                 "bitcamp.java106.pms.dao.MemberDao");
@@ -130,9 +131,9 @@ public class App {
     }
     
     static void prepareTeamData() {
+        
         TeamDao teamDao = (TeamDao) iocContainer.getBean(
                 "bitcamp.java106.pms.dao.TeamDao");
-        
         TeamMemberDao teamMemberDao = (TeamMemberDao) iocContainer.getBean(
                 "bitcamp.java106.pms.dao.TeamMemberDao");
         
@@ -140,7 +141,7 @@ public class App {
         team.setName("t1");
         team.setMaxQty(5);
         team.setStartDate(Date.valueOf("2018-1-1"));
-        team.setEndDate(Date.valueOf("2018-5-31"));
+        team.setEndDate(Date.valueOf("2018-5-30"));
         teamDao.insert(team);
         teamMemberDao.addMember("t1", "aaa");
         teamMemberDao.addMember("t1", "bbb");
@@ -151,13 +152,20 @@ public class App {
         team.setMaxQty(5);
         team.setStartDate(Date.valueOf("2018-2-1"));
         team.setEndDate(Date.valueOf("2018-6-30"));
+        teamDao.insert(team);
         teamMemberDao.addMember("t2", "ccc");
         teamMemberDao.addMember("t2", "ddd");
         teamMemberDao.addMember("t2", "eee");
-        teamDao.insert(team);
+        
     }
 }
 
-// ver 17 - Task 관리 기능 추가
+//ver 17 - Task 관리 기능 추가
 // ver 15 - TeamDao와 MemberDao 객체 생성. 
 //          팀 멤버를 다루는 메뉴 추가.
+
+
+
+
+
+

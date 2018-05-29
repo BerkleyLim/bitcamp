@@ -15,42 +15,31 @@ import bitcamp.java106.pms.domain.Task;
 import bitcamp.java106.pms.domain.Team;
 
 @Component
-public class TaskDao{
-    public int insert(Task task) throws Exception {
+public class TaskDao {
+    public int delete(int no) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "insert into pms_task(tano,titl,sdt,edt,mid)"
-                    + " values(?,?,?,?,?)")) {
+                "delete from pms_task where tano=?");) {
             
-            stmt.setString(1, task.getTitle());
-            stmt.setDate(2, task.getStartDate(), 
-                    Calendar.getInstance(Locale.KOREA));
-            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREA));
-            stmt.setString(4, task.getWorker().getId());
-            stmt.setString(5, task.getTeam().getName());
+            stmt.setInt(1, no);
             return stmt.executeUpdate();
-        }
+        } 
     }
     
     public List<Task> selectList(String teamName) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "select tnao,titl,std,edt,stat from pms_task where tnm=?")){
+                "select tano,titl,sdt,edt,stat,mid from pms_task where tnm=?");) {
             
-            stmt.setString(1, teamName);
-
+            stmt.setString(1, teamName);    
             try (ResultSet rs = stmt.executeQuery()) {
                 ArrayList<Task> arr = new ArrayList<>();
                 while (rs.next()) {
@@ -60,48 +49,38 @@ public class TaskDao{
                     task.setStartDate(rs.getDate("sdt"));
                     task.setEndDate(rs.getDate("edt"));
                     task.setState(rs.getInt("stat"));
+                    task.setWorker(new Member().setId(rs.getString("mid")));
                     arr.add(task);
                 }
                 return arr;
-                
             }
         }
     }
-    
-    public Task selectOne(int no) throws Exception {
+
+    public int insert(Task task) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "select tano,titl,sdt,edt,stat,mid,tnm from "
-                    + "pms_task where tano=?")){
+                "insert into pms_task(titl,sdt,edt,mid,tnm) values(?,?,?,?,?)");) {
             
-            stmt.setInt(1, no);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                Task task = new Task();
-                task.setNo(no);
-                task.setTitle(rs.getString("titl"));
-                task.setStartDate(rs.getDate("sdt"));
-                task.setEndDate(rs.getDate("edt"));
-                task.setState(rs.getInt("stat"));
-                task.setWorker(new Member().setId(rs.getString("mid")));
-                task.setTeam(new Team().setName(rs.getString("tnm")));
-                return task;
-            }
+            stmt.setString(1, task.getTitle());
+            stmt.setDate(2, task.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setString(4, task.getWorker().getId());
+            stmt.setString(5, task.getTeam().getName());
+            return stmt.executeUpdate();
         }
     }
-    
+
     public int update(Task task) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
-                "bitcamp", "1111");
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
                 "update pms_task set titl=?,sdt=?,edt=?,mid=?,tnm=? where tano=?");) {
             
@@ -114,48 +93,51 @@ public class TaskDao{
             return stmt.executeUpdate();
         }
     }
-    
-    public int delete(int no) throws Exception {
+
+    public Task selectOne(int no) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "delete from pms_task whrer tano=?")){
-            stmt.setInt(1, no);
-            return stmt.executeUpdate();
+                "select titl,sdt,edt,stat,mid,tnm from pms_task where tano=?");) {
             
-        } catch (Exception e) {
-            // System.out.println("오류!");
-            // 로그 파일에 기록을 남긴다.
-            throw e;
-        }
+            stmt.setInt(1, no);
+            
+            try (ResultSet rs = stmt.executeQuery();) {
+                if (!rs.next()) 
+                    return null;
+                
+                Task task = new Task();
+                task.setNo(no);
+                task.setTitle(rs.getString("titl"));
+                task.setStartDate(rs.getDate("sdt"));
+                task.setEndDate(rs.getDate("edt"));
+                task.setState(rs.getInt("stat"));
+                task.setWorker(new Member().setId(rs.getString("mid")));
+                task.setTeam(new Team().setName(rs.getString("tnm")));
+                return task;
+            }
+        }  
     }
-    
-    
-    // 요기는 메소드 필요한 것만 따로 추가
+
     public int updateState(int no, int state) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
-                PreparedStatement stmt = con.prepareStatement(
-                        "update pms_task set stat=? where tano=?");) {
-                    
-                    stmt.setInt(1, state);
-                    stmt.setInt(2, no);
-                    return stmt.executeUpdate();
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
+            PreparedStatement stmt = con.prepareStatement(
+                "update pms_task set stat=? where tano=?");) {
             
+            stmt.setInt(1, state);
+            stmt.setInt(2, no);
+            return stmt.executeUpdate();
         }
     }
 }
 
+//ver 31 - JDBC API 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 22 - 추상 클래스 AbstractDao를 상속 받는다.

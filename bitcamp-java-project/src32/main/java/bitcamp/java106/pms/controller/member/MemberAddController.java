@@ -2,12 +2,10 @@
 package bitcamp.java106.pms.controller.member;
 
 import java.io.PrintWriter;
-import java.sql.Date;
 
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.controller.Controller;
 import bitcamp.java106.pms.dao.MemberDao;
-import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.server.ServerRequest;
 import bitcamp.java106.pms.server.ServerResponse;
@@ -40,6 +38,7 @@ public class MemberAddController implements Controller {
 
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - MemberController에서 add() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

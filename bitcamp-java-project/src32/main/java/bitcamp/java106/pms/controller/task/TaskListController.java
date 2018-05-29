@@ -37,7 +37,6 @@ public class TaskListController implements Controller {
             }
             
             List<Task> list = taskDao.selectList(team.getName());
-            
             for (Task task : list) {
                 out.printf("%d,%s,%s,%s,%s\n", 
                         task.getNo(), task.getTitle(), 
@@ -47,13 +46,13 @@ public class TaskListController implements Controller {
             }
         } catch (Exception e) {
             out.println("목록 가져오기 실패!");
-            e.printStackTrace();
+            e.printStackTrace(out);
         }
-        
     }
 
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - TaskController에서 list() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

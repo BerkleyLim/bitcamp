@@ -25,19 +25,20 @@ public class TeamListController implements Controller {
         PrintWriter out = response.getWriter();
         
         try {
-            List<Team> list = teamDao.list();
+            List<Team> list = teamDao.selectList();
             for (Team team : list) {
                 out.printf("%s, %d, %s ~ %s\n", 
                         team.getName(), team.getMaxQty(), 
                         team.getStartDate(), team.getEndDate());
             }
         } catch (Exception e) {
-            System.out.println("조회 실패!");
-            e.printStackTrace();
+            out.println("목록 가져오기 실패!");
+            e.printStackTrace(out);
         }
     }
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - TeamController에서 list() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

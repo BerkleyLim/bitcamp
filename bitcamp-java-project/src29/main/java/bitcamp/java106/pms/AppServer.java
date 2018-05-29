@@ -20,15 +20,11 @@ import bitcamp.java106.pms.server.ServerResponse;
 
 public class AppServer {
     
-   
     HTTPServer httpServer;
     ApplicationContainer applicationContainer;
     
-    AppServer(int port) throws Exception {
+    public AppServer(int port) throws Exception {
         // 서버에서 작업하는데 필요한 객체를 준비한다.
-        // => 컨트롤러, DAO 등 클라이언트 요청을 처리하는 객체를 자동 생성한다.
-        //iocContainer = new ApplicationContext("bitcamp.java106.pms");
-       
         // => 클라이언트 요청을 처리할 객체를 준비한다.
         applicationContainer = new DefaultApplicationContainer();
         
@@ -44,10 +40,10 @@ public class AppServer {
         AppServer appServer = new AppServer(8888);
         appServer.service();
     }
-
+    
+    /*
     void onQuit() {
         System.out.println("안녕히 가세요!");
-        /*
         BoardDao boardDao = (BoardDao) iocContainer.getBean(BoardDao.class);
         ClassroomDao classroomDao = (ClassroomDao) iocContainer.getBean(ClassroomDao.class);
         MemberDao memberDao = (MemberDao) iocContainer.getBean(MemberDao.class);
@@ -74,8 +70,8 @@ public class AppServer {
         
         try {teamMemberDao.save();} 
         catch (Exception e) { System.out.println("팀멤버 데이터 저장 중 오류 발생!");}
-         */
     }
+     */
 
 }
 

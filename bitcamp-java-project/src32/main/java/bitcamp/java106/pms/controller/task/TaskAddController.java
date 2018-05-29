@@ -45,7 +45,7 @@ public class TaskAddController implements Controller {
         try {
             Team team = teamDao.selectOne(task.getTeam().getName());
             if (team == null) {
-                out.printf("'%s' 팀은 존재하지 않습니다.\n",task.getTeam().getName());
+                out.printf("'%s' 팀은 존재하지 않습니다.\n", task.getTeam().getName());
                 return;
             }
             
@@ -59,12 +59,13 @@ public class TaskAddController implements Controller {
             out.println("등록 성공!");
         } catch (Exception e) {
             out.println("등록 실패!");
-            e.printStackTrace();
+            e.printStackTrace(out);
         }
     }
 
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - TaskController에서 add() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

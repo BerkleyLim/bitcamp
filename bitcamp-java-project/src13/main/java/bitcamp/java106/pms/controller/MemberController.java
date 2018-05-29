@@ -1,159 +1,135 @@
+// 이 클래스는 회원 관련 기능을 모두 둔 클래스이다.
 package bitcamp.java106.pms.controller;
 
-import java.util.Scanner;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.util.Console;
+import java.util.Scanner;
 
 public class MemberController {
     // 이 클래스를 사용하려면 keyboard 스캐너가 있어야 한다.
     // 이 클래스를 사용하기 전에 스캐너를 설정하라!
-    private Scanner keyScan;
+    Scanner keyScan;
 
-    private Member[] members = new Member[1000];
-    private static int memberCount = 0;  // 맴버 입력 횟수
+    Member[] members = new Member[1000];
+    int memberIndex = 0;
     
-    public MemberController(Scanner keyScan) {
-        this.keyScan = keyScan;
+    public MemberController(Scanner scanner) {
+        this.keyScan = scanner;
     }
 
     public void service(String menu, String option) {
-        if (menu.equals("member/add")
-                        && option == null) { // 7) 회원 생성 명령어
+        if (menu.equals("member/add")) {
             this.onMemberAdd();
-        } else if(menu.equals("member/list")
-                        && option == null) { // 8) 회원 정보 간단 출력
+        } else if (menu.equals("member/list")) {
             this.onMemberList();
-        } else if(menu.equals("member/view")) { // 9) 해당 회원 상세정보 출력
-            this.onMemberView(option);
-        } else if(menu.equals("member/update")) { // 12) 회원 정보 수정
-            this.onMemberUpdate(option);
-        } else if(menu.equals("member/delete")) { // 12) 회원 정보 삭제
-            this.onMemberDelete(option);
+        } else if (menu.equals("member/view")) {
+            this.onMemberView(option);                
+        } else if (menu.equals("member/update")) {
+            this.onMemberUpdate(option);                
+        } else if (menu.equals("member/delete")) {
+            this.onMemberDelete(option);                
         } else {
             System.out.println("명령어가 올바르지 않습니다.");
         }
     }
 
-    private int getMemberIndex(String id) {
-        for(int i = 0; i < memberCount; i++) {
-            if(this.members[i] == null) continue;
-            if(id.equals(this.members[i].getID().toLowerCase())) {
+    int getMemberIndex(String id) {
+        for (int i = 0; i < this.memberIndex; i++) {
+            if (this.members[i] == null) continue;
+            if (id.equals(this.members[i].id.toLowerCase())) {
                 return i;
             }
         }
         return -1;
     }
 
-
-    // 회원 추가
-    private void onMemberAdd() {
-        String id, email, passWord; // 임시 변수 지정
+    void onMemberAdd() {
+        System.out.println("[회원 정보 입력]");
+        Member member = new Member();
         
         System.out.print("아이디? ");
-        id = keyScan.nextLine();
+        member.id = this.keyScan.nextLine();
 
         System.out.print("이메일? ");
-        email = keyScan.nextLine();
+        member.email = this.keyScan.nextLine();
 
         System.out.print("암호? ");
-        passWord = keyScan.nextLine();
+        member.password = this.keyScan.nextLine();
 
-        // 또 다른 임시 객체 생성
-        Member member = new Member(id, email, passWord); 
-
-        // 임시 객체에 저장 한 것을 월래 배열에 저장
-        this.members[memberCount++] = member;  
-        // 월래 팀에 저장할 클래스 배열에 저장
+        // 회원 정보가 담겨있는 객체의 주소를 배열에 보관한다.
+        this.members[this.memberIndex++] = member;
     }
 
-    // 회원 정보 조회
-    private void onMemberList() {
-        for(int i =0; i < memberCount; i++) {
-            if (members[i] == null) continue;
-            System.out.println(members[i].getID() + ", "
-             + members[i].getEmail() + ", " + members[i].getPassWord());
+    void onMemberList() {
+        System.out.println("[회원 목록]");
+        for (int i = 0; i < this.memberIndex; i++) {
+            if (this.members[i] == null) continue;
+            System.out.printf("%s, %s, %s\n", 
+                    this.members[i].id, this.members[i].email, this.members[i].password);
         }
     }
 
-    // 해당 회원 상세조회
-    private void onMemberView(String name) {
-        // team/view만 입력한 경우
-        if(name == null) {
-            System.out.println("아이디를 입력하세요.");
-            System.out.println();
+    void onMemberView(String id) {
+        System.out.println("[회원 정보 조회]");
+        if (id == null) {
+            System.out.println("아이디를 입력하시기 바랍니다.");
             return;
         }
-
-    
-        int i = this.getMemberIndex(name);
         
-        if(i == -1) {
-            System.out.println("해당 이름을 갖는 아이디가 없습니다.");
+        int i = this.getMemberIndex(id);
+
+        if (i == -1) {
+            System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
-            Member member = members[i];
-            System.out.println("아이디 : " + member.getID());
-            System.out.println("이메일 : " 
-                        + member.getEmail());
-            System.out.println("암호 : " 
-                        + member.getPassWord());
-            System.out.println();
+            Member member = this.members[i];
+            System.out.printf("아이디: %s\n", member.id);
+            System.out.printf("이메일: %s\n", member.email);
+            System.out.printf("암호: %s\n", member.password);
         }
     }
 
-    // 회원 정보 수정
-    private void onMemberUpdate(String name) {
-        // 회원명을 입력하지 않았을 때,
-        if(name == null) {
-            System.out.println("회원명을 입력하세요.");
+    void onMemberUpdate(String id) {
+        System.out.println("[회원 정보 변경]");
+        if (id == null) {
+            System.out.println("아이디를 입력하시기 바랍니다.");
             return;
         }
+        
+        int i = this.getMemberIndex(id);
 
-        int i = this.getMemberIndex(name);
-
-        if(i == memberCount) {
-            System.out.println("해당 회원이 없습니다.");
+        if (i == -1) {
+            System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
-            String id, email, passWord;
-            System.out.printf("아이디(%s)? ", members[i].getID());
-            id = this.keyScan.nextLine();
-            
-            System.out.printf("이메일(%s)? ", members[i].getEmail());
-            email = this.keyScan.nextLine();
-            
-            System.out.printf("암호(%s)? ", members[i].getPassWord());
-            passWord = this.keyScan.nextLine();
-
-            // member 임시 객체 만들어서 최종적으로 원 members에 저장
-            // try ~ catch문 사용하고, 유지보수를 위해 만든다.
-            Member member = new Member(id, email, passWord);
-            
-            members[i] = member;
-
+            Member member = this.members[i];
+            Member updateMember = new Member();
+            System.out.printf("아이디(%s)? ", member.id);
+            updateMember.id = this.keyScan.nextLine();
+            System.out.printf("이메일(%s)? ", member.email);
+            updateMember.email = this.keyScan.nextLine();
+            System.out.printf("암호? ");
+            updateMember.password = this.keyScan.nextLine();
+            this.members[i] = updateMember;
             System.out.println("변경하였습니다.");
-            return;
         }
     }
 
-    // 회원 정보 삭제
-    private void onMemberDelete(String name) {
-        if(name == null) {
-            System.out.println("아이디를 입력하세요.");
+    void onMemberDelete(String id) {
+        System.out.println("[회원 정보 삭제]");
+        if (id == null) {
+            System.out.println("아이디를 입력하시기 바랍니다.");
             return;
         }
+        
+        int i = this.getMemberIndex(id);
 
-        int i = getMemberIndex(name);
-
-        if(i == -1) {
-            System.out.println("해당 아이디가 없습니다.");
+        if (i == -1) {
+            System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
-            if(Console.confirm("정말 삭제하시겠습니까?")) {
-                memberCount--;
-                while(i < memberCount) {
-                    members[i] = members[i+1];
-                    i++;
-                }
-                members[memberCount+1] = new Member();
+            if (Console.confirm("정말 삭제하시겠습니까?")) {
+                this.members[i] = null;
+                System.out.println("삭제하였습니다.");
             }
         }
-    } 
+    }
+    
 }

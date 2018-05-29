@@ -22,22 +22,23 @@ public class ClassroomListController implements Controller {
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
+        
         try {
-            List<Classroom> list = classroomDao.list();
+            List<Classroom> list = classroomDao.selectList();
             for (Classroom classroom : list) {
                 out.printf("%d, %s, %s ~ %s, %s\n",
-                        classroom.getNo(), classroom.getTitle(), 
-                        classroom.getStartDate(), classroom.getEndDate(),
-                        classroom.getRoom());
+                    classroom.getNo(), classroom.getTitle(), 
+                    classroom.getStartDate(), classroom.getEndDate(),
+                    classroom.getRoom());
             }
         } catch (Exception e) {
             out.println("목록 가져오기 실패!");
             e.printStackTrace(out);
         }
-        
     }
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - ClassroomController에서 list() 메서드를 추출하여 클래스로 정의.
 

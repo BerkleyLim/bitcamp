@@ -58,7 +58,7 @@ public class TeamMemberController {
             return;
         }
         
-        if (teamMemberDao.isExist(teamName,memberId)) {
+        if (teamMemberDao.isExist(teamName, memberId)) {
             System.out.println("이미 등록된 회원입니다.");
             return;
         }
@@ -83,8 +83,8 @@ public class TeamMemberController {
         
         String[] members = teamMemberDao.getMembers(teamName);
         
-        for (String list : members) {
-            System.out.printf("%s, ", list);
+        for (int i = 0; i < members.length; i++) {
+            System.out.printf("%s, ", members[i]);
         }
         System.out.println();
     }
@@ -116,8 +116,9 @@ public class TeamMemberController {
     }
 }
 
-// ver 17 - TeamMemberDao 클래스를 사용하여 팀 멤버의 ID를 관리한다.
-// ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
+//ver 18 - ArrayList가 적용된 TeamMemberDao를 사용한다.
+//ver 17 - TeamMemberDao 클래스를 사용하여 팀 멤버의 아이디를 관리한다.
+//ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
 // ver 15 - 팀 멤버를 등록, 조회, 삭제할 수 있는 기능 추가. 
 // ver 14 - TeamDao를 사용하여 팀 데이터를 관리한다.
 // ver 13 - 시작일, 종료일을 문자열로 입력 받아 Date 객체로 변환하여 저장.

@@ -5,23 +5,21 @@ import java.sql.Date;
 public class Task {
     public static final int READY = 0;
     public static final int WORKING = 1;
-
     public static final int COMPLETE = 9;
     
     private static int count = 1;
-    private int no;         // 내부적으로 쓰이는 작업번호(작업상태 조작 아님)
 
-
-    private String title;    // 작업명
-    private Date startDate;  // 시작일
-    private int state;       // 작업상태 -> 0: 작업대기, 1: 작업중, 9: 완료
-    private Date endDate;    // 종료일
-    private Member worker;   // Member
-    private Team team;       // Team
+    private int no;
+    private String title;
+    private Date startDate;
+    private Date endDate;
+    private int state;
+    private Member worker;
+    private Team team;
     
     public Task(Team team) {
-        this.team = team;
         this.no = count++;
+        this.team = team;
     }
     
     public Task(Team team, String title, Date startDate, Date endDate) {
@@ -32,15 +30,17 @@ public class Task {
         this.state = READY;
     }
     
-    // 
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
+    }
     public int getState() {
         return state;
     }
     public void setState(int state) {
         this.state = state;
-    }
-    public String getTitle() {
-        return title;
     }
     public Member getWorker() {
         return worker;
@@ -53,6 +53,9 @@ public class Task {
     }
     public void setTeam(Team team) {
         this.team = team;
+    }
+    public String getTitle() {
+        return title;
     }
     public void setTitle(String title) {
         this.title = title;
@@ -69,21 +72,16 @@ public class Task {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
-    public int getNo() {
-        return no;
-    }
-
-    public void setNo(int no) {
-        this.no = no;
-    }
 
     @Override
     public String toString() {
-        return "Task [title=" + title + ", startDate=" + startDate + ", state=" + state + ", endDate=" + endDate
+        return "Task [title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", state=" + state
                 + ", worker=" + worker + ", team=" + team + "]";
     }
-    
 }
 
-// ver17 - 사용자 정의 데이터 타입 생성
+//ver 17 - 사용자 정의 데이터 타입 생성
+
+
+
+

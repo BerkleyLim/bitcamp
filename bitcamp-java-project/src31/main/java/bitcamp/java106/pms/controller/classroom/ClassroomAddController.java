@@ -21,14 +21,13 @@ public class ClassroomAddController implements Controller {
     
     @Override
     public void service(ServerRequest request, ServerResponse response) {
-        PrintWriter out = response.getWriter();
-
         Classroom classroom = new Classroom();
         classroom.setTitle(request.getParameter("title"));
         classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
         classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
         classroom.setRoom(request.getParameter("room"));
         
+        PrintWriter out = response.getWriter();
         try {
             classroomDao.insert(classroom);
             out.println("등록 성공!");
@@ -39,5 +38,6 @@ public class ClassroomAddController implements Controller {
     }
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - ClassroomController에서 add() 메서드를 추출하여 클래스로 정의.

@@ -59,8 +59,8 @@ public class TeamController {
 
     void onTeamList() {
         System.out.println("[팀 목록]");
-        Team[] list = teamDao.list();
-        for (Team team : list) {
+        Team[] teams = teamDao.list();
+        for (Team team : teams) {
             System.out.printf("%s, %d, %s ~ %s\n", 
                     team.getName(), team.getMaxQty(), 
                     team.getStartDate(), team.getEndDate());
@@ -101,7 +101,7 @@ public class TeamController {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
             Team updateTeam = new Team();
-            System.out.printf("팀명(%s)? \n", team.getName());
+            System.out.printf("팀명 : %s\n", team.getName());
             updateTeam.setName(team.getName());
             System.out.printf("설명(%s)? ", team.getDescription());
             updateTeam.setDescription(this.keyScan.nextLine());
@@ -139,8 +139,8 @@ public class TeamController {
     
 }
 
-// ver 18 - ArrayList 클래스를적용하여 객체(의 주소) 목록을 관리한다.
-// ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
+//ver 18 - ArrayList가 적용된 TeamDao를 사용한다.
+//ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
 // ver 15 - TeamDao를 생성자에서 주입 받도록 변경.
 // ver 14 - TeamDao를 사용하여 팀 데이터를 관리한다.
 // ver 13 - 시작일, 종료일을 문자열로 입력 받아 Date 객체로 변환하여 저장.

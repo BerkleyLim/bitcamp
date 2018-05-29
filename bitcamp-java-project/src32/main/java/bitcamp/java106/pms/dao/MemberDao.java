@@ -1,53 +1,40 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.jdbc.DataSource;
-import bitcamp.java106.pms.domain.Member;
 
 @Component
 public class MemberDao {
-    
+
     DataSource dataSource;
     
     public MemberDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+        
     public int delete(String id) throws Exception {
-        try(
+        try (
             Connection con = dataSource.getConnection();
             PreparedStatement stmt = con.prepareStatement(
-                    "delete from pms_member where bno=?");) {
+                "delete from pms_member where mid=?");) {
+            
             stmt.setString(1, id);
             return stmt.executeUpdate();
-        }
-        
+        } 
     }
     
     public List<Member> selectList() throws Exception {
-        try(
+        try (
             Connection con = dataSource.getConnection();
-            // 당장 select 할 때 파라미터 값을 넣지 않는다 하더라도,
-            // 나중에 넣을 것을 대비해서 그냥 PreparedStatement를 사용하라!
             PreparedStatement stmt = con.prepareStatement(
-                    "select mid,email,pwd from pms_member");
-            
-            // SQL 실행할 때는 파라미터로 SQL문을 넘겨주지 않는다.
+                "select mid, email from pms_member");
             ResultSet rs = stmt.executeQuery();) {
             
             ArrayList<Member> arr = new ArrayList<>();
@@ -55,75 +42,62 @@ public class MemberDao {
                 Member member = new Member();
                 member.setId(rs.getString("mid"));
                 member.setEmail(rs.getString("email"));
-                member.setPassword(rs.getString("pwd"));
                 arr.add(member);
-            } 
+            }
             return arr;
         }
     }
-    
-    public int insert(Member member) throws Exception {
-        try(
-            Connection con = dataSource.getConnection();
-            
-            // 값이 들어갈 자리에 in-parameter(?)를 지정한다.
-            // => 데이터 타입에 상관없이 ?를 넣는다.
-            PreparedStatement stmt = con.prepareStatement(
-                    "insert into pms_member(mid,email,pwd) values(?,?,?)");) {
 
-            // in-parameter에 값을 설정한다.
-            // => 설정하는 순서는 상관없다. 하지만 유지보수를 위해 순서대로 나열하라.
+    public int insert(Member member) throws Exception {
+        try (
+            Connection con = dataSource.getConnection();
+            PreparedStatement stmt = con.prepareStatement(
+                "insert into pms_member(mid,email,pwd) values(?,?,sha2(?,224))");) {
+            
             stmt.setString(1, member.getId());
             stmt.setString(2, member.getEmail());
             stmt.setString(3, member.getPassword());
-            
+        
             return stmt.executeUpdate();
         }
-        
-
     }
 
     public int update(Member member) throws Exception {
-        try(
+        try (
             Connection con = dataSource.getConnection();
-            
             PreparedStatement stmt = con.prepareStatement(
-                    "update pms_member set mid=?, email=?, "
-                    + "pwd=now() where mid=?");) {
+                "update pms_member set email=?, pwd=sha2(?,224) where mid=?");) {
             
-            stmt.setString(1, member.getId());
-            stmt.setString(2, member.getEmail());
-            stmt.setString(3, member.getPassword());
-            stmt.setString(4, member.getId());
+            stmt.setString(1, member.getEmail());
+            stmt.setString(2, member.getPassword());
+            stmt.setString(3, member.getId());
             return stmt.executeUpdate();
         }
     }
 
     public Member selectOne(String id) throws Exception {
-        try(
+        try (
             Connection con = dataSource.getConnection();
-            
             PreparedStatement stmt = con.prepareStatement(
-                    "select mid,email,pwd from pms_member where mid=?");) {
-                
+                "select mid,email from pms_member where mid=?");) {
+            
             stmt.setString(1, id);
             
             try (ResultSet rs = stmt.executeQuery();) {
-                if (!rs.next())
+                if (!rs.next()) 
                     return null;
                 
                 Member member = new Member();
-                member.setId(rs.getString("mid"));
+                member.setId(id);
                 member.setEmail(rs.getString("email"));
-                member.setPassword(rs.getString("pwd"));
                 return member;
             }
-            
-        }
-    }
-    
+        }  
+    }    
 }
 
+//ver 32 - DB 커넥션 풀 적용
+//ver 31 - JDBC API 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 22 - 추상 클래스 AbstractDao를 상속 받는다.

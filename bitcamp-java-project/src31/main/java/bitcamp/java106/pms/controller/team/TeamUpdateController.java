@@ -27,24 +27,25 @@ public class TeamUpdateController implements Controller {
         Team team = new Team();
         team.setName(request.getParameter("name"));
         team.setDescription(request.getParameter("description"));
-        team.setMaxQty(Integer.valueOf(request.getParameter("maxQty")));
+        team.setMaxQty(Integer.parseInt(request.getParameter("maxQty")));
         team.setStartDate(Date.valueOf(request.getParameter("startDate")));
         team.setEndDate(Date.valueOf(request.getParameter("endDate")));
         
         try {
             int count = teamDao.update(team);
-            if (count == 0)
-                System.out.println("해당 팀 없음");
-            else
-                System.out.println("변경하였습니다.");
-        } catch (Exception e) {
-            System.out.println("변경 실패!");
-            e.printStackTrace();
+            if (count == 0) {
+                out.println("해당 이름의 팀이 없습니다.");
+            } else {
+                out.println("변경하였습니다.");
+            }
+        }  catch (Exception e) {
+            out.println("변경 실패!");
+            e.printStackTrace(out);
         }
-
     }
 }
 
+//ver 31 - JDBC API가 적용된 DAO 사용
 //ver 28 - 네트워크 버전으로 변경
 //ver 26 - TeamController에서 update() 메서드를 추출하여 클래스로 정의.
 //ver 23 - @Component 애노테이션을 붙인다.

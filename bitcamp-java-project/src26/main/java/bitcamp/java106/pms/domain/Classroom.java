@@ -5,11 +5,11 @@ import java.sql.Date;
 public class Classroom {
     private static int count;
     
-    private int no;            // 인덱스 번호
-    private String className;  // 수업명
-    private Date startDate;    // 시작일
-    private Date endDate;      // 종료일
-    private String classNumber;  // 교실번호
+    private int no;
+    private String title;
+    private Date startDate;
+    private Date endDate;
+    private String room;
     
     public Classroom() {
         this.no = ++count;
@@ -17,22 +17,25 @@ public class Classroom {
     
     @Override
     public String toString() {
-        return "Classroom [no=" + no + ", className=" + className + ", startDate=" + startDate + ", endDate=" + endDate
-                + ", classNumber=" + classNumber + "]";
+        return "Classroom [no=" + no + ", title=" + title + ", startDate=" + startDate + ", endDate=" + endDate
+                + ", room=" + room + "]";
     }
-
-    // 설정자 반환자
+    
     public int getNo() {
         return no;
     }
     public void setNo(int no) {
+        // 외부에서 입력 받은 번호가 count 보다 클 때는 count의 값을 증가시켜야 한다.
+        if (no >= count) {
+            count = no + 1;
+        }
         this.no = no;
     }
-    public String getClassName() {
-        return className;
+    public String getTitle() {
+        return title;
     }
-    public void setClassName(String className) {
-        this.className = className;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public Date getStartDate() {
         return startDate;
@@ -46,12 +49,14 @@ public class Classroom {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    public String getClassNumber() {
-        return classNumber;
+    public String getRoom() {
+        return room;
     }
-    public void setClassNumber(String classNumber) {
-        this.classNumber = classNumber;
+    public void setRoom(String room) {
+        this.room = room;
     }
     
     
 }
+
+//ver 24 - setNo() 변경 

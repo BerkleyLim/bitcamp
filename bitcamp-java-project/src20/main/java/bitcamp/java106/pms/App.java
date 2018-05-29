@@ -4,12 +4,11 @@ import java.sql.Date;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
-import bitcamp.java106.pms.controller.ClassRoomController;
+import bitcamp.java106.pms.controller.ClassroomController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
-import bitcamp.java106.pms.dao.ClassRoomDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
@@ -38,24 +37,27 @@ public class App {
     }
 
     public static void main(String[] args) {
-        // 클래스를 사용하기 전에 필수 값을 설정한다.
         
         TeamDao teamDao = new TeamDao();
         MemberDao memberDao = new MemberDao();
         TaskDao taskDao = new TaskDao();
         TeamMemberDao teamMemberDao = new TeamMemberDao();
-        ClassRoomDao  classRoomDao = new ClassRoomDao();
         
-        // 테스트용 데이터를 준비하도록 다음 메서드를 호출한다.
+        // 테스트용 데이터를 준비한다. 
         prepareMemberData(memberDao);
         prepareTeamData(teamDao, teamMemberDao);
         
         TeamController teamController = new TeamController(keyScan, teamDao);
-        TeamMemberController teamMemberController = new TeamMemberController(keyScan, teamDao, memberDao, teamMemberDao);
-        MemberController memberController = new MemberController(keyScan, memberDao);
+        TeamMemberController teamMemberController = new TeamMemberController(
+                keyScan, teamDao, memberDao, teamMemberDao);
+        MemberController memberController = new MemberController(
+                keyScan, memberDao);
         BoardController boardController = new BoardController(keyScan);
-        TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
-        ClassRoomController classRoomController = new ClassRoomController(keyScan, classRoomDao);
+        TaskController taskController = new TaskController(
+                keyScan, teamDao, taskDao, teamMemberDao, memberDao);
+        ClassroomController classroomController = new ClassroomController(
+                keyScan);
+        
         Console.keyScan = keyScan;
 
         while (true) {
@@ -83,8 +85,8 @@ public class App {
                 boardController.service(menu, option);
             } else if (menu.startsWith("task/")) {
                 taskController.service(menu, option);
-            } else if (menu.startsWith("classroom/")){
-                classRoomController.service(menu, option);
+            } else if (menu.startsWith("classroom/")) {
+                classroomController.service(menu, option);
             } else {
                 System.out.println("명령어가 올바르지 않습니다.");
             }
@@ -92,8 +94,6 @@ public class App {
             System.out.println(); 
         }
     }
-    
-    
     static void prepareMemberData(MemberDao memberDao) {
         Member member = new Member();
         member.setId("aaa");
@@ -138,7 +138,7 @@ public class App {
         team.setName("t1");
         team.setMaxQty(5);
         team.setStartDate(Date.valueOf("2018-1-1"));
-        team.setEndDate(Date.valueOf("2018-5-31"));
+        team.setEndDate(Date.valueOf("2018-5-30"));
         teamDao.insert(team);
         teamMemberDao.addMember("t1", "aaa");
         teamMemberDao.addMember("t1", "bbb");
@@ -149,13 +149,20 @@ public class App {
         team.setMaxQty(5);
         team.setStartDate(Date.valueOf("2018-2-1"));
         team.setEndDate(Date.valueOf("2018-6-30"));
+        teamDao.insert(team);
         teamMemberDao.addMember("t2", "ccc");
         teamMemberDao.addMember("t2", "ddd");
         teamMemberDao.addMember("t2", "eee");
-        teamDao.insert(team);
+        
     }
 }
 
-// ver 17 - Task 관리 기능 추가
+//ver 17 - Task 관리 기능 추가
 // ver 15 - TeamDao와 MemberDao 객체 생성. 
 //          팀 멤버를 다루는 메뉴 추가.
+
+
+
+
+
+

@@ -1,9 +1,13 @@
 # 변경 내역
-- annotation 패키지 생성
-- Component.java 추가
-- context 패키지 생성
-- ApplicationContext.java 추가
-- 모든 DAO와 컨트롤러에 @Component 애노테이션을 붙인다.
-- 컨트롤러 중에서 의존 객체를 자체적으로 만드는 경우,
-  외부에서 주의받도로 해야 한다.
+- BoardDao.java 변경
+- ClassroomDao.java 변경
+- MemberDao.java 변경
+- TaskDao.java 변경
+- TeamDao.java 변경
+- TeamMemberDao.java 변경
+- Board.java 변경
+- Classroom.java 변경
+- Member.java 변경
+- Task.java 변경
+- Team.java 변경
 - App.java 변경

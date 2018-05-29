@@ -1,4 +1,5 @@
 # 변경 내역
-- ClassRoom.java 추가
-- ClassRoomDao.java 추가
-- ClassRoomCntroller.java 추가
+- Classroom.java 추가
+- ClassroomDao.java 추가
+- ClassroomController.java 추가
+- App.java 변경 

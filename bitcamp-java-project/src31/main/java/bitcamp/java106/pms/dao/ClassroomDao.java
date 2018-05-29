@@ -1,150 +1,121 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import bitcamp.java106.pms.annotation.Component;
-import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.domain.Classroom;
 
 @Component
 public class ClassroomDao {
     public int delete(int no) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        try(
-                Connection con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                        + "UTC&UseSSL=false",
-                        "bitcamp", "1111");
-                PreparedStatement stmt = con.prepareStatement(
-                        "delete from pms_classroom where cno=?");) {
+        try (
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
+            PreparedStatement stmt = con.prepareStatement(
+                "delete from pms_classroom where crno=?");) {
+            
             stmt.setInt(1, no);
             return stmt.executeUpdate();
-        }
-        
+        } 
     }
     
-    public List<Classroom> list() throws Exception {
+    public List<Classroom> selectList() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        try(
-            java.sql.Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
-            // 당장 select 할 때 파라미터 값을 넣지 않는다 하더라도,
-            // 나중에 넣을 것을 대비해서 그냥 PreparedStatement를 사용하라!
+        try (
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UCT&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "select cno,title,sdt,edt,room from pms_classroom");
-            
-            // SQL 실행할 때는 파라미터로 SQL문을 넘겨주지 않는다.
+                "select crno,titl,sdt,edt,room from pms_classroom");
             ResultSet rs = stmt.executeQuery();) {
             
             ArrayList<Classroom> arr = new ArrayList<>();
             while (rs.next()) {
                 Classroom classroom = new Classroom();
-                classroom.setNo(rs.getInt("cno"));
-                classroom.setTitle(rs.getString("title"));
+                classroom.setNo(rs.getInt("crno"));
+                classroom.setTitle(rs.getString("titl"));
                 classroom.setStartDate(rs.getDate("sdt"));
                 classroom.setEndDate(rs.getDate("edt"));
                 classroom.setRoom(rs.getString("room"));
                 arr.add(classroom);
-            } 
+            }
             return arr;
         }
     }
-    
+
     public int insert(Classroom classroom) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
-            
-            // 값이 들어갈 자리에 in-parameter(?)를 지정한다.
-            // => 데이터 타입에 상관없이 ?를 넣는다.
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "insert into pms_board(cno,title,sdt,edt,room)"
-                    + " values(?,?,?,?,?)");) {
-
-            // in-parameter에 값을 설정한다.
-            // => 설정하는 순서는 상관없다. 하지만 유지보수를 위해 순서대로 나열하라.
-            stmt.setInt(1, classroom.getNo());
-            stmt.setString(2, classroom.getTitle());
-            stmt.setDate(3, classroom.getStartDate(), Calendar.getInstance(Locale.KOREA));
-            stmt.setDate(4, classroom.getEndDate(), Calendar.getInstance(Locale.KOREA));
-            stmt.setString(5, classroom.getRoom());
+                "insert into pms_classroom(titl,sdt,edt,room) values(?,?,?,?)");) {
             
+            stmt.setString(1, classroom.getTitle());
+            stmt.setDate(2, classroom.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setDate(3, classroom.getEndDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setString(4, classroom.getRoom());
+        
             return stmt.executeUpdate();
         }
-        
-
     }
 
     public int update(Classroom classroom) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                            + "UTC&UseSSL=false",
-                            "bitcamp", "1111");
-            
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "update pms_board set title=?, sdt=?, "
-                    + "edt=? room=? where cno=?");) {
+                "update pms_classroom set titl=?, sdt=?, edt=?, room=? where crno=?");) {
             
             stmt.setString(1, classroom.getTitle());
-            stmt.setDate(2, classroom.getStartDate(), Calendar.getInstance(Locale.KOREA));
-            stmt.setDate(3, classroom.getEndDate(), Calendar.getInstance(Locale.KOREA));
+            stmt.setDate(2, classroom.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setDate(3, classroom.getEndDate(), Calendar.getInstance(Locale.KOREAN));
             stmt.setString(4, classroom.getRoom());
+            stmt.setInt(5, classroom.getNo());
             return stmt.executeUpdate();
         }
     }
 
     public Classroom selectOne(int no) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        try ( // 객체 생성 코드, 객체를 넣을 수 있는 변수만 가능
+        try (
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/java106db?serverTimezone="
-                    + "UTC&UseSSL=false",
-                    "bitcamp", "1111");
-            
+                "jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false",
+                "java106", "1111");
             PreparedStatement stmt = con.prepareStatement(
-                    "select cno,title,sdt,edt,room pms_classroom where cno=?");) {
-                
+                "select crno,titl,sdt,edt,room from pms_classroom where crno=?");) {
+            
             stmt.setInt(1, no);
             
             try (ResultSet rs = stmt.executeQuery();) {
-                if (!rs.next())
+                if (!rs.next()) 
                     return null;
                 
                 Classroom classroom = new Classroom();
-                classroom.setNo(rs.getInt("cno"));
-                classroom.setTitle(rs.getString("title"));
+                classroom.setNo(rs.getInt("crno"));
+                classroom.setTitle(rs.getString("titl"));
                 classroom.setStartDate(rs.getDate("sdt"));
                 classroom.setEndDate(rs.getDate("edt"));
                 classroom.setRoom(rs.getString("room"));
                 return classroom;
             }
-            
-        }
+        }  
     }
-
 }
 
+//ver 31 - JDBC API 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 22 - 추상 클래스 AbstractDao를 상속 받는다.
