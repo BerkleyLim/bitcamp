@@ -52,25 +52,22 @@ public class DispatcherServlet extends HttpServlet {
         //    필요한 공통 기능 처리한다.
         // => 클라이언트의 진입점이 한 군데라서 유지보수가 용이하다.
         
+        response.setContentType("text/html;charset=UTF-8");
+
         // 클라이언트가 요청한 서블릿의 경로를 알아내기
         String servletPath = request.getServletPath().replace(".do", "");
          
-        response.setContentType("text/html;charset=UTF-8");
-        
-        
-        // 클라이언트가 요청을 처리할 페이지 컨트롤러를 얻기
-        PageController pageController = (PageController) iocContainer.getBean(servletPath);
+        // 클라이언트 요청을 처리할 페이지 컨트롤러를 얻기
+        PageController pageController = (PageController)iocContainer.getBean(servletPath);
         
         // 페이지 컨트롤러 실행
         try {
             String viewUrl = pageController.service(request, response);
-            
             if (viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));
             } else {
                 request.getRequestDispatcher(viewUrl).include(request, response);
             }
-            
         } catch (Exception e) {
             throw new ServletException("페이지 컨트롤러 실행 중 오류 발생!");
         }

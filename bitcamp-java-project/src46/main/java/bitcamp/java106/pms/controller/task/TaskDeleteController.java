@@ -1,9 +1,7 @@
 package bitcamp.java106.pms.controller.task;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,22 +9,21 @@ import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.TaskDao;
-import bitcamp.java106.pms.dao.TeamDao;
 
 @Component("/task/delete")
 public class TaskDeleteController implements PageController {
     
-    TeamDao teamDao;
     TaskDao taskDao;
     
-    public TaskDeleteController(TeamDao teamDao, TaskDao taskDao) {
-        this.teamDao = teamDao;
+    public TaskDeleteController(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
+        
         String teamName = request.getParameter("teamName");
         
         int no = Integer.parseInt(request.getParameter("no"));
@@ -34,8 +31,7 @@ public class TaskDeleteController implements PageController {
         if (count == 0) {
             throw new Exception("해당 작업이 존재하지 않습니다.");
         }
-        return "redirect:list.do?teamName=" + 
-                        URLEncoder.encode(teamName, "UTF-8");
+        return "redirect:list.do?teamName=" + URLEncoder.encode(teamName, "UTF-8");
         // 응답 헤더의 값으로 한글을 포함할 때는 
         // 서블릿 컨테이너가 자동으로 URL 인코딩 하지 않는다.
         // 위와 같이 개발자가 직접 URL 인코딩 해야 한다.
@@ -43,6 +39,7 @@ public class TaskDeleteController implements PageController {
     
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 40 - CharacterEncodingFilter 필터 적용.

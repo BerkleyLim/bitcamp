@@ -24,14 +24,12 @@ public class BoardAddController implements PageController {
             HttpServletResponse response) throws Exception {
         
         Board board = new Board();
-        board.setNo(Integer.parseInt(request.getParameter("no")));
         board.setTitle(request.getParameter("title"));
         board.setContent(request.getParameter("content"));
-        
+
         boardDao.insert(board);
         return "redirect:list.do";
     }
-
 
 }
 

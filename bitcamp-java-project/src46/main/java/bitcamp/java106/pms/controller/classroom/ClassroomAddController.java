@@ -1,19 +1,15 @@
 package bitcamp.java106.pms.controller.classroom;
 
-import java.io.IOException;
 import java.sql.Date;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
-import bitcamp.java106.pms.support.WebApplicationContextUtils;
 
 @Component("/classroom/add")
 public class ClassroomAddController implements PageController {
@@ -25,8 +21,10 @@ public class ClassroomAddController implements PageController {
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
+        
         Classroom classroom = new Classroom();
         classroom.setTitle(request.getParameter("title"));
         classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
@@ -39,6 +37,7 @@ public class ClassroomAddController implements PageController {
     
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 40 - 필터 적용

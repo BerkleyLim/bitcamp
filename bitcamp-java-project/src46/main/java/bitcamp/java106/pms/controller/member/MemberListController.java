@@ -19,18 +19,19 @@ public class MemberListController implements PageController {
     public MemberListController(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
-
+    
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
-
+        
         List<Member> list = memberDao.selectList();
         request.setAttribute("list", list);
         return "/member/list.jsp";
-        
     }
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 39 - forward 적용

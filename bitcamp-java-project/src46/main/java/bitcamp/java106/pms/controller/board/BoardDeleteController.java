@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.BoardDao;
-import bitcamp.java106.pms.domain.Board;
 
 @Component("/board/delete")
 public class BoardDeleteController implements PageController {

@@ -19,13 +19,15 @@ public class TaskListController implements PageController {
     TeamDao teamDao;
     TaskDao taskDao;
     
-    public TaskListController(TeamDao teamDao, TaskDao taskDao) {
+    public TaskListController(TeamDao teamDao,
+            TaskDao taskDao) {
         this.teamDao = teamDao;
         this.taskDao = taskDao;
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
         
         String teamName = request.getParameter("teamName");
@@ -36,11 +38,12 @@ public class TaskListController implements PageController {
         }
         List<Task> list = taskDao.selectList(team.getName());
         request.setAttribute("list", list);
-        return "/task/list.jsp";
+        return  "/task/list.jsp";
     }
 
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 40 - CharacterEncodingFilter 필터 적용.

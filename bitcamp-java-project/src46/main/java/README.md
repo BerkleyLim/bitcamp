@@ -1,7 +1,6 @@
 # 변경 내역
-- DispatcherServlet 추가
+- 페이지 컨트롤러를 서블릿에서 POJO 클래스로 변경
+- DispatcherServlet 변경
 - web.xml 변경
-- 모든 서블릿 클래스 변경
-- JSP 페이지의 모든 링크에 *.do 붙이기
  
 

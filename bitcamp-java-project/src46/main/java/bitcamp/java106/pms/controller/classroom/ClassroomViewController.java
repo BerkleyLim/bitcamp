@@ -1,8 +1,5 @@
 package bitcamp.java106.pms.controller.classroom;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,8 +10,8 @@ import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
 
 @Component("/classroom/view")
-public class ClassroomViewController implements PageController{
-
+public class ClassroomViewController implements PageController {
+    
     ClassroomDao classroomDao;
     
     public ClassroomViewController(ClassroomDao classroomDao) {
@@ -22,11 +19,13 @@ public class ClassroomViewController implements PageController{
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
+     
         int no = Integer.parseInt(request.getParameter("no"));
         Classroom classroom = classroomDao.selectOne(no);
-        
+
         if (classroom == null) {
             throw new Exception("유효하지 않은 강의입니다.");
         }
@@ -35,6 +34,7 @@ public class ClassroomViewController implements PageController{
     }
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 39 - forward 적용

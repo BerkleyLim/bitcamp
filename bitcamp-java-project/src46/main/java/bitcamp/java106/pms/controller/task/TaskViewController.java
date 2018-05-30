@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.TaskDao;
-import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.dao.TeamMemberDao;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Task;
@@ -17,19 +16,19 @@ import bitcamp.java106.pms.domain.Task;
 @Component("/task/view")
 public class TaskViewController implements PageController {
     
-    TeamDao teamDao;
     TaskDao taskDao;
     TeamMemberDao teamMemberDao;
     
-    public TaskViewController(TeamDao teamDao, TaskDao taskDao,
-            TeamMemberDao teamMemberDao) {
-        this.teamDao = teamDao;
+    public TaskViewController(
+            TaskDao taskDao,
+            TeamMemberDao  teamMemberDao) {
         this.taskDao = taskDao;
         this.teamMemberDao = teamMemberDao;
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
         
         int no = Integer.parseInt(request.getParameter("no"));
@@ -48,6 +47,7 @@ public class TaskViewController implements PageController {
     }
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 39 - forward 적용

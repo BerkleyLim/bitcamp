@@ -1,19 +1,15 @@
 package bitcamp.java106.pms.controller.classroom;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
-import bitcamp.java106.pms.support.WebApplicationContextUtils;
 
 @Component("/classroom/list")
 public class ClassroomListController implements PageController {
@@ -25,15 +21,17 @@ public class ClassroomListController implements PageController {
     }
     
     @Override
-    public String service(HttpServletRequest request,
+    public String service(
+            HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
-        
+     
         List<Classroom> list = classroomDao.selectList();
         request.setAttribute("list", list);
         return "/classroom/list.jsp";
     }
 }
 
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 39 - forward 적용
