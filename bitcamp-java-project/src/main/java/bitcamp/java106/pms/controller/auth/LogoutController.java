@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
+import bitcamp.java106.pms.web.RequestMapping;
 
 @Component("/auth/logout")
-public class LogoutController implements PageController {
+public class LogoutController {
     
-    @Override
-    public String service(
+    @RequestMapping
+    public String logout(
             HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
         
@@ -23,7 +24,7 @@ public class LogoutController implements PageController {
         return "redirect:" + request.getContextPath(); // ==> "/java106-java-project"
     }
 }
-
+//ver 47 - 애노테이션을 적용하여 요청 핸들러 다루기
 //ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 41 - 클래스 추가

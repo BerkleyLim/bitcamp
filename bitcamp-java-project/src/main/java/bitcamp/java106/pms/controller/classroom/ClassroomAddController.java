@@ -14,9 +14,10 @@ import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
 import bitcamp.java106.pms.support.WebApplicationContextUtils;
+import bitcamp.java106.pms.web.RequestMapping;
 
 @Component("/classroom/add")
-public class ClassroomAddController implements PageController {
+public class ClassroomAddController {
     
     ClassroomDao classroomDao;
     
@@ -24,8 +25,8 @@ public class ClassroomAddController implements PageController {
         this.classroomDao = classroomDao;
     }
     
-    @Override
-    public String service(HttpServletRequest request,
+    @RequestMapping
+    public String add(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Classroom classroom = new Classroom();
         classroom.setTitle(request.getParameter("title"));
@@ -39,6 +40,8 @@ public class ClassroomAddController implements PageController {
     
 }
 
+//ver 47 - 애노테이션을 적용하여 요청 핸들러 다루기
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 40 - 필터 적용

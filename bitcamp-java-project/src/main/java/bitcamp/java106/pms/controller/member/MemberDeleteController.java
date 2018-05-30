@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.MemberDao;
+import bitcamp.java106.pms.web.RequestMapping;
 
 @Component("/member/delete")
-public class MemberDeleteController implements PageController {
+public class MemberDeleteController {
 
     MemberDao memberDao;
     
@@ -17,8 +18,8 @@ public class MemberDeleteController implements PageController {
         this.memberDao = memberDao;
     }
 
-    @Override
-    public String service(HttpServletRequest request,
+    @RequestMapping
+    public String delete(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         
         String id = request.getParameter("id");
@@ -32,6 +33,8 @@ public class MemberDeleteController implements PageController {
     
 }
 
+//ver 47 - 애노테이션을 적용하여 요청 핸들러 다루기
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
 //ver 45 - 프론트 컨트롤러 적용
 //ver 42 - JSP 적용
 //ver 39 - forward 적용
