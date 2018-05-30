@@ -1,21 +1,15 @@
 package bitcamp.java106.pms.web;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import bitcamp.java106.pms.controller.PageController;
 import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
-import bitcamp.java106.pms.support.WebApplicationContextUtils;
-import bitcamp.java106.pms.web.RequestMapping;
 
 @Component("/classroom")
 public class ClassroomController {
