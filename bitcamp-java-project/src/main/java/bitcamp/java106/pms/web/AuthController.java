@@ -21,15 +21,15 @@ public class AuthController {
     }
     
     @RequestMapping("/login")
-    public String login(
-            HttpServletRequest request, 
-            HttpServletResponse response) throws Exception {
-        
-        String id = request.getParameter("id");
-        String password = request.getParameter("password");
+    public String login(@RequestParam("id") String id,
+            @RequestParam("password") String password,
+            @RequestParam("saveId") String saveId,
+            HttpServletRequest request,
+            HttpServletResponse response, 
+            HttpSession session) throws Exception {
         
         Cookie cookie = null;
-        if (request.getParameter("saveId") != null) {
+        if (saveId != null) {
             // 입력폼에서 로그인할 때 사용한 ID를 자동으로 출력할 수 있도록 
             // 웹브라우저로 보내 저장시킨다.
             cookie = new Cookie("id", id);
@@ -42,8 +42,6 @@ public class AuthController {
         response.addCookie(cookie);
         
         Member member = memberDao.selectOneWithPassword(id, password);
-        
-        HttpSession session = request.getSession();
         
         if (member != null) { // 로그인 성공!
             session.setAttribute("loginUser", member);
@@ -68,11 +66,11 @@ public class AuthController {
     
     @RequestMapping("/logout")
     public String logout(
-            HttpServletRequest request, 
-            HttpServletResponse response) throws Exception {
+            HttpSession session,
+            HttpServletRequest request) throws Exception {
         
         // 세션을 꺼내 무효화시킨다.
-        request.getSession().invalidate();
+        session.invalidate();
         
         // 웹 애플리케이션의 시작 페이지로 가라고 웹브라우저에게 얘기한다.
         return "redirect:" + request.getContextPath(); // ==> "/java106-java-project"

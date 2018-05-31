@@ -2,6 +2,7 @@ package bitcamp.java106.pms.web;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,22 +22,13 @@ public class ClassroomController {
     }
     
     @RequestMapping("/add")
-    public String add(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        Classroom classroom = new Classroom();
-        classroom.setTitle(request.getParameter("title"));
-        classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
-        classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
-        classroom.setRoom(request.getParameter("room"));
-        
+    public String add(Classroom classroom) throws Exception {
         classroomDao.insert(classroom);
         return "redirect:list.do";
     }
     
     @RequestMapping("/delete")
-    public String delete(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        int no = Integer.parseInt(request.getParameter("no"));
+    public String delete(@RequestParam("no") int no) throws Exception {
         int count = classroomDao.delete(no);
         if (count == 0) {
             throw new Exception("<p>해당 강의가 없습니다.</p>");
@@ -45,24 +37,15 @@ public class ClassroomController {
     }
     
     @RequestMapping("/list")
-    public String list(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public String list(Map<String,Object> map) throws Exception {
         
         List<Classroom> list = classroomDao.selectList();
-        request.setAttribute("list", list);
+        map.put("list", list);
         return "/classroom/list.jsp";
     }
     
     @RequestMapping("/update")
-    public String update(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
-        Classroom classroom = new Classroom();
-        classroom.setNo(Integer.parseInt(request.getParameter("no")));
-        classroom.setTitle(request.getParameter("title"));
-        classroom.setStartDate(Date.valueOf(request.getParameter("startDate")));
-        classroom.setEndDate(Date.valueOf(request.getParameter("endDate")));
-        classroom.setRoom(request.getParameter("room"));
+    public String update(Classroom classroom) throws Exception {
         
         int count = classroomDao.update(classroom);
         if (count == 0) {
@@ -72,15 +55,14 @@ public class ClassroomController {
     }
     
     @RequestMapping("/view")
-    public String view(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        int no = Integer.parseInt(request.getParameter("no"));
+    public String view(@RequestParam("no") int no,
+            Map<String,Object> map) throws Exception {
         Classroom classroom = classroomDao.selectOne(no);
         
         if (classroom == null) {
             throw new Exception("유효하지 않은 강의입니다.");
         }
-        request.setAttribute("classroom", classroom);
+        map.put("classroom", classroom);
         return "/classroom/view.jsp";
     }
     

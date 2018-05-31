@@ -1,6 +1,7 @@
 # 변경 내역
-- @RequestMapping 추가
-- 모든 페이지 컨트롤러에서 클라이언트 요청을 처리하는 메서드에 @RequestMapping을 붙인다.
-- 페이지 컨트롤러는 PageController 인터페이스를 구현하지 않는다.
-- PageController 삭제
 - DispatcherServlet 변경
+- BoardXxxController 처럼 CRUD 컨트롤러들을 한 개의 클래스로 묶는다.
+
+
+
+

@@ -2,6 +2,7 @@ package bitcamp.java106.pms.web;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,25 +30,20 @@ public class TeamController {
     }
     
     @RequestMapping("/view")
-    public String view(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public String view(@RequestParam("name") String name,
+            Map<String, Object> map) throws Exception {
 
-        String name = request.getParameter("name");
-        
         Team team = teamDao.selectOneWithMembers(name);
         if (team == null) {
             throw new Exception("유효하지 않은 팀입니다.");
         }
-        request.setAttribute("team", team);
+        map.put("team", team);
         return "/team/view.jsp";
     }
 
     
     @RequestMapping("/delete")
-    public String delete(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
-        String name = request.getParameter("name");
+    public String delete(@RequestParam("name") String name) throws Exception {
         
         teamMemberDao.delete(name);
         taskDao.deleteByTeam(name);
@@ -59,40 +55,23 @@ public class TeamController {
         
     }
     
-    @RequestMapping("add")
-    public String add(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
-        Team team = new Team();
-        team.setName(request.getParameter("name"));
-        team.setDescription(request.getParameter("description"));
-        team.setMaxQty(Integer.parseInt(request.getParameter("maxQty")));
-        team.setStartDate(Date.valueOf(request.getParameter("startDate")));
-        team.setEndDate(Date.valueOf(request.getParameter("endDate")));
+    @RequestMapping("/add")
+    public String add(Team team) throws Exception {
         
         teamDao.insert(team);
         return "redirect:list.do";
     }
     
     @RequestMapping("/list")
-    public String list(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public String list(Map<String, Object> map) throws Exception {
         
         List<Team> list = teamDao.selectList();
-        request.setAttribute("list", list);
+        map.put("list", list);
         return "/team/list.jsp";
     }
     
     @RequestMapping("/update")
-    public String update(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
-        Team team = new Team();
-        team.setName(request.getParameter("name"));
-        team.setDescription(request.getParameter("description"));
-        team.setMaxQty(Integer.parseInt(request.getParameter("maxQty")));
-        team.setStartDate(Date.valueOf(request.getParameter("startDate")));
-        team.setEndDate(Date.valueOf(request.getParameter("endDate")));
+    public String update(Team team) throws Exception {
         
         int count = teamDao.update(team);
         if (count == 0) {
