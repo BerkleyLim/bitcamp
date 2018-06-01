@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import bitcamp.java106.pms.support.WebApplicationContextUtils;
 import bitcamp.java106.pms.web.RequestMapping;
 import bitcamp.java106.pms.web.RequestParam;
 
@@ -35,11 +34,6 @@ public class DispatcherServlet extends HttpServlet {
         try {
             iocContainer = new ClassPathXmlApplicationContext(
                 this.getServletConfig().getInitParameter("contextConfigLocation"));
-            
-            // 다른 서블릿에서 스프링 IoC 컨테이너를 꺼내 쓸 수 있도록,
-            // WebApplicationContextUtils에 보관한다.
-            WebApplicationContextUtils.containers.put(
-                    this.getServletContext(), iocContainer);
             
             String[] beanNames = iocContainer.getBeanDefinitionNames();
             System.out.println("-----------------------------");
@@ -110,7 +104,7 @@ public class DispatcherServlet extends HttpServlet {
                 request.getRequestDispatcher(viewUrl).include(request, response);
             }
         } catch (Exception e) {
-            throw new ServletException("페이지 컨트롤러 실행 중 오류 발생!");
+            throw new ServletException("페이지 컨트롤러 실행 중 오류 발생!", e);
         }
     }
 
@@ -149,27 +143,26 @@ public class DispatcherServlet extends HttpServlet {
         Class<?> clazz = p.getType();
         
         try {
-            Constructor<?> defaultConstructor = clazz.getConstructor(null);
+            Constructor<?> defaultConstructor = clazz.getConstructor();
             Object valueObject = defaultConstructor.newInstance();
             
             Method[] methods = clazz.getMethods();
             
             for (Method m : methods) {
                 if (!m.getName().startsWith("set")) continue;
+                
                 String propName = getPropertyName(m.getName());
                 String propValue = request.getParameter(propName);
                 
                 // 클라이언트가 그 프로퍼티 이름으로 보낸 값이 없으면 건너 뛴다.
                 if (propValue == null) continue;
                 
-                // 셋터에서 요구하는 파라미터 값의 타입이 String이나 primitive 타입이 아니면 건너 뛴다.
-                Class setterParamType = m.getParameterTypes()[0];
+                // 셋터에서 요구하는 파라미터 값의 타입이 String이나 primitive 타입이 아니면 건너 뛴다. 
+                Class<?> setterParamType = m.getParameterTypes()[0];
                 if (!isPrimitiveType(setterParamType)) continue;
                 
-                // invoke란? class 이름으로 class를 호출하여 사용하는 형식
                 // 셋터 메서드를 호출하여 클라이언트가 보낸 값을 저장한다.
                 m.invoke(valueObject, toPrimitiveValue(propValue, setterParamType));
-                
             }
             
             return valueObject;
@@ -190,10 +183,10 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private Object getRequestParamValue(Parameter p, HttpServletRequest request) {
-        // @RequestParam 애노테이션 정보를 추출한다.
+        // 파라미터 정보로부터 @RequestParam 애노테이션 정보를 추출한다.
         RequestParam anno = p.getAnnotation(RequestParam.class);
         
-        // 애노테이션의 설정된 파라미터 이름을 꺼낸다.
+        // 애노테이션 정보로부터 파라미터 이름을 꺼낸다.
         String paramName = anno.value();
         
         // 파라미터 이름을 사용하여 클라이언트가 보낸 데이터의 값을 꺼낸다.
@@ -201,11 +194,11 @@ public class DispatcherServlet extends HttpServlet {
         
         if (value == null) return null;
         
-        // 클라이언트가 보낸 값은 문자열인데 그 문자열을 파라미터의 primitive 타입으로 바꾼다.
+        // 클라이언트가 보낸 값은 문자열인데 그 문자열을 파라미터의 primitive 타입으로 바꿔 리턴한다.
         return toPrimitiveValue(value, p.getType());
     }
     
-    private Object toPrimitiveValue(String value, Class type) {
+    private Object toPrimitiveValue(String value, Class<?> type) {
         if (type == byte.class) return Byte.parseByte(value);
         if (type == short.class) return Short.parseShort(value);
         if (type == int.class) return Integer.parseInt(value);

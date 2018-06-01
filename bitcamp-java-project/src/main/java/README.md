@@ -1,7 +1,7 @@
 # 변경 내역
-- DispatcherServlet 변경
-- BoardXxxController 처럼 CRUD 컨트롤러들을 한 개의 클래스로 묶는다.
-
-
-
-
+- build.gradle 변경
+- DispatcherServlet 삭제
+- CharacterEncodingFilter 삭제
+- web.xml 변경
+- RequestMapping, RequestParam 애노테이션 삭제
+- 페이지 컨트롤러 변경
