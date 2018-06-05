@@ -10,15 +10,14 @@
     
     <context:component-scan base-package="bitcamp.mvc.web"/>
     
-    <!-- 클라이언트가 멀티파트 형식으로 보낸 데이터를 처리할 객체를 등록한다.
-         => 스프링의 CommonsMultipartResolver 클래스는 내부적으로 
-            아파치의 commons-fileupload 라이브러리를 사용하기 때문에
-            이 라이브러리도 추가로 등록해야 한다. 
-    -->
-    <bean id="multipartResolver"
-	      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	    <property name="maxUploadSize" value="5000000"/>
-	</bean>
+    <!-- Spring WebMVC의 기본 뷰 리졸버로 교체한다.
+        => JSP URL의 앞뒤 경로를 미리 설정해두면 페이지 컨트롤러에서
+           view URL을 지정하기 쉽다. -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    <property name="prefix" value="/WEB-INF/jsp/"/>
+    <property name="suffix" value=".jsp"/>
+    </bean>
 </beans>
 
 
