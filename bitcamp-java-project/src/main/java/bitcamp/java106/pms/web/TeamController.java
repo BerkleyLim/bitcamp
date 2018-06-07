@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,11 +31,15 @@ public class TeamController {
         this.taskDao = taskDao;
     }
     
+    @RequestMapping("/form")
+    public void form() {
+    }
+    
     @RequestMapping("/add")
     public String add(Team team) throws Exception {
         
         teamDao.insert(team);
-        return "redirect:list.do";
+        return "redirect:list";
     }
     
     @RequestMapping("/delete")
@@ -52,15 +57,14 @@ public class TeamController {
         if (count == 0) {
             throw new Exception ("해당 팀이 없습니다.");
         }
-        return "redirect:list.do";
+        return "redirect:list";
     }
     
     @RequestMapping("/list")
-    public String list(Map<String,Object> map) throws Exception {
+    public void list(Map<String,Object> map) throws Exception {
         
         List<Team> list = teamDao.selectList();
         map.put("list", list);
-        return "/team/list.jsp";
     }
     
     @RequestMapping("/update")
@@ -70,12 +74,12 @@ public class TeamController {
         if (count == 0) {
             throw new Exception("<p>해당 팀이 존재하지 않습니다.</p>");
         }
-        return "redirect:list.do";
+        return "redirect:list";
     }
     
-    @RequestMapping("/view")
+    @RequestMapping("/view/{name}")
     public String view(
-            @RequestParam("name") String name,
+            @PathVariable String name,
             Map<String,Object> map) throws Exception {
         
         Team team = teamDao.selectOneWithMembers(name);
@@ -83,7 +87,7 @@ public class TeamController {
             throw new Exception("유효하지 않은 팀입니다.");
         }
         map.put("team", team);
-        return "/team/view.jsp";
+        return "team/view";
     }
     
     // GlobalBindingInitializer 에 등록했기 때문에 이 클래스에서는 제외한다.
@@ -102,6 +106,8 @@ public class TeamController {
     */
 }
 
+//ver 52 - InternalResourceViewResolver 적용
+//         *.do 대신 /app/* 을 기준으로 URL 변경
 //ver 51 - Spring WebMVC 적용
 //ver 49 - 요청 핸들러의 파라미터 값 자동으로 주입받기
 //ver 48 - CRUD 기능을 한 클래스에 합치기

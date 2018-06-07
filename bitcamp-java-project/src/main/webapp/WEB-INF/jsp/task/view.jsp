@@ -9,10 +9,10 @@
 <title>작업 보기</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"/>
-<h1>작업 보기(MVC + JSP 전용 태그 + EL + JSTL)</h1>
-<form action='update.do' method='post'>
-<input type='hidden' name='no' value='${param.no}'>
+<jsp:include page="../header.jsp"/>
+<h1>작업 보기</h1>
+<form action='../../update' method='post'>
+<input type='hidden' name='no' value='${task.no}'>
 <table border='1'>
 <tr>
     <th>팀명</th>
@@ -47,8 +47,9 @@
     </select></td>
 </tr>
 </table>
+<a href='../../list/${teamName}'>목록</a>
 <button>변경</button> 
-<a href='delete.do?no=${param.no}&teamName=${task.team.name}'>삭제</a>
+<a href='../../delete?no=${task.no}&teamName=${task.team.name}'>삭제</a>
 </form>
 </body>
 </html>
