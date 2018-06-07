@@ -1,11 +1,14 @@
 ﻿# 자바 프로젝트 
 
+
 ## src52 - Spring WebMVC 기타 설정
 학습목표
-    - view resolver의 역할을 이해한다.
-    - Path Variable를 설정할 수 있다.
+    - view resolver의 역할을 이해하고 설정할 수 있다.
+    - Path Variable을 사용할 수 있다.
 작업내용
     - 프론트 컨트롤러의 스프링 설정에 뷰 리졸버 설정을 추가한다.
+    - 프론트 컨트롤러의 URL 맵핑을 *.do 에서 /app/* 으로 변경한다.
+    - Path Variable을 처리할 객체를 등록한다.
 
 ## src51 - Spring WebMVC 기본 적용
 학습목표
@@ -22,6 +25,7 @@
     - @InitBinder 애노테이션을 사용할 수 있다.
     - 커스텀 프로퍼티 에디터를 사용하여 클라이언트 파라미터 값을 요청 핸들러의 파라미터 값으로 변환할 수 있다.
     - @ControllerAdvice 애노테이션을 사용할 수 있다.
+    
     
 ## src50 - mybatis와 Spring IoC 컨테이너 연동하기
 학습목표 

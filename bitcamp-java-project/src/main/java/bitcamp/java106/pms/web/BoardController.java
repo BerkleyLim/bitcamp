@@ -1,9 +1,11 @@
 package bitcamp.java106.pms.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,7 @@ public class BoardController {
         this.boardDao = boardDao;
     }
 
-    @RequestMapping("/form")
+    @RequestMapping("form")
     public void form(/*Model model*/) {
         // 입력 폼에서 사용할 데이터가 있다면 
         // 이 request handler에서 준비하면 된다.
@@ -34,14 +36,14 @@ public class BoardController {
         // = "/WEB-INF/jsp/" + "board/form.do" + ".jsp"
     }
     
-    @RequestMapping("/add")
+    @RequestMapping("add")
     public String add(Board board) throws Exception {
         
         boardDao.insert(board);
         return "redirect:list";
     }
     
-    @RequestMapping("/delete")
+    @RequestMapping("delete")
     public String delete(@RequestParam("no") int no) throws Exception {
         
         int count = boardDao.delete(no);
@@ -51,14 +53,21 @@ public class BoardController {
         return "redirect:list";
     }
     
-    @RequestMapping("/list")
-    public void list(Map<String,Object> map) throws Exception {        
-            
-        List<Board> list = boardDao.selectList();
+    @RequestMapping("/list{page}")
+    public void list(
+            @MatrixVariable(defaultValue="1") int pageNo,
+            @MatrixVariable(defaultValue="3") int pageSize,
+            Map<String,Object> map) throws Exception {        
+        
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("startRowNo", (pageNo - 1) * pageSize);
+        params.put("pageSize", pageSize);
+        
+        List<Board> list = boardDao.selectList(params);
         map.put("list", list);
     }
     
-    @RequestMapping("/update")
+    @RequestMapping("update")
     public String update(Board board) throws Exception {
         
         int count = boardDao.update(board);
