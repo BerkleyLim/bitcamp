@@ -53,13 +53,13 @@ public class BoardController {
         return "redirect:list";
     }
     
-    @RequestMapping("/list{page}")
+    @RequestMapping("list{page}")
     public void list(
             @MatrixVariable(defaultValue="1") int pageNo,
             @MatrixVariable(defaultValue="3") int pageSize,
             Map<String,Object> map) throws Exception {        
         
-        HashMap<String, Object> params = new HashMap<>();
+        HashMap<String,Object> params = new HashMap<>();
         params.put("startRowNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
         
@@ -94,6 +94,7 @@ public class BoardController {
 
 //ver 52 - InternalResourceViewResolver 적용
 //         *.do 대신 /app/* 을 기준으로 URL 변경
+//         페이지 관련 파라미터에 matrix variable 적용
 //ver 51 - Spring WebMVC 적용
 //ver 49 - 요청 핸들러의 파라미터 값 자동으로 주입받기
 //ver 48 - CRUD 기능을 한 클래스에 합치기

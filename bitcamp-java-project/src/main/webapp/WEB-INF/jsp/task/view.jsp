@@ -47,7 +47,7 @@
     </select></td>
 </tr>
 </table>
-<a href='list/${teamName}'>목록</a>
+<a href='list'>목록</a>
 <button>변경</button> 
 <a href='delete?no=${task.no}'>삭제</a>
 </form>
