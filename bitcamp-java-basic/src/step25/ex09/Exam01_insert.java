@@ -3,8 +3,6 @@ package step25.ex09;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import step25.ex09.Board;
-
 public class Exam01_insert {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext iocContainer =
@@ -19,28 +17,27 @@ public class Exam01_insert {
         //    즉 DAO의 메서드를 사용하는 객체 또한 Spring IoC 컨테이너에 있어야 한다.
         //    => DAO 메서드를 호출하는 Service 객체를 만든다.
         //    => BoardService 클래스 추가
-        //
-        BoardDao boardDao = iocContainer.getBean(BoardDao.class);
+        // 3) AOP를 사용하여 트랜잭션 관리자를 적용한다.
+        //    => application-context.xml에 AOP Advice와 PointCut을 적용한다.
+        BoardService boardService = iocContainer.getBean(BoardService.class);
         
-        Board board = new Board();
-        board.setContent("xxxx");
+        Board b1 = new Board();
+        b1.setNo(151);
+        b1.setTitle("1111");
+        b1.setContent("xxxx");
         
-        board.setNo(141);
-        board.setTitle("1111");
-        board.setContent("xxxx");
-        boardDao.insert(board);
-        System.out.printf("%d번 게시물 입력!\n", board.getNo());
+        Board b2 = new Board();
+        b2.setNo(152);
+        b2.setTitle("2222");
+        b2.setContent("xxxx");
         
-        board.setNo(142);
-        board.setTitle("2222");
-        boardDao.insert(board);
-        System.out.printf("%d번 게시물 입력!\n", board.getNo());
+        Board b3 = new Board();
+        b3.setNo(153);
+        b3.setTitle("3333");
+        b3.setContent("xxxx");
         
-        board.setNo(143);
-        board.setTitle("3333");
-        boardDao.insert(board); 
-        System.out.printf("%d번 게시물 입력!\n", board.getNo());
-
+        boardService.test1(b1, b2, b3);
+        System.out.println("입력 성공!");
         
     }
 }

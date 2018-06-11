@@ -58,21 +58,20 @@
          AOP Advice 객체를 준비한다.
          별도의 클래스를 작성할 필요가 없이 다음과 같이 XML로 설정하면 된다. -->
     <tx:advice id="txAdvice" transaction-manager="txManager">
-        <!-- the transactional semantics... -->
         <tx:attributes>
             <!-- 특정 메서드에 대해 read-only 여부를 지정할 수 있다. -->
             <tx:method name="get*" read-only="true"/>
             <tx:method name="select*" read-only="true" />
             
             <!-- 그 밖의 모든 메서드는 insert|update|delete 가능! -->
-            <tx:method name="*"/>
+            <tx:method name="test1"/>
         </tx:attributes>
     </tx:advice>
     
     <!-- 위에서 정의한 AOP Advice 객체를 지정된 클래스의 메서드에 적용한다. -->
     <aop:config>
         <aop:advisor advice-ref="txAdvice" 
-                     pointcut-ref="execution(* step25.ex09.BoardService.*(..))"/>
+                     pointcut="execution(* step25.ex09.BoardService.*(..))"/>
     </aop:config>
     
 </beans>

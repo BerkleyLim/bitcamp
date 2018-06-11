@@ -1,4 +1,4 @@
-// Mybatis + spring IoC - 트랜잭션 적용 전
+// Mybatis + spring IoC - 트랜잭션 적용 후
 package step25.ex09;
 
 import java.util.List;
@@ -9,7 +9,7 @@ public class Exam01_list {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext iocContainer =
                 new ClassPathXmlApplicationContext(
-                        "step25/ex08/application-context.xml");
+                        "step25/ex09/application-context.xml");
         
         BoardDao boardDao = iocContainer.getBean(BoardDao.class);
         
