@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex10</title>
+</head>
+<body>
+<h1>변수 - 자바스크립트 변수와 자바의 Map 프로퍼티</h1>
+<script type="text/javascript">
+    "use strict"
+    
+    // 자바스크립트에서는 글로벌 변수가 모두 window 객체에 소속된다고 했다.
+    // 결국 내부적으로 변수를 다룰 때는 자바의 맵 객체의 프로퍼티 방식으로 다룬다.
+    window.v1 = 100; // java => map.put("v1", 100);
+    
+    // 이렇게 맵 객체의 프로퍼티를 추가하는 방식으로 변수를 관리하다 보니
+    // 변수의 값을 다른 타입으로 쉽게 바꿀 수 있는 것이다.
+    window.v1 = "문자열"; // java => map.put("v1", new String("문자열"));
+    
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
