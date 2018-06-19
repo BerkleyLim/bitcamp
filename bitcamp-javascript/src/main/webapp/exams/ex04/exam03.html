@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex02</title>
+</head>
+<body>
+<h1>객체 - 프로퍼티명 추가2</h1>
+<script>
+"use strict"
+// 일반적인 값 뿐만 아니라, 함수와 객체까지 저장할 수 있다.
+
+var obj= new Object();
+
+obj.name = "홍길동";
+obj.kor = 100;
+obj.eng = 90;
+obj.math = 80;
+obj.toString = function() {
+	// 자바와 달리 객체의 프로퍼티 변수를 사용할 때는 반드시 this를 붙여야 한다. 생략하면 안된다.
+	console.log(this.name, this.kor, this.eng, this.math);
+}
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
