@@ -31,7 +31,13 @@
 var e1 = document.getElementById("header4");
 console.log(e1.name); // underfined
 console.log(e1.localName); // 태그명
-console.log(e1.constructor.name); 
+console.log(e1.constructor.name); // 객체의 생성자 이름
+console.log(e1 instanceof HTMLHeadingElement); // true
+console.log(e1 instanceof HTMLElement);   // true
+console.log(e1 instanceof Element);   // true
+console.log(e1 instanceof Node);   // true
+console.log(e1 instanceof EventTarget);   // true
+console.log(e1 instanceof Object);   // true
 </script>
 </body>
 </html>
