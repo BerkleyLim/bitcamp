@@ -1,4 +1,4 @@
-// 인터셉터 - 페이지 컨트롤러를 실행하기 전후에 개입하기. 필터와 같은 역할을 한다.
+// JSON 데이터 출력하기 - 적용 전
 package bitcamp.mvc.web;
 
 import org.springframework.stereotype.Controller;
@@ -7,12 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import bitcamp.mvc.dao.BoardDao;
+
 @Controller 
-@RequestMapping("/exam09_1") 
-public class Exam09_1 implements HandlerInterceptor{ 
+@RequestMapping("/exam10_1") 
+public class Exam10_1 implements HandlerInterceptor{ 
     
-    @GetMapping(value="aaa/m1", produces="text/plain;charset=UTF-8")
-    public String m1() {
+    BoardDao boardDao;
+    
+    public Exam10_1(BoardDao boardDao) {
+        this.boardDao = boardDao;
+    }
+    
+    @GetMapping("list")
+    public String list() {
         // 테스트:
         //      http://localhost:8888/bitcamp-spring-webmvc/mvc/exam09_1/aaa/m1
         System.out.println("Exam09_1.m1()");
