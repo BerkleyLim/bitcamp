@@ -12,8 +12,8 @@
 <jsp:include page="../header.jsp"/>
 
 <h1>Exam06_4의 실행 결과</h1>
-name: ${name} <br>
-age: ${age} <br>
+name: ${name}<br>
+age: ${age}<br>
 
 <jsp:include page="../footer.jsp"/>
 </body>

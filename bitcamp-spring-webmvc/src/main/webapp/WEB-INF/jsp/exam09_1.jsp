@@ -12,7 +12,7 @@
 <h1>Exam09_1의 실행 결과</h1>
 </body>
 </html>
-<% System.out.println("exam09_1.jsp 실행!"); %>
+<%System.out.println("exam09_1.jsp 실행!");%>
 
 
 

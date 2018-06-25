@@ -16,6 +16,44 @@ public class BoardDao {
     
     public BoardDao() {
         System.out.println("====> BoardDao()");
+        Member writer = new Member();
+        writer.setId("hong");
+        writer.setEmail("hong@test.com");
+        
+        Board b1 = new Board();
+        b1.setNo(1);
+        b1.setTitle("제목입니다!1");
+        b1.setUser(writer);
+        b1.setCreatedDate(Date.valueOf("2018-6-22"));
+        list.add(b1);
+        
+        b1 = new Board();
+        b1.setNo(2);
+        b1.setTitle("제목입니다!2");
+        b1.setUser(writer);
+        b1.setCreatedDate(Date.valueOf("2018-6-22"));
+        list.add(b1);
+        
+        b1 = new Board();
+        b1.setNo(3);
+        b1.setTitle("제목입니다!3");
+        b1.setUser(writer);
+        b1.setCreatedDate(Date.valueOf("2018-6-22"));
+        list.add(b1);
+        
+        b1 = new Board();
+        b1.setNo(4);
+        b1.setTitle("제목입니다!4");
+        b1.setUser(writer);
+        b1.setCreatedDate(Date.valueOf("2018-6-22"));
+        list.add(b1);
+        
+        b1 = new Board();
+        b1.setNo(5);
+        b1.setTitle("제목입니다!5");
+        b1.setUser(writer);
+        b1.setCreatedDate(Date.valueOf("2018-6-22"));
+        list.add(b1);
     }
     
     ArrayList<Board> list = new ArrayList<>();
@@ -25,33 +63,16 @@ public class BoardDao {
     }
     
     public List<Board> selectList() {
-        Member writer = new Member();
-        writer.setId("hong");
-        writer.setEmail("hong@test.com");
-
-        Board b1 = new Board();
-        b1.setNo(1);
-        b1.setTitle("제목입니다.");
-        b1.setUser(writer);
-        b1.setCreatedDate(Date.valueOf("2018-6-22"));
-        list.add(b1);
-        
-        b1.setNo(2);
-        b1.setTitle("제목입니다.2");
-        list.add(b1);
-        
-        b1.setNo(3);
-        b1.setTitle("제목입니다.3");
-        list.add(b1);
-        
-        b1.setNo(4);
-        b1.setTitle("제목입니다.4");
-        list.add(b1);
-        
-        b1.setNo(5);
-        b1.setTitle("제목입니다.5");
-        list.add(b1);
-        
         return list;
     }
 }
+
+
+
+
+
+
+
+
+
+
