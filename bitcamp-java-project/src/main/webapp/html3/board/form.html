@@ -31,63 +31,51 @@
 </p>
 </form>
 
-<!-- <script src="../js/bitcamp.js"></script> -->
-<script src="../js/bitcamp.min.js"></script>
-<!-- <script src="../header.js"></script> -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../header.js"></script>
 <script>
-// 태그의 id를 지정하면 window 객체에 자동 등록된다.
-// 따라서 다음과 같이 태그를 찾는 코드를 작성하지 않아도 된다.
-/*
-var fNo = document.querySelector("#fNo"),
-    fTitle = document.querySelector("#fTitle"),
-    fContent = document.querySelector("#fContent"),
-    fCreatedDate = document.querySelector("#fCreatedDate");
- */
- if (location.href.split("?").length > 1) {
-//   var tags = document.querySelectorAll(".input-view");
-    var tags = $(".input-view");
-    /* for (var tag of tags) {
-       tag.style.display = "none"; 
-    } */
+
+if (location.href.split("?").length > 1) {
+	var tags = $(".input-view");
     tags.css("display", "none");
     
-    var no = location.href.split("?")[1].split("=")[1];
-    
-    $.getJSON("../../json/board/" + no, function(data) {
+	var no = location.href.split("?")[1].split("=")[1];
+	
+	$.getJSON("../../json/board/" + no, function(data) {
         $(fNo).val(data.no);
         $(fTitle).val(data.title);
         $(fContent).val(data.content);
         $(fCreatedDate).val(data.createdDate);
-    });
-    
-    $("#updBtn").click(() => {
-        $.post("../../json/board/update", {
-            title: $(fTitle).val(),
-            content: $(fContent).val(),
-            no: $(fNo).val()
-        }, () => {
-            location.href = "list.html";
-        });
-    });
-    
+	});
+	
+	$("#updBtn").click(() => {
+		$.post("../../json/board/update", {
+			title: $(fTitle).val(),
+			content: $(fContent).val(),
+			no: $(fNo).val()
+		}, () => {
+			location.href = "list.html";
+		});
+	});
+	
     $("#delBtn").click(() => {
         if (window.confirm("삭제하시겠습니까?") == false) 
-            return;
+        	return;
         
         $.get("../../json/board/delete", {"no": no}, () => {
-            location.href = "list.html";
+        	location.href = "list.html";
         });
-    });
-    
+	});
+	
 } else { // 새 글 등록
     var tags = $(".detail-view");
     tags.css("display", "none");
     
-    $("#addBtn").click (() => {
+    $("#addBtn").click(() => {
     	$.post("../../json/board/add", {
     		title: $(fTitle).val(),
-    		content: $(fContent).val()
+            content: $(fContent).val()
     	}, () => {
     		location.href = "list.html";
     	});
