@@ -4,7 +4,7 @@
 
 // 1) gradle 빌드 도구가 사용할 플러그인 추가
 // => 이클립스 관련 파일을 생성하고 제거하는 명령어가 들어 있는 플러그인
-apply plugin: 'eclipse-wtp' 
+apply plugin: 'eclipse-wtp'
 
 // => 자바 관련 작업을 수행할 명령어가 들어 있는 플러그인
 apply plugin: 'java'
