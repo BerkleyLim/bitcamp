@@ -10,4 +10,4 @@ apply plugin: 'eclipse'
 apply plugin: 'java'
 
 // 2)인텔리제이
-apply plugin: 'idea'
+apply plugin: 'idea' 
