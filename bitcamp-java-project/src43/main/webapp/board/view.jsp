@@ -1,4 +1,4 @@
-<%@page import="bitcamp.java106.pms.domain.Board"%>
+<%@page import="bitcamp.java106.pms.domain.Works"%>
 <%@ page language="java" 
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="/header.jsp"/>
 <h1>게시물 보기(MVC + JSP 전용 태그)</h1>
-<jsp:useBean id="board" class="bitcamp.java106.pms.domain.Board" scope="request"/>
+<jsp:useBean id="board" class="bitcamp.java106.pms.domain.Works" scope="request"/>
 <form action='update' method='post'>
 <table border='1'>
 <tr><th>번호</th><td>

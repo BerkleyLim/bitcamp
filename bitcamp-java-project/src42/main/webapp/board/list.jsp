@@ -1,4 +1,4 @@
-<%@page import="bitcamp.java106.pms.domain.Board"%>
+<%@page import="bitcamp.java106.pms.domain.Works"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" 
     contentType="text/html; charset=UTF-8"
@@ -12,8 +12,9 @@
 <body>
 
 <%
-out.flush();
-request.getRequestDispatcher("/header.jsp").include(request, response);%>
+    out.flush();
+request.getRequestDispatcher("/header.jsp").include(request, response);
+%>
 
 <h1>게시물 목록(MVC)</h1>
 <p><a href='form.html'>새 글</a></p>
@@ -22,8 +23,8 @@ request.getRequestDispatcher("/header.jsp").include(request, response);%>
     <th>번호</th><th>제목</th><th>등록일</th>
 </tr>
 <%
-List<Board> list = (List<Board>)request.getAttribute("list");
-for (Board board : list) {
+    List<Works> list = (List<Works>)request.getAttribute("list");
+for (Works board : list) {
 %>
 <tr>
     <td><%=board.getNo()%></td>
