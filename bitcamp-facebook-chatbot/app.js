@@ -182,6 +182,7 @@ function handleMessage(sender_psid, received_message) {
 					  }]
 				  }
 			  }
+    }
   } 
   
   // Send the response message
